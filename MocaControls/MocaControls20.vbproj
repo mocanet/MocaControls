@@ -1,0 +1,261 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectTypeGuids>{82b43b9b-a64c-4715-b499-d71e9ca2bd60};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
+    <ProjectGuid>{467638FB-8A19-43DE-8918-BCDA0F8A51C2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Moca</RootNamespace>
+    <AssemblyName>MocaControls</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <GeneratePkgDefFile>false</GeneratePkgDefFile>
+    <OptionStrict>Off</OptionStrict>
+    <OptionInfer>On</OptionInfer>
+    <TargetFrameworkProfile />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>4.0</OldToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036,42353,42354,42355</NoWarn>
+    <DeployExtension>False</DeployExtension>
+    <CreateVsixContainer>False</CreateVsixContainer>
+    <DocumentationFile>MocaControls.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036,42353,42354,42355</NoWarn>
+    <CopyVsixExtensionFiles>False</CopyVsixExtensionFiles>
+    <CopyVsixExtensionLocation>..\Release</CopyVsixExtensionLocation>
+    <CreateVsixContainer>False</CreateVsixContainer>
+    <DeployExtension>False</DeployExtension>
+    <DocumentationFile>MocaControls.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.3\lib\net20-full\log4net.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Moca, Version=2.0.1.0, Culture=neutral, PublicKeyToken=42f7e4f7232a6bf5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moca.NETCore.2.0.1\lib\net20-full\Moca.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="MocaWin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=74dd2591eb474191, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moca.NETWin.2.0.3\lib\net20-full\MocaWin.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="resourceDummy.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Win\AlertMessage.Designer.vb">
+      <DependentUpon>AlertMessage.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Win\AlertMessage.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Win\BindingHelper.vb" />
+    <Compile Include="Win\BindValueValidator.vb" />
+    <Compile Include="Win\Calendar.Designer.vb">
+      <DependentUpon>Calendar.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Win\Calendar.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Win\CheckBoxGroup.Designer.vb">
+      <DependentUpon>CheckBoxGroup.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Win\CheckBoxGroup.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Win\DataBinder.Designer.vb">
+      <DependentUpon>DataBinder.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Win\DataBinder.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Win\DayStyle.vb" />
+    <Compile Include="Win\DebugMarker.Designer.vb">
+      <DependentUpon>DebugMarker.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Win\DebugMarker.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Win\MocaDi.Designer.vb">
+      <DependentUpon>MocaDi.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Win\MocaDi.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Win\NullableDateTimePicker.Designer.vb">
+      <DependentUpon>NullableDateTimePicker.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Win\NullableDateTimePicker.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Win\RadioButtonGroup.Designer.vb">
+      <DependentUpon>RadioButtonGroup.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Win\RadioButtonGroup.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Win\TextBoxEx.Designer.vb">
+      <DependentUpon>TextBoxEx.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Win\TextBoxEx.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Win\ToolStripMenuItemGroup.Designer.vb">
+      <DependentUpon>ToolStripMenuItemGroup.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Win\ToolStripMenuItemGroup.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Win\WYSIWYGEditor.Designer.vb">
+      <DependentUpon>WYSIWYGEditor.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Win\WYSIWYGEditor.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Win\AlertMessage.resx">
+      <DependentUpon>AlertMessage.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Win\Calendar.resx">
+      <DependentUpon>Calendar.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Win\DebugMarker.resx">
+      <DependentUpon>DebugMarker.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Win\MocaDi.resx">
+      <DependentUpon>MocaDi.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Win\NullableDateTimePicker.resx">
+      <DependentUpon>NullableDateTimePicker.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Win\WYSIWYGEditor.resx">
+      <DependentUpon>WYSIWYGEditor.vb</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Key.snk" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\DebugMarker.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\MocaDi.bmp" />
+    <EmbeddedResource Include="Resources\ToolStripMenuItemGroup.bmp" />
+    <EmbeddedResource Include="Resources\RadioButtonGroup.bmp" />
+    <EmbeddedResource Include="Resources\NullableDateTimePicker.bmp" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\VSSDK\Microsoft.VsSDK.targets" Condition="false" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  -->
+  <Target Name="AfterCompile">
+    <Delete Files="$(TargetDir)Oracle.DataAccess.dll" />
+  </Target>
+  <Target Name="AfterBuild">
+    <!--<Copy SourceFiles="$(OutputPath)MocaControls.vsix" DestinationFolder="..\Release" />-->
+  </Target>
+</Project>
