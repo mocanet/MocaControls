@@ -22,8 +22,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="tools\" target="tools" />
-    <file src="content\" target="content" />
     <file src="..\MocaControls\bin\Release\MocaControls.dll" target="lib\net20-full\MocaControls.dll" />
     <file src="..\MocaControls\bin\Release\MocaControls.xml" target="lib\net20-full\MocaControls.xml" />
     <file src="..\MocaControls35\bin\Release\MocaControls.dll" target="lib\net35-full\MocaControls.dll" />
