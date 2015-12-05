@@ -1,0 +1,65 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MocaControls", "NuGetPackage\MocaControls.csproj", "{0451BAEF-DF2E-4B98-8644-94EE9415E389}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6B7DA8EC-C83B-4566-B688-BB4BE533D92A}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE.md = LICENSE.md
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{2CF47E95-7B9F-43C1-A463-09F876182F31}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "MocaControls20", "MocaControls\MocaControls20.vbproj", "{467638FB-8A19-43DE-8918-BCDA0F8A51C2}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "MocaControls35", "MocaControls35\MocaControls35.vbproj", "{3C0FBF57-E8FE-43C5-9C47-1F9564B34D2B}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "MocaControls40", "MocaControls40\MocaControls40.vbproj", "{F8AC941E-C798-46AE-B673-23610E97B84B}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "MocaControls45", "MocaControls45\MocaControls45.vbproj", "{BBD85D2F-13EE-45B7-890B-2F93E1BA2D72}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "MocaControls46", "MocaControls46\MocaControls46.vbproj", "{249C42CE-F933-4830-9914-D702E47F637B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0451BAEF-DF2E-4B98-8644-94EE9415E389}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0451BAEF-DF2E-4B98-8644-94EE9415E389}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0451BAEF-DF2E-4B98-8644-94EE9415E389}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0451BAEF-DF2E-4B98-8644-94EE9415E389}.Release|Any CPU.Build.0 = Release|Any CPU
+		{467638FB-8A19-43DE-8918-BCDA0F8A51C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{467638FB-8A19-43DE-8918-BCDA0F8A51C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{467638FB-8A19-43DE-8918-BCDA0F8A51C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{467638FB-8A19-43DE-8918-BCDA0F8A51C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C0FBF57-E8FE-43C5-9C47-1F9564B34D2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C0FBF57-E8FE-43C5-9C47-1F9564B34D2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C0FBF57-E8FE-43C5-9C47-1F9564B34D2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C0FBF57-E8FE-43C5-9C47-1F9564B34D2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8AC941E-C798-46AE-B673-23610E97B84B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8AC941E-C798-46AE-B673-23610E97B84B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8AC941E-C798-46AE-B673-23610E97B84B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8AC941E-C798-46AE-B673-23610E97B84B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBD85D2F-13EE-45B7-890B-2F93E1BA2D72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBD85D2F-13EE-45B7-890B-2F93E1BA2D72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBD85D2F-13EE-45B7-890B-2F93E1BA2D72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBD85D2F-13EE-45B7-890B-2F93E1BA2D72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{249C42CE-F933-4830-9914-D702E47F637B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{249C42CE-F933-4830-9914-D702E47F637B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{249C42CE-F933-4830-9914-D702E47F637B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{249C42CE-F933-4830-9914-D702E47F637B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
