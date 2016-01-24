@@ -7,9 +7,8 @@ Namespace Win
     ''' AOP を利用するためのコントローラ
     ''' </summary>
     ''' <remarks></remarks>
-    <DisplayName("MocaDi"),
-     Description("AOP を利用するためのコントローラ"),
-     ToolboxItem(False),
+    <Description("AOP を利用するためのコントローラ"),
+     ToolboxItem(True),
      ToolboxBitmap(GetType(resourceDummy), "MocaDi.bmp"),
      DesignTimeVisible(True)>
     Public Class MocaDi
