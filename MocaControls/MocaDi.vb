@@ -3,15 +3,16 @@ Imports System.ComponentModel
 
 Namespace Win
 
-	''' <summary>
-	''' AOP を利用するためのコントローラ
-	''' </summary>
-	''' <remarks></remarks>
-	<Description("AOP を利用するためのコントローラ"), _
-	ToolboxItem(True),
-	ToolboxBitmap(GetType(resourceDummy), "MocaDi.bmp"), _
-	DesignTimeVisible(True)> _
-	Public Class MocaDi
+    ''' <summary>
+    ''' AOP を利用するためのコントローラ
+    ''' </summary>
+    ''' <remarks></remarks>
+    <DisplayName("MocaDi"),
+     Description("AOP を利用するためのコントローラ"),
+     ToolboxItem(False),
+     ToolboxBitmap(GetType(resourceDummy), "MocaDi.bmp"),
+     DesignTimeVisible(True)>
+    Public Class MocaDi
 
 		''' <summary>ページに対しての依存性注入</summary>
 		Private _injector As Di.MocaInjector
