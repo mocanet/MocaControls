@@ -1,8 +1,23 @@
 # Moca.NET Controls
 
 [![Build status](https://ci.appveyor.com/api/projects/status/fl5o0xyd1kaummnq?svg=true)](https://ci.appveyor.com/project/miyabis/mocacontrols)
+[![NuGet](https://img.shields.io/nuget/v/Moca.NETControls.svg)](https://www.nuget.org/packages/Moca.NETControls/)
 
 DI&amp;AOP framework Moca.NET Windows UI Controls
+
+
+Moca.NET Controls NuGet
+==========
+
+Moca.NET Windows Forms Toolbox Controls 2.0 for .NET2.0, .NET3.5, .NET4.0, .NET4.5.2, .NET4.6.1
+
+How to get
+==========
+
+URL:https://www.nuget.org/packages/Moca.NETControls/
+```
+PM> Install-Package Moca.NETControls
+```
 
 
 Moca.NET Contorls VSPackage

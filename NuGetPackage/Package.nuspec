@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <authors>MiYABiS</authors>
     <owners>MiYABiS</owners>
     <id>Moca.NETControls</id>
@@ -10,7 +10,6 @@
     <description>DI&amp;AOP framework Moca.NET Windows UI Controls</description>
     <summary>DI&amp;AOP framework Moca.NET Windows UI Controls</summary>
     <releaseNotes>
-      GitHub issues : #1, #2, #3
     </releaseNotes>
     <copyright>Copyright © 2016 MiYABiS All Rights Reserved.</copyright>
     <language>en-US</language>
@@ -19,6 +18,7 @@
     <references></references>
     <tags></tags>
     <dependencies>
+      <dependency id="Moca.NETCore" version="2.3.0" />
       <dependency id="Moca.NETWin" version="2.1.0" />
     </dependencies>
   </metadata>

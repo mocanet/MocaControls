@@ -35,10 +35,10 @@ Imports Microsoft.VisualStudio.Shell.Interop
 'ProvideToolboxItemConfiguration(GetType(ToolboxConfig))>
 
 <PackageRegistration(UseManagedResourcesOnly:=True),
- InstalledProductRegistration("#110", "#112", "2.0.3", IconResourceID:=400),
- ProvideLoadKey("Standard", "2.0.3", "Moca.NET Windows Forms Controls 2.0", "MiYABiS", 1),
+ InstalledProductRegistration("#110", "#112", "2.1.2", IconResourceID:=400),
+ ProvideLoadKey("Standard", "2.1.2", "Moca.NET Windows Forms Controls 2.0", "MiYABiS", 1),
  Guid(GuidList.guidMocaControlsVSPackagePkgString),
- ProvideToolboxItems(3)>
+ ProvideToolboxItems(4)>
 Public NotInheritable Class MocaControlsVSPackage
     Inherits Package
 
@@ -105,6 +105,9 @@ Public NotInheritable Class MocaControlsVSPackage
         For ii As Integer = 0 To _componentPath.Count - 1
             _OnRefreshToolbox(service, toolbox, ii)
         Next
+
+        service.SelectedCategory = _tabName & _categoryTabs(0)
+        service.Refresh()
     End Sub
 
     Private Sub _OnRefreshToolbox(ByVal service As IToolboxService, ByVal toolbox As IVsToolbox, ByVal index As Integer)
@@ -134,9 +137,6 @@ Public NotInheritable Class MocaControlsVSPackage
             _output("Add Toolbox : " & item.DisplayName)
             service.AddToolboxItem(item, categoryTab)
         Next
-        service.SelectedCategory = categoryTab
-
-        service.Refresh()
     End Sub
 
     Private Sub _initToolboxItems(ByVal index As Integer)
