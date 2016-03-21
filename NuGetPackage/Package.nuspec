@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
     <authors>MiYABiS</authors>
     <owners>MiYABiS</owners>
     <id>Moca.NETControls</id>
@@ -18,7 +18,7 @@
     <references></references>
     <tags></tags>
     <dependencies>
-      <dependency id="Moca.NETCore" version="2.3.0" />
+      <dependency id="Moca.NETCore" version="2.3.1" />
       <dependency id="Moca.NETWin" version="2.1.0" />
     </dependencies>
   </metadata>

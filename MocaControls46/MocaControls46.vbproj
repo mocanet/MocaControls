@@ -85,8 +85,8 @@
       <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Moca, Version=4.6.2.0, Culture=neutral, PublicKeyToken=42f7e4f7232a6bf5, processorArchitecture=MSIL">
-      <HintPath>..\packages\Moca.NETCore.2.3.0\lib\net46-full\Moca.dll</HintPath>
+    <Reference Include="Moca, Version=4.6.3.0, Culture=neutral, PublicKeyToken=42f7e4f7232a6bf5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moca.NETCore.2.3.1\lib\net46-full\Moca.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="MocaWin, Version=4.6.0.0, Culture=neutral, PublicKeyToken=74dd2591eb474191, processorArchitecture=MSIL">
@@ -253,9 +253,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\MocaControls40\app.config">
-      <Link>app.config</Link>
-    </None>
     <None Include="..\MocaControls\Key.snk">
       <Link>Key.snk</Link>
     </None>
@@ -272,6 +269,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
