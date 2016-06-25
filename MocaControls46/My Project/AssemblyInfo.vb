@@ -18,7 +18,7 @@ Imports System.Runtime.InteropServices
 ' Setting ComVisible to false makes the types in this assembly not visible 
 ' to COM components.  If you need to access a type in this assembly from 
 ' COM, set the ComVisible attribute to true on that type.
-<Assembly: ComVisible(False)>
+<Assembly: ComVisible(True)>
 
 ' Version information for an assembly consists of the following four values:
 '
@@ -34,6 +34,6 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyFileVersion("4.6.1")>
 
 ' プログラム要素が CLS (Common Language Specification) に準拠しているかどうかを示します
-<Assembly: System.CLSCompliant(True)> 
+<Assembly: System.CLSCompliant(True)>
 
-<Assembly: GuidAttribute("5815799A-8433-48E2-8665-C60AA16F644F")> 
+<Assembly: Guid("90AB841F-834D-4BE7-BC3D-3045444BAB19")>

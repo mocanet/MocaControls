@@ -98,6 +98,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\MocaControls\ComboBoxEx.Designer.vb">
+      <Link>ComboBoxEx.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\MocaControls\ComboBoxEx.vb">
+      <Link>ComboBoxEx.vb</Link>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="..\MocaControls\My Project\Application.Designer.vb">
       <Link>My Project\Application.Designer.vb</Link>
       <AutoGen>True</AutoGen>

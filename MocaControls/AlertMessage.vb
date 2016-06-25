@@ -18,15 +18,17 @@ Namespace Win
 		''' <summary>ウィンドウアニメーション</summary>
 		Private _animateWindow As Moca.Win.AnimateWindow
 
+        Private _timer As Timer
+
 #End Region
 
 #Region " コンストラクタ "
 
-		''' <summary>
-		''' デフォルトコンストラクタ
-		''' </summary>
-		''' <remarks></remarks>
-		Public Sub New()
+        ''' <summary>
+        ''' デフォルトコンストラクタ
+        ''' </summary>
+        ''' <remarks></remarks>
+        Public Sub New()
 
 			' この呼び出しはデザイナーで必要です。
 			InitializeComponent()
@@ -37,8 +39,10 @@ Namespace Win
 				Return
 			End If
 
-			_animateWindow = New Moca.Win.AnimateWindow
-		End Sub
+            _animateWindow = New Moca.Win.AnimateWindow
+            _timer = New Timer
+            AddHandler _timer.Tick, AddressOf Timer_TicK
+        End Sub
 
 #End Region
 
@@ -159,11 +163,24 @@ Namespace Win
 
         <Description("全体をクリックして閉じる"), Browsable(True)>
         Public Property FullClickClose As Boolean
+            Get
+                Return Not btnAlertClose.Visible
+            End Get
+            Set(value As Boolean)
+                btnAlertClose.Visible = Not value
+            End Set
+        End Property
+
+        <Description("表示して何秒後に閉じるか指定する。０は閉じない。"), Browsable(True)>
+        Public Property AutoCloseSecond As Integer
 
 #End Region
 #Region " Handles "
 
         Private Sub AlertMessage_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+            Me.lblAlert.BackColor = Me.DefaultMessageBackColor
+            Me.lblAlert.ForeColor = Me.DefaultMessageForeColor
+
             If Moca.Win.WinUtil.UserControlDesignMode Then
                 Return
             End If
@@ -175,6 +192,8 @@ Namespace Win
         End Sub
 
         Private Sub btnAlertClose_Click(sender As System.Object, e As System.EventArgs) Handles btnAlertClose.Click
+            _timer.Stop()
+
             Dim dt As Moca.Win.AnimateWindow.DirectionType
             Select Case Me.DirectionType
                 Case AnimateWindow.DirectionType.Top
@@ -194,21 +213,26 @@ Namespace Win
             btnAlertClose_Click(sender, e)
         End Sub
 
+        Private Sub Timer_TicK(sender As Object, e As EventArgs)
+            btnAlertClose_Click(sender, e)
+        End Sub
+
 #End Region
 #Region " Method "
 
-		''' <summary>
-		''' アラートクリア
-		''' </summary>
-		''' <remarks></remarks>
-		Public Sub Clear()
+        ''' <summary>
+        ''' アラートクリア
+        ''' </summary>
+        ''' <remarks></remarks>
+        Public Sub Clear()
 			Me.lblAlert.BackColor = Me.DefaultMessageBackColor
 			Me.lblAlert.ForeColor = Me.DefaultMessageForeColor
 			Me.lblAlert.Text = String.Empty
 			Me.btnAlertClose.BackColor = Me.lblAlert.BackColor
 			Me.BackColor = Me.ForeColor
-			Me.Visible = False
-		End Sub
+            Me.Visible = False
+            _timer.Stop()
+        End Sub
 
 		''' <summary>
 		''' 正常アラート
@@ -217,43 +241,74 @@ Namespace Win
 		''' <param name="args"></param>
 		''' <remarks></remarks>
 		Public Sub Success(ByVal msg As String, ParamArray args() As String)
-			_showAlert(Me.SuccessBackColor, Me.SuccessForeColor, msg, args)
-		End Sub
+            Success(AutoCloseSecond, msg, args)
+        End Sub
 
-		''' <summary>
-		''' エラーアラート
-		''' </summary>
-		''' <param name="msg"></param>
-		''' <param name="args"></param>
-		''' <remarks></remarks>
-		Public Sub [Error](ByVal msg As String, ParamArray args() As String)
-			_showAlert(Me.ErrorBackColor, Me.ErrorForeColor, msg, args)
-		End Sub
+        ''' <summary>
+		''' 正常アラート
+        ''' </summary>
+        ''' <param name="second"></param>
+        ''' <param name="msg"></param>
+        ''' <param name="args"></param>
+        Public Sub Success(ByVal second As Integer, ByVal msg As String, ParamArray args() As String)
+            _showAlert(second, Me.SuccessBackColor, Me.SuccessForeColor, msg, args)
+        End Sub
 
-		''' <summary>
-		''' ワーニングアラート
-		''' </summary>
-		''' <param name="msg"></param>
-		''' <param name="args"></param>
-		''' <remarks></remarks>
-		Public Sub Warn(ByVal msg As String, ParamArray args() As String)
-			_showAlert(Me.WarnBackColor, Me.WarnForeColor, msg, args)
-		End Sub
+        ''' <summary>
+        ''' エラーアラート
+        ''' </summary>
+        ''' <param name="msg"></param>
+        ''' <param name="args"></param>
+        ''' <remarks></remarks>
+        Public Sub [Error](ByVal msg As String, ParamArray args() As String)
+            [Error](AutoCloseSecond, msg, args)
+        End Sub
 
-		''' <summary>
-		''' アラートを表示
-		''' </summary>
-		''' <param name="labelBackColor"></param>
-		''' <param name="labelForeColor"></param>
-		''' <param name="msg"></param>
-		''' <param name="args"></param>
-		''' <remarks></remarks>
-		Private Sub _showAlert(ByVal labelBackColor As Color, labelForeColor As Color, ByVal msg As String, ParamArray args() As String)
-			Me.lblAlert.BackColor = labelBackColor
-			Me.lblAlert.ForeColor = labelForeColor
-			Me.lblAlert.Text = String.Format(msg, args)
-			Me.btnAlertClose.BackColor = Me.lblAlert.BackColor
-			Me.btnAlertClose.ForeColor = labelForeColor
+        ''' <summary>
+        ''' エラーアラート
+        ''' </summary>
+        ''' <param name="second"></param>
+        ''' <param name="msg"></param>
+        ''' <param name="args"></param>
+        Public Sub [Error](ByVal second As Integer, ByVal msg As String, ParamArray args() As String)
+            _showAlert(second, Me.ErrorBackColor, Me.ErrorForeColor, msg, args)
+        End Sub
+
+        ''' <summary>
+        ''' ワーニングアラート
+        ''' </summary>
+        ''' <param name="msg"></param>
+        ''' <param name="args"></param>
+        ''' <remarks></remarks>
+        Public Sub Warn(ByVal msg As String, ParamArray args() As String)
+            Warn(AutoCloseSecond, msg, args)
+        End Sub
+
+        ''' <summary>
+        ''' ワーニングアラート
+        ''' </summary>
+        ''' <param name="second"></param>
+        ''' <param name="msg"></param>
+        ''' <param name="args"></param>
+        Public Sub Warn(ByVal second As Integer, ByVal msg As String, ParamArray args() As String)
+            _showAlert(second, Me.WarnBackColor, Me.WarnForeColor, msg, args)
+        End Sub
+
+        ''' <summary>
+        ''' アラートを表示
+        ''' </summary>
+        ''' <param name="second"></param>
+        ''' <param name="labelBackColor"></param>
+        ''' <param name="labelForeColor"></param>
+        ''' <param name="msg"></param>
+        ''' <param name="args"></param>
+        ''' <remarks></remarks>
+        Private Sub _showAlert(ByVal second As Integer, ByVal labelBackColor As Color, labelForeColor As Color, ByVal msg As String, ParamArray args() As String)
+            Me.lblAlert.BackColor = labelBackColor
+            Me.lblAlert.ForeColor = labelForeColor
+            Me.lblAlert.Text = String.Format(msg, args)
+            Me.btnAlertClose.BackColor = Me.lblAlert.BackColor
+            Me.btnAlertClose.ForeColor = labelForeColor
             Me.BackColor = labelForeColor
             If Me.FullClickClose Then
                 Me.Cursor = Cursors.Hand
@@ -265,9 +320,15 @@ Namespace Win
                 Me.btnAlertClose.Visible = True
             End If
             _animateWindow.Slide(Me, DirectionType)
-			Me.btnAlertClose.Refresh()
-			Me.Parent.Focus()
-		End Sub
+            Me.btnAlertClose.Refresh()
+            Me.Parent.Focus()
+            If second.Equals(0) Then
+                Return
+            End If
+            _timer.Interval = second * 1000
+            _timer.Stop()
+            _timer.Start()
+        End Sub
 
 #End Region
 

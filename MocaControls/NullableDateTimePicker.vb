@@ -22,38 +22,53 @@ Namespace Win
 	DesignTimeVisible(True)> _
 	Public Class NullableDateTimePicker
 
-		''' <summary>現在の値がNull値かどうかを判定</summary>
-		Private _isNull As Boolean
 
-		''' <summary>Nullだった場合に表示する文字列</summary>
-		Private _nullValue As String
+#Region " Declare "
 
-		'''' <summary>日時のフォーマット</summary>
-		Private _format As DateTimePickerFormat = DateTimePickerFormat.Long
+        Private Shared WM_PAINT As Integer = &HF
 
-		'''' <summary>親のカスタムフォーマット文字列</summary>
-		Private _formatAsString As String
+        ''' <summary>現在の値がNull値かどうかを判定</summary>
+        Private _isNull As Boolean
 
-		'''' <summary>カスタムフォーマット文字列</summary>
-		Private _customFormat As String
+        ''' <summary>Nullだった場合に表示する文字列</summary>
+        Private _nullValue As String
+
+        '''' <summary>日時のフォーマット</summary>
+        Private _format As DateTimePickerFormat = DateTimePickerFormat.Long
+
+        '''' <summary>親のカスタムフォーマット文字列</summary>
+        Private _formatAsString As String
+
+        '''' <summary>カスタムフォーマット文字列</summary>
+        Private _customFormat As String
+
+        ''' <summary>境界線</summary>
+        Private _borderColor As Color = Color.FromArgb(100, 100, 100)
+        ''' <summary>境界線のスタイル</summary>
+        Private _borderStyle As ButtonBorderStyle = ButtonBorderStyle.Solid
+
+#End Region
 
 #Region " コンストラクタ "
 
-		''' <summary>
-		''' デフォルトコンストラクタ
-		''' </summary>
-		''' <remarks>
-		''' </remarks>
-		Public Sub New()
+        ''' <summary>
+        ''' デフォルトコンストラクタ
+        ''' </summary>
+        ''' <remarks>
+        ''' </remarks>
+        Public Sub New()
 			MyBase.New()
 
 			' この呼び出しは Windows フォーム デザイナで必要です。
 			InitializeComponent()
 
-			' InitializeComponent() 呼び出しの後に初期化を追加します。
+            ' InitializeComponent() 呼び出しの後に初期化を追加します。
 
-			MyBase.Format = DateTimePickerFormat.Custom
-			NullValue = String.Empty
+            Me.SetStyle(ControlStyles.DoubleBuffer, True)
+            Me.SetStyle(ControlStyles.AllPaintingInWmPaint, True)
+
+            MyBase.Format = DateTimePickerFormat.Custom
+            NullValue = String.Empty
 			Me.Format = DateTimePickerFormat.Long
 		End Sub
 
@@ -188,17 +203,49 @@ Namespace Win
 			End Set
 		End Property
 
+        ''' <summary>
+        ''' 境界線
+        ''' </summary>
+        ''' <returns></returns>
+        <Category("Appearance")>
+        <Description("コントロールの境界線の色を指定します")>
+        Public Property BorderColor() As Color
+            Get
+                Return _borderColor
+            End Get
+            Set
+                _borderColor = Value
+                Invalidate()
+            End Set
+        End Property
+
+        ''' <summary>
+        ''' 境界線のスタイル
+        ''' </summary>
+        ''' <returns></returns>
+        <Category("Appearance")>
+        <Description("コントロールに境界線を付けるかどうかを指定します")>
+        Public Property BorderStyle() As ButtonBorderStyle
+            Get
+                Return _borderStyle
+            End Get
+            Set
+                _borderStyle = Value
+                Invalidate()
+            End Set
+        End Property
+
 #End Region
 
 #Region " イベント "
 
-		''' <summary>
-		''' ドロップダウン時のポップアップ画面が閉じられたイベントのオーバーライド
-		''' </summary>
-		''' <param name="eventargs"></param>
-		''' <remarks>
-		''' </remarks>
-		Protected Overrides Sub OnCloseUp(ByVal eventargs As System.EventArgs)
+        ''' <summary>
+        ''' ドロップダウン時のポップアップ画面が閉じられたイベントのオーバーライド
+        ''' </summary>
+        ''' <param name="eventargs"></param>
+        ''' <remarks>
+        ''' </remarks>
+        Protected Overrides Sub OnCloseUp(ByVal eventargs As System.EventArgs)
 			If (Control.MouseButtons = MouseButtons.None And _isNull) Then
 				_setToDateTimeValue()
 				_isNull = False
@@ -223,13 +270,36 @@ Namespace Win
 
 #End Region
 
-		''' <summary>
-		''' 標準DateTimePickerを置き換え
-		''' </summary>
-		''' <param name="dtpOriginal">置き換えするDateTimePicker</param>
-		''' <remarks>
-		''' </remarks>
-		Private Sub _replaceControl(ByVal dtpOriginal As DateTimePicker)
+#Region " Overrides "
+
+        Protected Overrides Sub WndProc(ByRef m As Message)
+            MyBase.WndProc(m)
+
+            If m.Msg = WM_PAINT Then
+                If _borderStyle = ButtonBorderStyle.None Then
+                    Return
+                End If
+                Dim g As Graphics = Graphics.FromHwnd(Handle)
+                Dim bounds As New Rectangle(0, 0, Width, Height)
+                If Not Focused OrElse Not Enabled Then
+                    ControlPaint.DrawBorder(g, bounds, SystemColors.ControlDark, _borderStyle)
+                Else
+                    ControlPaint.DrawBorder(g, bounds, _borderColor, _borderStyle)
+                End If
+            End If
+        End Sub
+
+#End Region
+
+#Region " Methods "
+
+        ''' <summary>
+        ''' 標準DateTimePickerを置き換え
+        ''' </summary>
+        ''' <param name="dtpOriginal">置き換えするDateTimePicker</param>
+        ''' <remarks>
+        ''' </remarks>
+        Private Sub _replaceControl(ByVal dtpOriginal As DateTimePicker)
 			Dim parent As Control
 
 			Me.Location = dtpOriginal.Location
@@ -293,6 +363,8 @@ Namespace Win
 			MyBase.CustomFormat = CStr(IIf(_nullValue Is Nothing Or _nullValue = String.Empty, " ", "’" + NullValue + "’"))
 		End Sub
 
-	End Class
+#End Region
+
+    End Class
 
 End Namespace

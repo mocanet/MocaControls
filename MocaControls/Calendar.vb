@@ -75,12 +75,19 @@ Namespace Win
 			Get
 				Return Me.lblHeader.Font
 			End Get
-			Set(value As Font)
-				Me.lblHeader.Font = value
-				Me.btnPreMonth.Font = value
-				Me.btnNextMonth.Font = value
-			End Set
-		End Property
+            Set(value As Font)
+                Me.lblHeader.Font = value
+                Me.btnPreMonth.Font = value
+                Me.btnNextMonth.Font = value
+                Me.lblDayOfWeek0.Font = value
+                Me.lblDayOfWeek1.Font = value
+                Me.lblDayOfWeek2.Font = value
+                Me.lblDayOfWeek3.Font = value
+                Me.lblDayOfWeek4.Font = value
+                Me.lblDayOfWeek5.Font = value
+                Me.lblDayOfWeek6.Font = value
+            End Set
+        End Property
 
 		''' <summary>
 		''' タイトルの文字色
@@ -281,8 +288,20 @@ Namespace Win
 					Dim btns() As Control = Me.Controls.Find("btnDay" + (ii + 1).ToString, True)
 					btns(0).Font = _defaultDayFont
 				Next
-			End Set
-		End Property
+                Me.btnMonth0.Font = value
+                Me.btnMonth1.Font = value
+                Me.btnMonth2.Font = value
+                Me.btnMonth3.Font = value
+                Me.btnMonth4.Font = value
+                Me.btnMonth5.Font = value
+                Me.btnMonth6.Font = value
+                Me.btnMonth7.Font = value
+                Me.btnMonth8.Font = value
+                Me.btnMonth9.Font = value
+                Me.btnMonth10.Font = value
+                Me.btnMonth11.Font = value
+            End Set
+        End Property
 
 		''' <summary>
 		''' 選択された日付の背景色

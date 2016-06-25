@@ -5,35 +5,60 @@
 
 DI&amp;AOP framework Moca.NET Windows UI Controls
 
+## Controls
 
-Moca.NET Controls NuGet
-==========
+* ComboBoxEx  
+Line is displayed in a flat style
+* AlertMessage  
+control of the alert message display
+* Calendar  
+calendar control
+* CheckBoxGroup  
+Treated as a group multiple check boxes
+* DataBinder  
+Component to assist in the binding of item and data input
+* DebugMarker  
+Debugging mark
+* MocaDi  
+Controller in order to use the AOP
+* NullableDateTimePicker  
+Control was extended to handle Null in the standard DateTimePicker
+* RadioButtonGroup  
+Treated as a group multiple radio buttons
+* TextBoxEx  
+Control was extended to handle standard TextBox input restrictions, etc.
+* ToolStripMenuItemGroup  
+Treated as a group a plurality of menu items
+* WYSIWYGEditor  
+Simple WYSIWYG Editor
+
+## NuGet
 
 Moca.NET Windows Forms Toolbox Controls 2.0 for .NET2.0, .NET3.5, .NET4.0, .NET4.5.2, .NET4.6.1
 
-How to get
-==========
+### How to get
 
-URL:https://www.nuget.org/packages/Moca.NETControls/
+[Moca.NET Controls ](https://www.nuget.org/packages/Moca.NETControls/)
 ```
 PM> Install-Package Moca.NETControls
 ```
 
 
-Moca.NET Contorls VSPackage
-==========
+## Visual Studio Extension
 
-Moca.NET Windows Forms Toolbox Controls 2.0 for VS2012, VS2013, VS2015
+Moca.NET Windows Forms Toolbox Controls 2.0 for VS2012, VS2013, VS2015  
+Please add the nuget library [Moca.NET Windows](https://www.nuget.org/packages/Moca.NETWin/) or [Moca.NET Controls ](https://www.nuget.org/packages/Moca.NETControls/) to the project .
 
-
-How to get
-==========
+### How to get
 
 [Moca.NET Windows Forms Controls 2.0](https://visualstudiogallery.msdn.microsoft.com/565e3bf2-48a1-4830-946f-8cf91c1dbcc4)
 
 
-License
-=======
+## Demo Source
+
+[Moca.NET-WinControlsDemo](https://github.com/miyabis/Moca.NET-WinControlsDemo)
+
+## License
 
 Microsoft Public License (MS-PL)
 

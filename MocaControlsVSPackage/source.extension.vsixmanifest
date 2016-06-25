@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="ccb393e3-f0f2-46db-86fa-5ad370408a68" Version="2.1.2" Language="en-US" Publisher="MiYABiS" />
+    <Identity Id="ccb393e3-f0f2-46db-86fa-5ad370408a68" Version="2.1.0" Language="en-US" Publisher="MiYABiS" />
     <DisplayName>Moca.NET Windows Forms Controls 2.0</DisplayName>
     <Description xml:space="preserve">Moca.NET Windows Forms Toolbox Controls 2.0 for VS2012, VS2013, VS2015</Description>
     <MoreInfo>http://visualstudiogallery.msdn.microsoft.com/565e3bf2-48a1-4830-946f-8cf91c1dbcc4</MoreInfo>

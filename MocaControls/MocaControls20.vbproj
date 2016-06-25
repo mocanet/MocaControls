@@ -83,6 +83,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ComboBoxEx.Designer.vb">
+      <DependentUpon>ComboBoxEx.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ComboBoxEx.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>

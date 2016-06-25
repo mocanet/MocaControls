@@ -100,6 +100,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\MocaControls\ComboBoxEx.Designer.vb">
+      <Link>ComboBoxEx.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\MocaControls\ComboBoxEx.vb">
+      <Link>ComboBoxEx.vb</Link>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="..\MocaControls\My Project\Application.Designer.vb">
       <Link>My Project\Application.Designer.vb</Link>
       <AutoGen>True</AutoGen>
@@ -253,9 +260,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\MocaControls\Key.snk">
-      <Link>Key.snk</Link>
-    </None>
     <None Include="..\MocaControls\My Project\Application.myapp">
       <Link>My Project\Application.myapp</Link>
       <Generator>MyApplicationCodeGenerator</Generator>
@@ -272,6 +276,7 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Key.snk" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -323,7 +328,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\MocaControls\Key.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />

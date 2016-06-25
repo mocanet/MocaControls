@@ -13,12 +13,9 @@ Namespace Win
      DesignTimeVisible(True)>
     Public Class MocaDi
 
-		''' <summary>ページに対しての依存性注入</summary>
-		Private _injector As Di.MocaInjector
-
 #Region " コンストラクタ "
 
-		Public Sub New()
+        Public Sub New()
 
 			' この呼び出しは、Windows フォーム デザイナで必要です。
 			InitializeComponent()
@@ -39,9 +36,18 @@ Namespace Win
 		End Sub
 
 #End Region
+#Region " Property "
+
+        ''' <summary>
+        ''' 依存性を注入するインジェクターインスタンス
+        ''' </summary>
+        ''' <returns></returns>
+        Public ReadOnly Property Injector As Di.MocaInjector
+
+#End Region
 #Region " Handles "
 
-		Private Sub MocaDi_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
+        Private Sub MocaDi_Disposed(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Disposed
 			If WinUtil.UserControlDesignMode() Then
 				Exit Sub
 			End If
