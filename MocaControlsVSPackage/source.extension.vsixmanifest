@@ -7,7 +7,7 @@
     <MoreInfo>http://visualstudiogallery.msdn.microsoft.com/565e3bf2-48a1-4830-946f-8cf91c1dbcc4</MoreInfo>
     <License>License.txt</License>
     <ReleaseNotes>ReleaseNote.rtf</ReleaseNotes>
-    <PreviewImage>MocaControls.png</PreviewImage>
+    <PreviewImage>Resources\MocaControls.png</PreviewImage>
     <Tags>control</Tags>
   </Metadata>
   <Installation InstalledByMsi="false" AllUsers="true">
@@ -15,7 +15,6 @@
     <InstallationTarget Version="[11.0,15.0)" Id="Microsoft.VisualStudio.Premium" />
     <InstallationTarget Version="[11.0,15.0)" Id="Microsoft.VisualStudio.Ultimate" />
     <InstallationTarget Version="[11.0,15.0)" Id="Microsoft.VisualStudio.Community" />
-    <InstallationTarget Version="[11.0,15.0)" Id="Microsoft.VisualStudio.VSWinExpress" />
   </Installation>
   <Dependencies>
   </Dependencies>
