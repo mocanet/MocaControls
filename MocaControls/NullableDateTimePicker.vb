@@ -235,6 +235,14 @@ Namespace Win
             End Set
         End Property
 
+        ''' <summary>
+        ''' 境界線
+        ''' </summary>
+        ''' <returns></returns>
+        <Category("Appearance")>
+        <Description("コントロールにフォーカスがないときの境界線の色を指定します")>
+        Public Property UnfocusedBorderColor() As Color = SystemColors.ControlDark
+
 #End Region
 
 #Region " イベント "
@@ -282,7 +290,7 @@ Namespace Win
                 Dim g As Graphics = Graphics.FromHwnd(Handle)
                 Dim bounds As New Rectangle(0, 0, Width, Height)
                 If Not Focused OrElse Not Enabled Then
-                    ControlPaint.DrawBorder(g, bounds, SystemColors.ControlDark, _borderStyle)
+                    ControlPaint.DrawBorder(g, bounds, UnfocusedBorderColor, _borderStyle)
                 Else
                     ControlPaint.DrawBorder(g, bounds, _borderColor, _borderStyle)
                 End If

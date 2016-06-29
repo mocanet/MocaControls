@@ -48,13 +48,13 @@ Namespace Win
 
 #Region " Property "
 
-		''' <summary>
-		''' デフォルトの背景色
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		<Description("デフォルトの背景色"), Browsable(True)>
+        ''' <summary>
+        ''' デフォルトの背景色
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        <Description("デフォルトの背景色"), Browsable(True)>
 		Public Property DefaultMessageBackColor As Color = Color.FromArgb(236, 241, 245)
 
 		''' <summary>
@@ -189,6 +189,10 @@ Namespace Win
 
             Me.TabStop = False
             Me.btnAlertClose.TabStop = False
+        End Sub
+
+        Private Sub AlertMessage_Disposed(sender As Object, e As EventArgs) Handles Me.Disposed
+            _timer.Stop()
         End Sub
 
         Private Sub btnAlertClose_Click(sender As System.Object, e As System.EventArgs) Handles btnAlertClose.Click
