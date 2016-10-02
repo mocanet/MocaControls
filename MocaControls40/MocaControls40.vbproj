@@ -98,12 +98,72 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\mocacontrols\args\GridColmnSettingEventArgs.vb">
+      <Link>Args\GridColmnSettingEventArgs.vb</Link>
+    </Compile>
+    <Compile Include="..\mocacontrols\args\GridSettingEventArgs.vb">
+      <Link>Args\GridSettingEventArgs.vb</Link>
+    </Compile>
+    <Compile Include="..\mocacontrols\attr\AllowMergingAttribute.vb">
+      <Link>Attr\AllowMergingAttribute.vb</Link>
+    </Compile>
+    <Compile Include="..\mocacontrols\attr\CaptionAttribute.vb">
+      <Link>Attr\CaptionAttribute.vb</Link>
+    </Compile>
+    <Compile Include="..\mocacontrols\attr\ColumnStyleAttribute.vb">
+      <Link>Attr\ColumnStyleAttribute.vb</Link>
+    </Compile>
+    <Compile Include="..\mocacontrols\attr\FrozenAttribute.vb">
+      <Link>Attr\FrozenAttribute.vb</Link>
+    </Compile>
+    <Compile Include="..\mocacontrols\attr\HiddenColumnAttribute.vb">
+      <Link>Attr\HiddenColumnAttribute.vb</Link>
+    </Compile>
+    <Compile Include="..\mocacontrols\attr\RequiredColumnAttribute.vb">
+      <Link>Attr\RequiredColumnAttribute.vb</Link>
+    </Compile>
+    <Compile Include="..\mocacontrols\attr\ValidateTypesAttribute.vb">
+      <Link>Attr\ValidateTypesAttribute.vb</Link>
+    </Compile>
     <Compile Include="..\MocaControls\ComboBoxEx.Designer.vb">
       <Link>ComboBoxEx.Designer.vb</Link>
     </Compile>
     <Compile Include="..\MocaControls\ComboBoxEx.vb">
       <Link>ComboBoxEx.vb</Link>
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="..\MocaControls\DataGridViewCalendarCell.vb">
+      <Link>DataGridViewCalendarCell.vb</Link>
+    </Compile>
+    <Compile Include="..\MocaControls\DataGridViewCalendarColumn.vb">
+      <Link>DataGridViewCalendarColumn.vb</Link>
+    </Compile>
+    <Compile Include="..\MocaControls\DataGridViewCalendarEditingControl.vb">
+      <Link>DataGridViewCalendarEditingControl.vb</Link>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="..\MocaControls\DataGridViewMaskedTextBoxCell.vb">
+      <Link>DataGridViewMaskedTextBoxCell.vb</Link>
+    </Compile>
+    <Compile Include="..\MocaControls\DataGridViewMaskedTextBoxColumn.vb">
+      <Link>DataGridViewMaskedTextBoxColumn.vb</Link>
+    </Compile>
+    <Compile Include="..\MocaControls\DataGridViewMaskedTextBoxEditingControl.vb">
+      <Link>DataGridViewMaskedTextBoxEditingControl.vb</Link>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="..\MocaControls\Declare.vb">
+      <Link>Declare.vb</Link>
+    </Compile>
+    <Compile Include="..\MocaControls\GridDesignSettings.Designer.vb">
+      <Link>GridDesignSettings.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\MocaControls\ModelGridView.vb">
+      <Link>ModelGridView.vb</Link>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="..\mocacontrols\model\RowModelBase.vb">
+      <Link>Model\RowModelBase.vb</Link>
     </Compile>
     <Compile Include="..\MocaControls\My Project\Application.Designer.vb">
       <Link>My Project\Application.Designer.vb</Link>
@@ -258,6 +318,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\MocaControls\GridDesignSettings.settings">
+      <Link>GridDesignSettings.settings</Link>
+    </None>
     <None Include="..\MocaControls\Key.snk">
       <Link>Key.snk</Link>
     </None>
