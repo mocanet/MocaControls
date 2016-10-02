@@ -35,8 +35,8 @@ Imports Microsoft.VisualStudio.Shell.Interop
 'ProvideToolboxItemConfiguration(GetType(ToolboxConfig))>
 
 <PackageRegistration(UseManagedResourcesOnly:=True),
- InstalledProductRegistration("#110", "#112", "2.1.2", IconResourceID:=400),
- ProvideLoadKey("Standard", "2.1.2", "Moca.NET Windows Forms Controls 2.0", "MiYABiS", 1),
+ InstalledProductRegistration("#110", "#112", "2.2.0", IconResourceID:=400),
+ ProvideLoadKey("Standard", "2.2.0", "Moca.NET Windows Forms Controls 2.0", "MiYABiS", 1),
  Guid(GuidList.guidMocaControlsVSPackagePkgString),
  ProvideToolboxItems(4)>
 Public NotInheritable Class MocaControlsVSPackage

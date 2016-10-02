@@ -30,8 +30,8 @@ Imports System.Runtime.InteropServices
 ' You can specify all the values or you can default the Build and Revision Numbers 
 ' by using the '*' as shown below:
 ' [assembly: AssemblyVersion("1.0.*")]
-<Assembly: AssemblyVersion("4.5.4")>
-<Assembly: AssemblyFileVersion("4.5.4")>
+<Assembly: AssemblyVersion("4.5.5")>
+<Assembly: AssemblyFileVersion("4.5.5")>
 
 ' プログラム要素が CLS (Common Language Specification) に準拠しているかどうかを示します
 <Assembly: System.CLSCompliant(True)> 

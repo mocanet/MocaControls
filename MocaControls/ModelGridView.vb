@@ -1,0 +1,1333 @@
+﻿
+Imports System.ComponentModel
+Imports System.Drawing
+Imports System.Reflection
+Imports Moca.Db
+Imports Moca.Util
+Imports Moca.Win
+
+Namespace Win
+
+    ''' <summary>
+    ''' DataGridView の操作を補助する拡張コントロール
+    ''' </summary>
+    <Description("DataGridView の操作を補助する拡張コントロール"),
+ ToolboxItem(True),
+ DesignTimeVisible(True)>
+    Public Class ModelGridView
+        Inherits DataGridView
+
+#Region " Declare "
+
+#Region " 列名編集用コード "
+
+        ''' <summary>列の改行コード</summary>
+        Public Const C_COLTITLE_CR As String = "\n"
+
+#End Region
+
+#Region " Events "
+
+        ''' <summary>
+        ''' グリッドの設定変更イベント
+        ''' </summary>
+        ''' <param name="sender"></param>
+        ''' <param name="e"></param>
+        ''' <remarks>
+        ''' このイベントでグリッドの固定列、固定行を設定しても反映されません。<br/>
+        ''' これは.NETの初期化タイミングの問題なので回避できません。<br/>
+        ''' デザイン時に設定するか、フォームロード時に設定してください。
+        ''' </remarks>
+        Public Event GridSetting(ByVal sender As Object, ByVal e As GridSettingEventArgs)
+
+        ''' <summary>
+        ''' グリッドの列情報設定イベント
+        ''' </summary>
+        ''' <param name="sender"></param>
+        ''' <param name="e"></param>
+        ''' <remarks></remarks>
+        Public Event GridColmnSetting(ByVal sender As Object, ByVal e As GridColmnSettingEventArgs)
+
+#End Region
+
+#Region " スタイル定義 "
+
+        ''' <summary>グリッドのスタイル定義</summary>
+        Private _designSettings As System.Configuration.ApplicationSettingsBase
+
+#End Region
+
+        ''' <summary>エンティティタイプ</summary>
+        Private _rowEntityType As Type
+
+        ''' <summary>エンティティのプロパティたち</summary>
+        Private _modelProps() As PropertyInfo
+        Private _modelPropDic As IDictionary(Of String, PropertyInfo)
+
+        ''' <summary>データバインダー</summary>
+        Private _dataBinder As New DataBinder
+
+        ''' <summary>削除対象データ</summary>
+        Private _deletedRows As IList
+
+        ''' <summary>スクロール固定列</summary>
+        Private _frozen As Integer
+
+        ''' <summary>テーブル定義</summary>
+        Private _tblDef As New TableDefinition
+
+#End Region
+
+#Region " コンストラクタ "
+
+        ''' <summary>
+        ''' デフォルトコンストラクタ
+        ''' </summary>
+        Public Sub New()
+            MyBase.New()
+
+            ' セットアップ
+            _setupGrid()
+        End Sub
+
+#End Region
+
+        'コンポーネント デザイナーで必要です。
+        Private components As System.ComponentModel.IContainer
+
+        'メモ: 以下のプロシージャはコンポーネント デザイナーで必要です。
+        'コンポーネント デザイナーを使って変更できます。
+        'コード エディターを使って変更しないでください。
+        <System.Diagnostics.DebuggerStepThrough()>
+        Private Sub InitializeComponent()
+            components = New System.ComponentModel.Container()
+        End Sub
+
+#Region " Property "
+
+        ''' <summary>
+        ''' データバインダー
+        ''' </summary>
+        ''' <returns></returns>
+        <Browsable(False)>
+        Public ReadOnly Property DataBinder As DataBinder
+            Get
+                Return _dataBinder
+            End Get
+        End Property
+
+        ''' <summary>
+        ''' グリッドデザイン設定
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property DesignSettings As System.Configuration.ApplicationSettingsBase
+            Get
+                Return _designSettings
+            End Get
+            Set(value As System.Configuration.ApplicationSettingsBase)
+                _designSettings = value
+                _setStyleNames()
+            End Set
+        End Property
+
+        ''' <summary>
+        ''' グリッドの列定義列挙
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        <Browsable(False)>
+        Public Property RowEntityType() As Type
+            Get
+                Return _rowEntityType
+            End Get
+            Set(value As Type)
+                _rowEntityType = value
+            End Set
+        End Property
+
+        ''' <summary>
+        ''' データ変更があるかどうか
+        ''' </summary>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        <Browsable(False)>
+        Public ReadOnly Property HasChanges() As Boolean
+            Get
+                Return (Not GetChanges().Count.Equals(0))
+            End Get
+        End Property
+
+        ''' <summary>
+        ''' スクロール固定列位置
+        ''' </summary>
+        ''' <returns></returns>
+        Public ReadOnly Property Frozen As Integer
+            Get
+                Return _frozen
+            End Get
+        End Property
+
+        ''' <summary>
+        ''' エンティティコレクション
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        <Browsable(False)>
+        Public Shadows Property DataSource() As Object
+            Get
+                Return _dataBinder.DataSource
+            End Get
+            Set(value As Object)
+                _deletedRows.Clear()
+
+                _dataBinder.DataSource = value
+
+                ' データからグリッドの設定
+                _setData(_dataBinder.BindSrc)
+                ' セル位置設定
+                _dataBinder.Position = 0
+            End Set
+        End Property
+
+        ''' <summary>
+        ''' 各種セルスタイル
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property Styles As IDictionary(Of String, DataGridViewCellStyle)
+            Get
+                If _styles Is Nothing Then
+                    _styles = New Dictionary(Of String, DataGridViewCellStyle)
+                End If
+                Return _styles
+            End Get
+            Set(value As IDictionary(Of String, DataGridViewCellStyle))
+                _styles = value
+            End Set
+        End Property
+        Private _styles As IDictionary(Of String, DataGridViewCellStyle)
+
+#End Region
+
+#Region " Overrides "
+
+        '''<summary>
+        '''Tab キー、Esc キー、Enter キー、方向キーなど、ダイアログ ボックスの制御に使用されるキーを処理します。
+        '''</summary>
+        '''<returns>
+        '''キーが処理された場合は true。それ以外の場合は false。
+        '''</returns>
+        '''<param name="keyData">
+        '''処理するキーを表す <see cref="T:System.Windows.Forms.Keys" /> 値のビットごとの組み合わせ。
+        '''</param>
+        '''<exception cref="T:System.InvalidCastException">
+        '''コントロールを編集モードに移行させるキーが押されましたが、現在のセルの <see cref="P:System.Windows.Forms.DataGridViewCell.EditType" /> プロパティには、<see cref="T:System.Windows.Forms.IDataGridViewEditingControl" /> を実装する、<see cref="T:System.Windows.Forms.Control" /> の派生クラスが指定されていません。
+        '''</exception>
+        '''<exception cref="T:System.Exception">
+        '''この操作を実行すると、セルの値がコミットされるか、編集モードに移行しますが、データ ソース内にエラーが存在するため、この操作を正常に実行できません。<see cref="E:System.Windows.Forms.DataGridView.DataError" /> イベントにハンドラが存在しないか、ハンドラによって <see cref="P:System.Windows.Forms.DataGridViewDataErrorEventArgs.ThrowException" /> プロパティが true に設定されています。
+        '''</exception>
+        <System.Security.Permissions.UIPermission(
+        System.Security.Permissions.SecurityAction.Demand,
+        Window:=System.Security.Permissions.UIPermissionWindow.AllWindows)>
+        Protected Overrides Function ProcessDialogKey(ByVal keyData As Keys) As Boolean
+            'Enterキーが押された時は、Tabキーが押されたようにする
+            If (keyData And Keys.KeyCode) = Keys.Enter Then
+                Return Me.ProcessTabKey(keyData)
+            End If
+            Return MyBase.ProcessDialogKey(keyData)
+        End Function
+
+        '''<summary>
+        '''<see cref="T:System.Windows.Forms.DataGridView" /> での移動に使用されるキーを処理します。
+        '''</summary>
+        '''<returns>
+        '''キーが処理された場合は true。それ以外の場合は false。
+        '''</returns>
+        '''<param name="e">
+        '''押されたキーに関する情報を格納します。
+        '''</param>
+        '''<exception cref="T:System.InvalidCastException">
+        '''コントロールを編集モードに移行させるキーが押されましたが、現在のセルの <see cref="P:System.Windows.Forms.DataGridViewCell.EditType" /> プロパティには、<see cref="T:System.Windows.Forms.IDataGridViewEditingControl" /> を実装する、<see cref="T:System.Windows.Forms.Control" /> の派生クラスが指定されていません。
+        '''</exception>
+        '''<exception cref="T:System.Exception">
+        '''この操作を実行すると、セルの値がコミットされるか、編集モードに移行しますが、データ ソース内にエラーが存在するため、この操作を正常に実行できません。<see cref="E:System.Windows.Forms.DataGridView.DataError" /> イベントにハンドラが存在しないか、ハンドラによって <see cref="P:System.Windows.Forms.DataGridViewDataErrorEventArgs.ThrowException" /> プロパティが true に設定されています。
+        '''
+        '''または
+        '''
+        '''Del キーが押されると、1 つまたは複数の行が削除されますが、データ ソース内にエラーが存在するため、削除操作を正常に実行できません。<see cref="E:System.Windows.Forms.DataGridView.DataError" /> イベントにハンドラが存在しないか、ハンドラによって <see cref="P:System.Windows.Forms.DataGridViewDataErrorEventArgs.ThrowException" /> プロパティが true に設定されています。
+        '''</exception>
+        <System.Security.Permissions.SecurityPermission(
+        System.Security.Permissions.SecurityAction.Demand,
+        Flags:=System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode)>
+        Protected Overrides Function ProcessDataGridViewKey(ByVal e As KeyEventArgs) As Boolean
+            'Enterキーが押された時は、Tabキーが押されたようにする
+            If e.KeyCode = Keys.Enter Then
+                Return Me.ProcessTabKey(e.KeyCode)
+            End If
+            Return MyBase.ProcessDataGridViewKey(e)
+        End Function
+
+        '''<summary>
+        '''<see cref="E:System.Windows.Forms.DataGridView.CellEndEdit" /> イベントを発生させます。
+        '''</summary>
+        '''<param name="e">
+        '''イベント データを格納している <see cref="T:System.Windows.Forms.DataGridViewCellEventArgs" />。
+        '''</param>
+        '''<exception cref="T:System.ArgumentOutOfRangeException">
+        '''<paramref name="e" /> の <see cref="P:System.Windows.Forms.DataGridViewCellEventArgs.ColumnIndex" /> プロパティの値が、コントロール内の列数 - 1 を超えています。
+        '''
+        '''または
+        '''<paramref name="e" /> の <see cref="P:System.Windows.Forms.DataGridViewCellEventArgs.RowIndex" /> プロパティの値が、コントロール内の行数 - 1 を超えています。
+        '''</exception>
+        Protected Overrides Sub OnCellEndEdit(e As DataGridViewCellEventArgs)
+            MyBase.OnCellEndEdit(e)
+
+            Dim prop As PropertyInfo
+            prop = CType(Columns(e.ColumnIndex).Tag, PropertyInfo)
+            If prop Is Nothing Then
+                Return
+            End If
+
+            Dim org As RowModelBase = Current(Of RowModelBase).GetOriginal()
+            Dim cur As RowModelBase = Current()
+            Dim value As Object = org.GetType().GetProperty(prop.Name).GetValue(org, Nothing)
+            Dim newValue As Object = cur.GetType.GetProperty(prop.Name).GetValue(cur, Nothing)
+            If value = newValue Then
+                Return
+            End If
+            cur.Modify()
+            If Styles.ContainsKey(StyleNames.Modify.ToString) Then
+                CurrentCell.Style.Font = Styles(StyleNames.Modify.ToString).Font
+            End If
+            CurrentRow.HeaderCell.ToolTipText = _getGridDesignSetting("ModifyToolTipText")
+        End Sub
+
+        Protected Overrides Sub OnEditingControlShowing(e As DataGridViewEditingControlShowingEventArgs)
+            MyBase.OnEditingControlShowing(e)
+        End Sub
+
+        ''' <summary>
+        ''' <see cref="DataGridView"/> コントロールで現在のセルが変更されたとき、またはこのコントロールが入力フォーカスを受け取ったとき
+        ''' </summary>
+        ''' <param name="e"></param>
+        Protected Overrides Sub OnCellEnter(e As DataGridViewCellEventArgs)
+            MyBase.OnCellEnter(e)
+
+            Dim column As DataGridViewColumn = Columns(e.ColumnIndex)
+            Dim prop As PropertyInfo
+            prop = CType(column.Tag, PropertyInfo)
+            If prop Is Nothing Then
+                Return
+            End If
+
+            Dim attr As ColumnStyleAttribute
+            attr = ClassUtil.GetCustomAttribute(Of ColumnStyleAttribute)(prop)
+            If attr Is Nothing Then
+                Return
+            End If
+
+            ImeMode = attr.ImeMode
+        End Sub
+
+        Protected Overrides Sub OnCellFormatting(e As DataGridViewCellFormattingEventArgs)
+            MyBase.OnCellFormatting(e)
+
+            If e.Value IsNot Nothing Then
+                Return
+            End If
+            If Not e.CellStyle.NullValue.Equals("N/A") Then
+                Return
+            End If
+
+            e.CellStyle.ForeColor = Color.DimGray
+        End Sub
+
+        ''' <summary>
+        ''' マウス ポインタがセルに入る
+        ''' </summary>
+        ''' <param name="e"></param>
+        Protected Overrides Sub OnCellMouseEnter(e As DataGridViewCellEventArgs)
+            MyBase.OnCellMouseEnter(e)
+
+            If TypeOf Cols(e.ColumnIndex) Is DataGridViewButtonColumn Then
+                Dim btn As DataGridViewButtonColumn = Cols(e.ColumnIndex)
+                If btn.FlatStyle = FlatStyle.Flat Then
+                    Cursor = Cursors.Hand
+                    ShowCellToolTips = False
+                End If
+            Else
+                Cursor = Cursors.Default
+                ShowCellToolTips = True
+            End If
+        End Sub
+
+        ''' <summary>
+        ''' マウス ポインタがセルを離れる
+        ''' </summary>
+        ''' <param name="e"></param>
+        Protected Overrides Sub OnCellMouseLeave(e As DataGridViewCellEventArgs)
+            MyBase.OnCellMouseLeave(e)
+
+            If TypeOf Cols(e.ColumnIndex) Is DataGridViewButtonColumn Then
+                Cursor = Cursors.Default
+                ShowCellToolTips = True
+            End If
+        End Sub
+
+        '''<summary>
+        '''<see cref="E:System.Windows.Forms.DataGridView.CellPainting" /> イベントを発生させます。
+        '''</summary>
+        '''<param name="e">
+        '''イベント データを格納している <see cref="T:System.Windows.Forms.DataGridViewCellPaintingEventArgs" />。
+        '''</param>
+        '''<exception cref="T:System.ArgumentOutOfRangeException">
+        '''<paramref name="e" /> の <see cref="P:System.Windows.Forms.DataGridViewCellPaintingEventArgs.ColumnIndex" /> プロパティの値が、コントロール内の列数 - 1 を超えています。
+        '''
+        '''または
+        '''<paramref name="e" /> の <see cref="P:System.Windows.Forms.DataGridViewCellPaintingEventArgs.RowIndex" /> プロパティの値が、コントロール内の行数 - 1 を超えています。
+        '''</exception>
+        Protected Overrides Sub OnCellPainting(e As DataGridViewCellPaintingEventArgs)
+            MyBase.OnCellPainting(e)
+
+            If NewRowIndex = e.RowIndex Then
+                Return
+            End If
+
+            Select Case e.ColumnIndex
+                Case < 0
+                    ' 行ヘッダー部
+                    Select Case e.RowIndex
+                        Case < 0
+                            ' 行ヘッダーで列ヘッダー
+                        Case Else
+                            If DirectCast(Rows(e.RowIndex).DataBoundItem, RowModelBase).Status = DataRowState.Unchanged Then
+                                Return
+                            End If
+
+                            ' 行ヘッダーでデータ部
+                            If (e.PaintParts And DataGridViewPaintParts.Background) = DataGridViewPaintParts.Background Then
+                                '背景だけを描画する
+                                Dim backParts As DataGridViewPaintParts = e.PaintParts And (DataGridViewPaintParts.Background Or DataGridViewPaintParts.SelectionBackground)
+                                e.Paint(e.ClipBounds, backParts)
+
+                                'Using gridBrush As Brush = New SolidBrush(GridColor)
+                                '    Using backColorBrush As Brush = New SolidBrush(Color.Orange)
+                                '        Using gridLinePen As New Pen(gridBrush)
+                                '            e.Graphics.FillRectangle(backColorBrush, e.CellBounds)
+                                '        End Using
+                                '    End Using
+                                'End Using
+
+                                Const paddingRight As Integer = 7
+                                Dim srcRect As Rectangle = New Rectangle(0, 0, My.Resources.RowEdit.Width, My.Resources.RowEdit.Height)
+                                Dim destPoints As Rectangle = New Rectangle(e.CellBounds.Left + e.CellBounds.Width - srcRect.Width - paddingRight, e.CellBounds.Height / 2 - srcRect.Height / 2 + e.CellBounds.Top - 1, srcRect.Width, srcRect.Height)
+                                e.Graphics.DrawImage(My.Resources.RowEdit, destPoints, srcRect, GraphicsUnit.Pixel)
+
+                                '背景以外が描画されるようにする
+                                Dim paintParts As DataGridViewPaintParts = e.PaintParts And Not backParts
+                                'セルを描画する
+                                e.Paint(e.ClipBounds, paintParts)
+
+                                '描画が完了したことを知らせる
+                                e.Handled = True
+                            End If
+                    End Select
+                Case Else
+                    ' データ部
+                    Select Case e.RowIndex
+                        Case < 0
+                            ' 行ヘッダーで列データ
+                            e.PaintBackground(e.CellBounds, False)
+
+                            Dim r2 As Rectangle = e.CellBounds
+                            r2.Y += e.CellBounds.Height / 2
+                            r2.Height = e.CellBounds.Height / 2
+                            e.PaintContent(r2)
+                            e.Handled = True
+                        Case Else
+                    End Select
+            End Select
+        End Sub
+
+#End Region
+
+#Region " Method "
+
+#Region " SuspendLayout/ResumeLayout "
+
+        Public Sub BeginUpdate()
+            SuspendLayout()
+        End Sub
+
+        Public Sub EndUpdate()
+            ResumeLayout()
+        End Sub
+
+#End Region
+#Region " SetComboBoxItems "
+
+        ''' <summary>
+        ''' コンボボックスへ表示するデータをバインドする
+        ''' </summary>
+        ''' <param name="propertyName">バインドしたい列名称</param>
+        ''' <param name="dataSource">コンボボックスへバインドするデータソース</param>
+        ''' <param name="displayMember">コンボ ボックスに表示する文字列の取得先となるプロパティまたは列を指定する文字列を取得または設定します。 </param>
+        ''' <param name="valueMember">ドロップダウン リストの選択項目に対応する値の取得先となる、プロパティまたは列を指定する文字列を取得または設定します。 </param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Function SetComboBoxItems(ByVal propertyName As String, ByVal dataSource As DataTable, ByVal displayMember As String, ByVal valueMember As String) As DataGridViewComboBoxColumn
+            Dim col As DataGridViewColumn
+            col = Me.Columns.Item(propertyName)
+            Return _setComboBoxItems(col, dataSource, displayMember, valueMember)
+        End Function
+
+        ''' <summary>
+        ''' コンボボックスへ表示するデータをバインドする
+        ''' </summary>
+        ''' <param name="index">列位置</param>
+        ''' <param name="dataSource">コンボボックスへバインドするデータソース</param>
+        ''' <param name="displayMember">コンボ ボックスに表示する文字列の取得先となるプロパティまたは列を指定する文字列を取得または設定します。 </param>
+        ''' <param name="valueMember">ドロップダウン リストの選択項目に対応する値の取得先となる、プロパティまたは列を指定する文字列を取得または設定します。 </param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Function SetComboBoxItems(ByVal index As Integer, ByVal dataSource As DataTable, ByVal displayMember As String, ByVal valueMember As String) As DataGridViewComboBoxColumn
+            Dim col As DataGridViewColumn
+            col = Me.Columns.Item(index)
+            Return _setComboBoxItems(col, dataSource, displayMember, valueMember)
+        End Function
+
+#End Region
+#Region " Cols "
+
+        ''' <summary>
+        ''' Columns.Item(index) のラッパー
+        ''' </summary>
+        ''' <param name="index"></param>
+        ''' <returns></returns>
+        Public Overloads Function Cols(ByVal index As Integer) As DataGridViewColumn
+            If index < 0 Then
+                Return Nothing
+            End If
+            Return Me.Columns.Item(index)
+        End Function
+
+        ''' <summary>
+        ''' Columns.Item(index) のラッパー
+        ''' </summary>
+        ''' <param name="columnName"></param>
+        ''' <returns></returns>
+        Public Overloads Function Cols(ByVal columnName As String) As DataGridViewColumn
+            Return Me.Columns.Item(columnName)
+        End Function
+
+#End Region
+#Region " GetChanges "
+
+        ''' <summary>
+        ''' 変更行のみ返す
+        ''' </summary>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Overloads Function GetChanges(Of T)() As IList(Of T)
+            Dim rc As New List(Of T)(1000)
+
+            For Each row As T In GetChanges()
+                rc.Add(row)
+            Next
+
+            Return rc
+        End Function
+
+        ''' <summary>
+        ''' 変更行のみ返す
+        ''' </summary>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Overloads Function GetChanges() As IList(Of Object)
+            Dim lst As New List(Of Object)(1000)
+            If _dataBinder.BindSrc.DataSource IsNot Nothing Then
+                'lst = (From row As Object In CType(_dataBinder.BindSrc.DataSource, IList)
+                '       Where CType(row, RowModelBase).Status <> DataRowState.Unchanged
+                '       Select row).ToList
+                For Each row As Object In CType(_dataBinder.BindSrc.DataSource, IList)
+                    If CType(row, RowModelBase).Status <> DataRowState.Unchanged Then
+                        lst.Add(row)
+                    End If
+                Next
+            End If
+
+            lst.AddRange(_deletedRows)
+
+            Return lst
+        End Function
+
+        ''' <summary>
+        ''' 削除データを返す
+        ''' </summary>
+        ''' <returns></returns>
+        Public Function GetDelete() As IList(Of Object)
+            Return _deletedRows
+        End Function
+
+#End Region
+#Region " Current "
+
+        ''' <summary>
+        ''' 現在行のDataSource項目を返す
+        ''' </summary>
+        ''' <returns></returns>
+        Public Function Current() As Object
+            If _dataBinder Is Nothing Then
+                Return Nothing
+            End If
+            Return Me._dataBinder.BindSrc.Current()
+        End Function
+
+        ''' <summary>
+        ''' カレント行データ
+        ''' </summary>
+        ''' <typeparam name="T"></typeparam>
+        ''' <returns></returns>
+        Public Function Current(Of T)() As T
+            Dim row As T
+            If Me._dataBinder.BindSrc Is Nothing Then
+                Return Nothing
+            End If
+            row = Me._dataBinder.BindSrc.Current()
+            Return row
+        End Function
+
+        ''' <summary>
+        ''' カレント行データ
+        ''' </summary>
+        ''' <typeparam name="T"></typeparam>
+        ''' <param name="includeNode"></param>
+        ''' <returns></returns>
+        Public Function Current(Of T)(ByVal includeNode As Boolean) As T
+            If Not includeNode Then
+                Return Current(Of T)()
+            End If
+            Dim row As DataGridViewRow = CurrentRow()
+            Return CType(row.DataBoundItem, T)
+        End Function
+
+#End Region
+#Region " AddNew "
+
+        ''' <summary>
+        ''' 最終行へ新規追加
+        ''' </summary>
+        ''' <returns></returns>
+        Public Function AddNew(Of T)() As T
+            Dim add As Object
+            add = Me._dataBinder.BindSrc.AddNew()
+            If TypeOf add Is RowModelBase Then
+                DirectCast(add, RowModelBase).Add()
+            End If
+
+            Me.Focus()
+            Return add
+        End Function
+
+        ''' <summary>
+        ''' 選択行の下へ新規追加
+        ''' </summary>
+        ''' <param name="copy">カレント行のデータをコピーするか</param>
+        ''' <returns></returns>
+        Public Function AddNewCurrent(Of T)(Optional ByVal copy As Boolean = False) As T
+            Dim add As Object
+
+            add = ClassUtil.NewInstance(Me.RowEntityType)
+            Me._dataBinder.BindSrc.Insert(Me.SelectedCells(0).RowIndex + 1, add)
+
+            If TypeOf add Is RowModelBase Then
+                Dim value As RowModelBase = DirectCast(add, RowModelBase)
+                value.Add()
+                If copy Then
+                    value.Copy(Current)
+                End If
+            End If
+
+            Me.Focus()
+            Return add
+        End Function
+
+#End Region
+#Region " Remove "
+
+        ''' <summary>
+        ''' グリッドから現在の行を削除する
+        ''' </summary>
+        Public Function RemoveCurrent(Of T)() As T
+            Dim row As T
+            row = Current()
+            If row Is Nothing Then
+                Return Nothing
+            End If
+
+            Dim toprow As Integer
+            toprow = Me.FirstDisplayedScrollingRowIndex
+
+            _dataBinder.BindSrc.RemoveCurrent()
+
+            Dim obj As Object = row
+            Dim mdl As RowModelBase = DirectCast(obj, RowModelBase)
+            mdl.Delete()
+            If mdl.Status = DataRowState.Deleted Then
+                _deletedRows.Add(row)
+            End If
+
+            If Not Me.Rows.Count.Equals(0) Then
+                If Rows.Count <= toprow Then
+                    toprow -= 1
+                End If
+                Me.FirstDisplayedScrollingRowIndex = toprow
+            End If
+
+            Me.Focus()
+            Return row
+        End Function
+
+#End Region
+#Region " Range "
+
+        ''' <summary>
+        ''' セルの書式設定と操作に使用できる <see cref="DataGridViewCell"/> オブジェクトを取得
+        ''' </summary>
+        ''' <param name="row"></param>
+        ''' <param name="col"></param>
+        ''' <returns></returns>
+        Public Function GetCellRange(row As Integer, col As Integer) As DataGridViewCell
+            Return Item(col, row)
+        End Function
+
+#End Region
+
+        ''' <summary>
+        ''' グリッドのセットアップ
+        ''' </summary>
+        ''' <remarks></remarks>
+        Private Sub _setupGrid()
+            ' デザイン時はここまで
+            If Me.DesignMode Then
+                Exit Sub
+            End If
+
+            Me.DoubleBuffered = True
+            Me.Columns.Clear()
+            'Me.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
+            'Me.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
+            Me.AutoGenerateColumns = False   ' DataSource設定時の自動列作成をOFF
+
+            _deletedRows = New List(Of Object)
+
+            ' グリッドの設定変更イベント
+            Dim args As GridSettingEventArgs
+            args = New GridSettingEventArgs
+            args.TargetGrid = Me
+
+            RaiseEvent GridSetting(Me, args)
+        End Sub
+
+        ''' <summary>
+        ''' デザイン情報を構築する
+        ''' </summary>
+        Private Sub _setStyleNames()
+            ' カスタムスタイルを作成します。
+            Dim cs As DataGridViewCellStyle
+            Dim spv As String
+            spv = _getGridDesignSetting("StyleNames")
+            If spv Is Nothing Then
+                Return
+            End If
+
+            Dim names() As String = Nothing
+            names = spv.Split(",")
+
+            For Each name As String In names
+                name = name.Trim
+
+                If Me.Styles.Keys.Contains(name.Trim) Then
+                    cs = Me.Styles(name)
+                Else
+                    cs = DefaultCellStyle.Clone()
+                    Me.Styles.Add(name, cs)
+                End If
+
+                Dim val As Object
+                val = _getGridDesignSetting(name & "BackColor")
+                If val IsNot Nothing Then
+                    cs.BackColor = val
+                End If
+                val = _getGridDesignSetting(name & "ForeColor")
+                If val IsNot Nothing Then
+                    cs.ForeColor = val
+                End If
+                val = _getGridDesignSetting(name & "Font")
+                If val IsNot Nothing Then
+                    cs.Font = val
+                End If
+                'val = _getGridDesignSetting(name & "BorderWidth")
+                'If val IsNot Nothing Then
+                '    cs.Border.Width = val
+                'End If
+                'val = _getGridDesignSetting(name & "BorderColor")
+                'If val IsNot Nothing Then
+                '    cs.Border.Color = val
+                'End If
+                'val = _getGridDesignSetting(name & "BorderStyle")
+                'If val IsNot Nothing Then
+                '    cs.Border.Style = val
+                'End If
+                'val = _getGridDesignSetting(name & "BorderDirection")
+                'If val IsNot Nothing Then
+                '    cs.Border.Direction = val
+                'End If
+                cs.Tag = name
+            Next
+
+            _setDefaultStyle()
+        End Sub
+
+        ''' <summary>
+        ''' セルのデフォルトスタイルを設定する
+        ''' </summary>
+        Private Sub _setDefaultStyle()
+            DefaultCellStyle = Styles(StyleNames.Normal.ToString)
+        End Sub
+
+        ''' <summary>
+        ''' グリッドデザイン設定の設定
+        ''' </summary>
+        ''' <param name="key"></param>
+        ''' <returns></returns>
+        Private Function _getGridDesignSetting(ByVal key As String) As Object
+            If _designSettings Is Nothing Then
+                Return Nothing
+            End If
+            If _designSettings.Properties(key) Is Nothing Then
+                Return Nothing
+            End If
+            Return _designSettings(key)
+        End Function
+
+        ''' <summary>
+        ''' 各種コードを削除して正式な列名を返す。
+        ''' </summary>
+        ''' <param name="val"></param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Private Function _cnvColCaption(ByVal val As String) As String
+            Dim caption As String = val
+
+            caption = caption.Replace(C_COLTITLE_CR, Environment.NewLine)
+
+            Return caption
+        End Function
+
+        ''' <summary>
+        ''' グリッドにデータソースを設定する
+        ''' </summary>
+        ''' <param name="obj"></param>
+        ''' <remarks></remarks>
+        Private Sub _setData(ByVal obj As BindingSource)
+            MyBase.DataSource = Nothing
+            Columns.Clear()
+
+            If obj.DataSource Is Nothing Then
+                RowEntityType = Nothing
+                _deletedRows.Clear()
+                Return
+            End If
+
+            MyBase.DataSource = obj
+
+            If RowEntityType Is Nothing Then
+                RowEntityType = obj.List.GetType.GetGenericArguments(0)
+                'RowEntityType = obj.List.GetType.GetGenericArguments.First
+            End If
+
+            ' 列設定（非表示、編集不可）
+            _setCols()
+        End Sub
+
+        ''' <summary>
+        ''' 列定義設定
+        ''' </summary>
+        Private Sub _setCols()
+            If Me.RowEntityType Is Nothing Then
+                Return
+            End If
+
+            Dim args As GridColmnSettingEventArgs
+
+            args = New GridColmnSettingEventArgs
+            _modelProps = ClassUtil.GetProperties(Me.RowEntityType)
+            _modelPropDic = New Dictionary(Of String, PropertyInfo)
+            For Each prop As PropertyInfo In _modelProps
+                _modelPropDic.Add(prop.Name, prop)
+            Next
+
+            If _dataBinder.DataSource Is Nothing Then
+                Return
+            End If
+
+            Dim attrColspans As IList(Of CaptionAttribute)
+            attrColspans = New List(Of CaptionAttribute)
+
+            For Each prop As PropertyInfo In _modelProps
+                Dim col As DataGridViewColumn
+
+                ' スタイル
+                col = _setColStyle(prop)
+
+                ' 読取専用
+                _setColStyleReadOnly(prop, col)
+
+                ' 非表示
+                _setColStyleHidden(prop, col)
+
+                ' スクロール固定列
+                _setColStyleFrozen(prop, col)
+
+                ' 必須
+                _setColStyleRequired(prop, col)
+
+                '' マージ
+                '_setColStyleMerging(prop, col)
+
+                col.Tag = prop
+
+                args.Index = col.Index
+                args.Column = col
+                args.ModelProperty = prop
+                RaiseEvent GridColmnSetting(Me, args)
+            Next
+        End Sub
+
+        ''' <summary>
+        ''' 列のスタイル設定
+        ''' </summary>
+        ''' <param name="prop"></param>
+        Private Function _setColStyle(ByVal prop As PropertyInfo) As DataGridViewColumn
+            Dim col As DataGridViewColumn
+            Dim attrCaption As DisplayNameAttribute
+            Dim attr As ColumnStyleAttribute
+
+            Dim caption As String
+
+            attrCaption = ClassUtil.GetCustomAttribute(Of DisplayNameAttribute)(prop)
+            If attrCaption Is Nothing Then
+                caption = prop.Name
+            Else
+                caption = attrCaption.DisplayName
+            End If
+
+            attr = ClassUtil.GetCustomAttribute(Of ColumnStyleAttribute)(prop)
+            If attr Is Nothing Then
+                attr = New ColumnStyleAttribute(cellType:=CellType.TextBox)
+                col = _makeColumn(attr)
+                col.HeaderText = _cnvColCaption(caption)
+                col.DataPropertyName = prop.Name
+                col.Name = prop.Name
+                Me.Columns.Add(col)
+                Return col
+            End If
+
+            Dim colIndex As Integer
+
+            col = _makeColumn(attr)
+            col.HeaderText = _cnvColCaption(caption)
+            col.DataPropertyName = prop.Name
+            col.Name = prop.Name
+            col.DefaultCellStyle.Alignment = attr.Align
+            col.SortMode = DataGridViewColumnSortMode.NotSortable
+            col.DefaultCellStyle.NullValue = attr.NullValue
+
+            colIndex = Me.Columns.Add(col)
+
+            If attr.Width >= 0 Then
+                col.Width = attr.Width
+            Else
+                ' とりあえず列のサイズは自動にする
+                col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
+            End If
+
+            Dim negativeValueFormat As String = _getGridDesignSetting("NegativeValueFormat")
+            Dim format As String = attr.Format
+            If Not String.IsNullOrEmpty(negativeValueFormat) Then
+                format = format.Replace(negativeValueFormat, String.Empty)
+            End If
+            If Not String.IsNullOrEmpty(attr.Format) Then
+                col.DefaultCellStyle.Format = format
+            End If
+            If attr.WordWrap Then
+                col.DefaultCellStyle.WrapMode = DataGridViewTriState.True
+            End If
+
+            Return col
+        End Function
+
+        ''' <summary>
+        ''' 指定されたセル種別でDataGridViewColumnを作成する。
+        ''' </summary>
+        ''' <param name="attr"></param>
+        ''' <returns></returns>
+        Private Function _makeColumn(ByVal attr As ColumnStyleAttribute) As DataGridViewColumn
+            Dim type As CellType = attr.CellType
+            Dim col As DataGridViewColumn
+            Select Case type
+                Case CellType.Button
+                    col = New DataGridViewButtonColumn()
+                Case CellType.DisableButton
+                    col = New DataGridViewDisableButtonColumn()
+                Case CellType.CheckBox
+                    col = New DataGridViewCheckBoxColumn()
+                Case CellType.ComboBox
+                    col = New DataGridViewComboBoxColumn()
+                    Dim cbo As DataGridViewComboBoxColumn = DirectCast(col, DataGridViewComboBoxColumn)
+                    ' 現在のセルしかコンボボックスが表示されないようにする
+                    cbo.DisplayStyleForCurrentCellOnly = True
+                    ' 編集モードの時だけコンボボックスを表示する
+                    cbo.DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing
+                Case CellType.Image
+                    col = New DataGridViewImageColumn()
+                Case CellType.Link
+                    col = New DataGridViewLinkColumn()
+                Case CellType.Calendar
+                    col = New DataGridViewCalendarColumn()
+                    Dim cal As DataGridViewCalendarColumn = DirectCast(col, DataGridViewCalendarColumn)
+                    If String.IsNullOrEmpty(attr.InputFormat) Then
+                        If Not String.IsNullOrEmpty(attr.Format) Then
+                            cal.PickerCustomFormat = attr.Format
+                        End If
+                    Else
+                        cal.PickerCustomFormat = attr.InputFormat
+                    End If
+                Case CellType.MaskedTextBox
+                    col = New DataGridViewMaskedTextBoxColumn()
+                    Dim mask As DataGridViewMaskedTextBoxColumn = DirectCast(col, DataGridViewMaskedTextBoxColumn)
+                    mask.Mask = attr.InputFormat
+                Case Else
+                    col = New DataGridViewTextBoxColumn()
+            End Select
+
+            Return col
+        End Function
+
+        ''' <summary>
+        ''' 必須列設定
+        ''' </summary>
+        ''' <param name="prop"></param>
+        ''' <param name="col"></param>
+        Private Sub _setColStyleRequired(ByVal prop As PropertyInfo, ByVal col As DataGridViewColumn)
+            Dim attr As RequiredColumnAttribute
+            attr = ClassUtil.GetCustomAttribute(Of RequiredColumnAttribute)(prop)
+            If attr Is Nothing Then
+                Return
+            End If
+            If Not attr.IsRequired Then
+                Return
+            End If
+
+            Dim style As DataGridViewCellStyle
+            style = Styles(StyleNames.Required.ToString)
+            col.DefaultCellStyle.BackColor = style.BackColor
+            col.DefaultCellStyle.Font = style.Font
+            col.DefaultCellStyle.ForeColor = style.ForeColor
+            col.DefaultCellStyle.SelectionBackColor = style.SelectionBackColor
+            col.DefaultCellStyle.SelectionForeColor = style.SelectionForeColor
+            col.DefaultCellStyle.Tag = style.Tag
+        End Sub
+
+        ''' <summary>
+        ''' 読取専用列設定
+        ''' </summary>
+        ''' <param name="prop"></param>
+        ''' <param name="col"></param>
+        Private Sub _setColStyleReadOnly(ByVal prop As PropertyInfo, ByVal col As DataGridViewColumn)
+            Dim attr As ReadOnlyAttribute
+            attr = ClassUtil.GetCustomAttribute(Of ReadOnlyAttribute)(prop)
+            If attr Is Nothing Then
+                Return
+            End If
+            If Not attr.IsReadOnly Then
+                Return
+            End If
+
+            col.ReadOnly = True
+            col.DefaultCellStyle = Styles(StyleNames.ReadOnly.ToString)
+        End Sub
+
+        ''' <summary>
+        ''' 非表示列設定
+        ''' </summary>
+        ''' <param name="prop"></param>
+        ''' <param name="col"></param>
+        Private Sub _setColStyleHidden(ByVal prop As PropertyInfo, ByVal col As DataGridViewColumn)
+            Dim attr As HiddenColumnAttribute
+            attr = ClassUtil.GetCustomAttribute(Of HiddenColumnAttribute)(prop)
+            If attr Is Nothing Then
+                Return
+            End If
+
+            col.Visible = Not attr.IsHidden
+        End Sub
+
+        ''' <summary>
+        ''' スクロール固定列設定
+        ''' </summary>
+        ''' <param name="prop"></param>
+        ''' <param name="col"></param>
+        Private Sub _setColStyleFrozen(ByVal prop As PropertyInfo, ByVal col As DataGridViewColumn)
+            Dim attr As FrozenAttribute
+            attr = ClassUtil.GetCustomAttribute(Of FrozenAttribute)(prop)
+            If attr Is Nothing Then
+                Return
+            End If
+
+            If attr.Column < 0 Then
+                _frozen = col.Index
+            Else
+                _frozen = attr.Column
+            End If
+
+            For ii As Integer = 0 To _frozen
+                Columns.Item(ii).Frozen = True
+                If Columns.Item(ii).DefaultCellStyle IsNot Nothing AndAlso
+                Columns.Item(ii).DefaultCellStyle.Tag = StyleNames.Required.ToString Then
+                    Continue For
+                End If
+                If Styles.ContainsKey(StyleNames.Frozen.ToString) Then
+                    Columns.Item(ii).DefaultCellStyle.BackColor = Styles(StyleNames.Frozen.ToString).BackColor
+                End If
+            Next
+        End Sub
+
+        ''' <summary>
+        ''' コンボボックスへ表示するデータをバインドする
+        ''' </summary>
+        ''' <param name="col">列</param>
+        ''' <param name="dataSource">コンボボックスへバインドするデータソース</param>
+        ''' <param name="displayMember">コンボ ボックスに表示する文字列の取得先となるプロパティまたは列を指定する文字列を取得または設定します。 </param>
+        ''' <param name="valueMember">ドロップダウン リストの選択項目に対応する値の取得先となる、プロパティまたは列を指定する文字列を取得または設定します。 </param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Private Function _setComboBoxItems(ByVal col As DataGridViewColumn, ByVal dataSource As DataTable, ByVal displayMember As String, ByVal valueMember As String) As DataGridViewComboBoxColumn
+            If Not TypeOf col Is DataGridViewComboBoxColumn Then
+                Throw New ArgumentException("指定された列はコンボボックススタイルになっていません。")
+            End If
+
+            Dim cbo As DataGridViewComboBoxColumn = DirectCast(col, DataGridViewComboBoxColumn)
+
+            cbo.DataSource = dataSource
+            cbo.DisplayMember = displayMember
+            cbo.ValueMember = valueMember
+
+            Return cbo
+        End Function
+
+#Region " Validate "
+
+        ''' <summary>
+        ''' 列のチェック内容を返す
+        ''' </summary>
+        ''' <param name="col"></param>
+        ''' <returns></returns>
+        Public Function GetColValidateTypes(ByVal col As Integer, ByVal val As Object) As ValidateTypesAttribute
+            Dim prop As PropertyInfo
+            prop = CType(Me.Columns(col).Tag, PropertyInfo)
+
+            Dim attr As ValidateTypesAttribute
+            attr = ClassUtil.GetCustomAttribute(Of ValidateTypesAttribute)(prop)
+            If attr Is Nothing Then
+                Return Nothing
+            End If
+
+            If String.IsNullOrEmpty(attr.TableDefinitionFieldName) Then
+                _tblDef.GetTableDefinition(val)
+            Else
+                _tblDef.GetTableDefinition(val, attr.TableDefinitionFieldName)
+            End If
+
+            Dim columnName As String
+            Dim dbInfoCol As Moca.Db.DbInfoColumn
+
+            columnName = prop.Name
+            If Not String.IsNullOrEmpty(attr.TableColumnName) Then
+                columnName = attr.TableColumnName
+            End If
+            If String.IsNullOrEmpty(attr.TableDefinitionFieldName) Then
+                dbInfoCol = _tblDef.GetTableDefinitionColumn(columnName)
+            Else
+                dbInfoCol = _tblDef.GetTableDefinitionColumn(columnName, attr.TableDefinitionFieldName)
+            End If
+
+            Return _getValidateAttribute(dbInfoCol, attr)
+        End Function
+
+        ''' <summary>
+        ''' 列のチェック内容を作成
+        ''' </summary>
+        ''' <param name="dbInfoCol"></param>
+        ''' <param name="attr"></param>
+        ''' <returns></returns>
+        Private Function _getValidateAttribute(ByVal dbInfoCol As Moca.Db.DbInfoColumn, ByVal attr As ValidateTypesAttribute) As ValidateTypesAttribute
+            Dim validator As New Validator
+            Dim attrNew As ValidateTypesAttribute
+            Dim columnDefinition As Moca.Db.DbInfoColumn = dbInfoCol
+            Dim max As Object = Nothing
+            If columnDefinition IsNot Nothing Then
+                If attr.Max Is Nothing Then
+                    If validator.IsValidLenghtMaxB(attr.ValidateTypes) Then
+                        max = columnDefinition.MaxLength
+                    Else
+                        max = columnDefinition.MaxLengthB
+                    End If
+                Else
+                    max = attr.Max
+                End If
+                attrNew = New ValidateTypesAttribute(attr.ValidateTypes, attr.Min, max, attr.ErrorDispControlName)
+            Else
+                attrNew = New ValidateTypesAttribute(attr.ValidateTypes, attr.Min, attr.Max, attr.ErrorDispControlName)
+            End If
+
+            Return attrNew
+        End Function
+
+#End Region
+
+#End Region
+
+#Region " TableDefinition Class "
+
+        ''' <summary>
+        ''' テーブル定義
+        ''' </summary>
+        Public Class TableDefinition
+
+            ''' <summary>
+            ''' 列名
+            ''' </summary>
+            Private _columnNames As IDictionary(Of String, IDictionary(Of String, String))
+            ''' <summary>
+            ''' フィールド情報
+            ''' </summary>
+            Private _infos As IDictionary(Of String, FieldInfo)
+            ''' <summary>
+            ''' テーブル定義オブジェクト
+            ''' </summary>
+            Private _tblDefs As IDictionary(Of String, Object)
+
+            ''' <summary>
+            ''' デフォルトコンストラクタ
+            ''' </summary>
+            Public Sub New()
+                _tblDefs = New Dictionary(Of String, Object)
+                _infos = New Dictionary(Of String, FieldInfo)
+                _columnNames = New Dictionary(Of String, IDictionary(Of String, String))
+            End Sub
+
+            ''' <summary>
+            ''' テーブル定義情報取得
+            ''' </summary>
+            ''' <param name="val"></param>
+            Public Sub GetTableDefinition(ByVal val As Object, Optional ByVal tableDefinitionFieldName As String = "tableDefinition")
+                If _tblDefs.ContainsKey(tableDefinitionFieldName) Then
+                    Return
+                End If
+
+                If Not _infos.ContainsKey(tableDefinitionFieldName) Then
+                    Dim fields() As FieldInfo = val.GetType.GetFields(BindingFlags.Instance Or BindingFlags.Public Or BindingFlags.NonPublic)
+                    For Each field As FieldInfo In fields
+                        Dim attr As Moca.Db.Attr.TableAttribute = ClassUtil.GetCustomAttribute(Of Moca.Db.Attr.TableAttribute)(field.FieldType)
+                        If attr Is Nothing Then
+                            Continue For
+                        End If
+                        If _infos.ContainsKey(field.Name) Then
+                            Continue For
+                        End If
+                        _infos.Add(field.Name, field)
+                        If Not _infos.ContainsKey(tableDefinitionFieldName) Then
+                            _infos.Add(tableDefinitionFieldName, field)
+                        End If
+                    Next
+
+                    If Not _infos.ContainsKey(tableDefinitionFieldName) Then
+                        Return
+                    End If
+                End If
+
+                Dim tblDef As Object
+                Dim info As FieldInfo
+                info = _infos(tableDefinitionFieldName)
+                Dim builder As EntityBuilder = New EntityBuilder
+                builder.SetColumnInfo(val)
+
+                tblDef = val.GetType.InvokeMember(info.Name, BindingFlags.Instance Or BindingFlags.NonPublic Or BindingFlags.Public Or BindingFlags.GetField, Nothing, val, New Object() {})
+                _tblDefs.Add(tableDefinitionFieldName, tblDef)
+            End Sub
+
+            ''' <summary>
+            ''' テーブル定義列情報取得
+            ''' </summary>
+            ''' <param name="name"></param>
+            ''' <returns></returns>
+            Public Function GetTableDefinitionColumn(ByVal name As String, Optional ByVal tableDefinitionFieldName As String = "tableDefinition") As Moca.Db.DbInfoColumn
+                If Not _tblDefs.ContainsKey(tableDefinitionFieldName) Then
+                    Return Nothing
+                End If
+
+                Dim tblDef As Object
+                Dim info As FieldInfo
+                Dim columnNames As IDictionary(Of String, String)
+
+                tblDef = _tblDefs(tableDefinitionFieldName)
+                info = _infos(tableDefinitionFieldName)
+
+                If _columnNames.ContainsKey(tableDefinitionFieldName) Then
+                    columnNames = _columnNames(tableDefinitionFieldName)
+                Else
+                    columnNames = _getColumnNames(tableDefinitionFieldName, info)
+                End If
+
+                Dim columnName As String = String.Empty
+                If Not columnNames.TryGetValue(name, columnName) Then
+                    Return Nothing
+                End If
+
+                Dim column As Moca.Db.DbInfoColumn = Nothing
+                column = TryCast(info.FieldType.InvokeMember(columnName, BindingFlags.Instance Or BindingFlags.Public Or BindingFlags.GetProperty, Nothing, tblDef, New Object() {}), Moca.Db.DbInfoColumn)
+                Return column
+            End Function
+
+            ''' <summary>
+            ''' 列名取得
+            ''' </summary>
+            ''' <param name="TableDefinitionFieldInfo"></param>
+            Private Function _getColumnNames(ByVal tableDefinitionFieldName As String, ByVal TableDefinitionFieldInfo As FieldInfo) As IDictionary(Of String, String)
+                Dim columnNames As IDictionary(Of String, String) = New Dictionary(Of String, String)
+
+                Dim props() As PropertyInfo = TableDefinitionFieldInfo.FieldType.GetProperties()
+                For Each prop As PropertyInfo In props
+                    Dim attrColumn As Moca.Db.Attr.ColumnAttribute = ClassUtil.GetCustomAttribute(Of Moca.Db.Attr.ColumnAttribute)(prop)
+                    Dim columnName As String = prop.Name
+                    If attrColumn IsNot Nothing Then
+                        columnName = attrColumn.ColumnName
+                    End If
+                    columnNames.Add(columnName, prop.Name)
+                Next
+
+                _columnNames.Add(tableDefinitionFieldName, columnNames)
+
+                Return columnNames
+            End Function
+
+        End Class
+
+#End Region
+
+    End Class
+
+End Namespace

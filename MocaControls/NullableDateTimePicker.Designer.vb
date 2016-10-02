@@ -5,7 +5,7 @@ Namespace Win
  Partial Class NullableDateTimePicker
 		Inherits System.Windows.Forms.DateTimePicker
 
-		'UserControl ‚ÍƒRƒ“ƒ|[ƒlƒ“ƒgˆê——‚ğÁ‹‚·‚é‚½‚ß‚É dispose ‚ğƒI[ƒo[ƒ‰ƒCƒh‚µ‚Ü‚·B
+		'UserControl ã¯ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆä¸€è¦§ã‚’æ¶ˆå»ã™ã‚‹ãŸã‚ã« dispose ã‚’ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰ã—ã¾ã™ã€‚
 		<System.Diagnostics.DebuggerNonUserCode()> _
 		Protected Overloads Overrides Sub Dispose(ByVal disposing As Boolean)
 			Try
@@ -17,12 +17,12 @@ Namespace Win
 			End Try
 		End Sub
 
-		' Windows ƒtƒH[ƒ€ ƒfƒUƒCƒi‚Å•K—v‚Å‚·B
+		' Windows ãƒ•ã‚©ãƒ¼ãƒ  ãƒ‡ã‚¶ã‚¤ãƒŠã§å¿…è¦ã§ã™ã€‚
 		Private components As System.ComponentModel.IContainer
 
-		' ƒƒ‚ : ˆÈ‰º‚ÌƒvƒƒV[ƒWƒƒ‚ÍAWindows ƒtƒH[ƒ€ ƒfƒUƒCƒi‚Å•K—v‚Å‚·B
-		'Windows ƒtƒH[ƒ€ ƒfƒUƒCƒi‚ğg‚Á‚Ä•ÏX‚µ‚Ä‚­‚¾‚³‚¢B  
-		' ƒR[ƒh ƒGƒfƒBƒ^‚ğg‚Á‚Ä•ÏX‚µ‚È‚¢‚Å‚­‚¾‚³‚¢B
+		' ãƒ¡ãƒ¢ : ä»¥ä¸‹ã®ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£ã¯ã€Windows ãƒ•ã‚©ãƒ¼ãƒ  ãƒ‡ã‚¶ã‚¤ãƒŠã§å¿…è¦ã§ã™ã€‚
+		'Windows ãƒ•ã‚©ãƒ¼ãƒ  ãƒ‡ã‚¶ã‚¤ãƒŠã‚’ä½¿ã£ã¦å¤‰æ›´ã—ã¦ãã ã•ã„ã€‚  
+		' ã‚³ãƒ¼ãƒ‰ ã‚¨ãƒ‡ã‚£ã‚¿ã‚’ä½¿ã£ã¦å¤‰æ›´ã—ãªã„ã§ãã ã•ã„ã€‚
 		<System.Diagnostics.DebuggerStepThrough()> _
 		Private Sub InitializeComponent()
 			components = New System.ComponentModel.Container

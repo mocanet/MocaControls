@@ -1,0 +1,72 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="" GeneratedClassName="GridDesignSettings">
+  <Profiles />
+  <Settings>
+    <Setting Name="StyleNames" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Normal,Alternate,Fixed,Highlight,Focus,Editor,Frozen,NewRow,SelectedColumnHeader,SelectedRowHeader,FilterEditor,Error,Disable,ReadOnly,Required,NoEdit,NegativeValue,Closed,Modify</Value>
+    </Setting>
+    <Setting Name="ErrorBackColor" Type="System.Drawing.Color" Scope="Application">
+      <Value Profile="(Default)">242, 222, 222</Value>
+    </Setting>
+    <Setting Name="ErrorForeColor" Type="System.Drawing.Color" Scope="Application">
+      <Value Profile="(Default)">185, 74, 72</Value>
+    </Setting>
+    <Setting Name="RequiredBackColor" Type="System.Drawing.Color" Scope="Application">
+      <Value Profile="(Default)">Info</Value>
+    </Setting>
+    <Setting Name="RequiredForeColor" Type="System.Drawing.Color" Scope="Application">
+      <Value Profile="(Default)">33, 33, 33</Value>
+    </Setting>
+    <Setting Name="NormalFont" Type="System.Drawing.Font" Scope="Application">
+      <Value Profile="(Default)">Meiryo UI, 9pt</Value>
+    </Setting>
+    <Setting Name="ReadOnlyBackColor" Type="System.Drawing.Color" Scope="Application">
+      <Value Profile="(Default)">239, 239, 239</Value>
+    </Setting>
+    <Setting Name="ReadOnlyForeColor" Type="System.Drawing.Color" Scope="Application">
+      <Value Profile="(Default)">33, 33, 33</Value>
+    </Setting>
+    <Setting Name="DisableBackColor" Type="System.Drawing.Color" Scope="Application">
+      <Value Profile="(Default)">Gainsboro</Value>
+    </Setting>
+    <Setting Name="DisableForeColor" Type="System.Drawing.Color" Scope="Application">
+      <Value Profile="(Default)">DarkGray</Value>
+    </Setting>
+    <Setting Name="FrozenBackColor" Type="System.Drawing.Color" Scope="Application">
+      <Value Profile="(Default)">251, 251, 243</Value>
+    </Setting>
+    <Setting Name="NoEditForeColor" Type="System.Drawing.Color" Scope="Application">
+      <Value Profile="(Default)">LightSlateGray</Value>
+    </Setting>
+    <Setting Name="ReadOnlyBorderColor" Type="System.Drawing.Color" Scope="Application">
+      <Value Profile="(Default)">250, 250, 250</Value>
+    </Setting>
+    <Setting Name="NegativeValueFormat" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">[赤]</Value>
+    </Setting>
+    <Setting Name="NegativeValueForeColor" Type="System.Drawing.Color" Scope="Application">
+      <Value Profile="(Default)">178, 24, 43</Value>
+    </Setting>
+    <Setting Name="ClosedBackColor" Type="System.Drawing.Color" Scope="Application">
+      <Value Profile="(Default)">239, 239, 239</Value>
+    </Setting>
+    <Setting Name="ClosedBorderColor" Type="System.Drawing.Color" Scope="Application">
+      <Value Profile="(Default)">250, 250, 250</Value>
+    </Setting>
+    <Setting Name="ClosedForeColor" Type="System.Drawing.Color" Scope="Application">
+      <Value Profile="(Default)">LightSlateGray</Value>
+    </Setting>
+    <Setting Name="NormalForeColor" Type="System.Drawing.Color" Scope="Application">
+      <Value Profile="(Default)">33, 33, 33</Value>
+    </Setting>
+    <Setting Name="NormalBackColor" Type="System.Drawing.Color" Scope="Application">
+      <Value Profile="(Default)">White</Value>
+    </Setting>
+    <Setting Name="ModifyFont" Type="System.Drawing.Font" Scope="Application">
+      <Value Profile="(Default)">Meiryo UI, 9pt, style=Bold</Value>
+    </Setting>
+    <Setting Name="ModifyToolTipText" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">この行は変更されています</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

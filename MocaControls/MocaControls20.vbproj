@@ -83,12 +83,39 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Args\GridColmnSettingEventArgs.vb" />
+    <Compile Include="Args\GridSettingEventArgs.vb" />
+    <Compile Include="Attr\AllowMergingAttribute.vb" />
+    <Compile Include="Attr\CaptionAttribute.vb" />
+    <Compile Include="Attr\ColumnStyleAttribute.vb" />
+    <Compile Include="Attr\FrozenAttribute.vb" />
+    <Compile Include="Attr\HiddenColumnAttribute.vb" />
+    <Compile Include="Attr\RequiredColumnAttribute.vb" />
+    <Compile Include="Attr\ValidateTypesAttribute.vb" />
     <Compile Include="ComboBoxEx.Designer.vb">
       <DependentUpon>ComboBoxEx.vb</DependentUpon>
     </Compile>
     <Compile Include="ComboBoxEx.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="DataGridViewCalendarCell.vb" />
+    <Compile Include="DataGridViewCalendarColumn.vb" />
+    <Compile Include="DataGridViewCalendarEditingControl.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DataGridViewMaskedTextBoxCell.vb" />
+    <Compile Include="DataGridViewMaskedTextBoxColumn.vb" />
+    <Compile Include="DataGridViewMaskedTextBoxEditingControl.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Declare.vb" />
+    <Compile Include="GridDesignSettings.Designer.vb">
+      <DependentUpon>GridDesignSettings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="ModelGridView.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Model\RowModelBase.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
@@ -205,6 +232,7 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="GridDesignSettings.settings" />
     <None Include="Key.snk" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
@@ -237,6 +265,9 @@
     <EmbeddedResource Include="Resources\ToolStripMenuItemGroup.bmp" />
     <EmbeddedResource Include="Resources\RadioButtonGroup.bmp" />
     <EmbeddedResource Include="Resources\NullableDateTimePicker.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RowEdit.png" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

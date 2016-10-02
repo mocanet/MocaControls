@@ -16,7 +16,7 @@ Namespace Win
 
         End Sub
 
-        <System.Diagnostics.DebuggerNonUserCode()> _
+        <System.Diagnostics.DebuggerNonUserCode()>
         Public Sub New()
             MyBase.New()
 
@@ -24,10 +24,19 @@ Namespace Win
             InitializeComponent()
 
             ' IME無効
-            'Me.ImeMode = Windows.Forms.ImeMode.Disable
             Me.ImeMode = System.Windows.Forms.ImeMode.Disable
             Me.NegativeColor = Color.Red
             Me._nowPaste = False
+            AutoSize = False
+            _bottomBorder = New Label() With {
+                    .AutoSize = False,
+                    .Height = 1,
+                    .Dock = DockStyle.Bottom,
+                    .BackColor = BottomBorderColor,
+                    .FlatStyle = FlatStyle.Flat,
+                    .Visible = True}
+            Controls.Add(_bottomBorder)
+            AddHandler _bottomBorder.SizeChanged, AddressOf _sizeChanged
         End Sub
 
         'Component は、コンポーネント一覧に後処理を実行するために dispose をオーバーライドします。
