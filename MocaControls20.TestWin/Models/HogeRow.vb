@@ -5,8 +5,10 @@ Imports Moca.Win
 Public Class HogeRow
     Inherits RowModelBase
 
+    <ColumnStyle(20, RightBorderNone:=True)>
     Public Property ID As String
 
+    <ColumnStyle(100, RightBorderNone:=True)>
     Public Property UserCode As String
 
     <DisplayName("名前")>
@@ -21,5 +23,10 @@ Public Class HogeRow
     <DisplayName("備考")>
     <ColumnStyle(200, ImeMode:=ImeMode.Hiragana)>
     Public Property Note As String
+
+    <DisplayName("Hoge")>
+    <ColumnStyle(100, DataGridViewContentAlignment.MiddleCenter)>
+    <[ReadOnly](True)>
+    Public Property Hoge As String
 
 End Class

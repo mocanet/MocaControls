@@ -92,17 +92,6 @@ Namespace Win
 
 #End Region
 
-        'コンポーネント デザイナーで必要です。
-        Private components As System.ComponentModel.IContainer
-
-        'メモ: 以下のプロシージャはコンポーネント デザイナーで必要です。
-        'コンポーネント デザイナーを使って変更できます。
-        'コード エディターを使って変更しないでください。
-        <System.Diagnostics.DebuggerStepThrough()>
-        Private Sub InitializeComponent()
-            components = New System.ComponentModel.Container()
-        End Sub
-
 #Region " Property "
 
         ''' <summary>
@@ -120,12 +109,17 @@ Namespace Win
         ''' グリッドデザイン設定
         ''' </summary>
         ''' <returns></returns>
+        <Browsable(False)>
         Public Property DesignSettings As System.Configuration.ApplicationSettingsBase
             Get
                 Return _designSettings
             End Get
             Set(value As System.Configuration.ApplicationSettingsBase)
-                _designSettings = value
+                If value Is Nothing Then
+                    _designSettings = GridDesignSettings.Default
+                Else
+                    _designSettings = value
+                End If
                 _setStyleNames()
             End Set
         End Property
@@ -183,6 +177,10 @@ Namespace Win
                 _deletedRows.Clear()
 
                 _dataBinder.DataSource = value
+
+                If Styles.Count.Equals(0) Then
+                    _setStyleNames()
+                End If
 
                 ' データからグリッドの設定
                 _setData(_dataBinder.BindSrc)
@@ -433,6 +431,7 @@ Namespace Win
                                 e.Handled = True
                             End If
                     End Select
+
                 Case Else
                     ' データ部
                     Select Case e.RowIndex
@@ -447,6 +446,20 @@ Namespace Win
                             e.Handled = True
                         Case Else
                     End Select
+
+                    Dim column As DataGridViewColumn = Columns(e.ColumnIndex)
+                    Dim prop As PropertyInfo
+                    prop = CType(column.Tag, PropertyInfo)
+                    If prop IsNot Nothing Then
+                        Dim attr As ColumnStyleAttribute
+                        attr = ClassUtil.GetCustomAttribute(Of ColumnStyleAttribute)(prop)
+                        If attr IsNot Nothing Then
+                            If attr.RightBorderNone Then
+                                e.AdvancedBorderStyle.Right = DataGridViewAdvancedCellBorderStyle.None
+                            End If
+                        End If
+                    End If
+
             End Select
         End Sub
 
@@ -716,8 +729,6 @@ Namespace Win
 
             Me.DoubleBuffered = True
             Me.Columns.Clear()
-            'Me.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft
-            'Me.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter
             Me.AutoGenerateColumns = False   ' DataSource設定時の自動列作成をOFF
 
             _deletedRows = New List(Of Object)
@@ -727,6 +738,10 @@ Namespace Win
             args = New GridSettingEventArgs
             args.TargetGrid = Me
 
+            OnGridSetting(args)
+        End Sub
+
+        Protected Overridable Sub OnGridSetting(ByVal args As GridSettingEventArgs)
             RaiseEvent GridSetting(Me, args)
         End Sub
 
@@ -848,6 +863,10 @@ Namespace Win
                 'RowEntityType = obj.List.GetType.GetGenericArguments.First
             End If
 
+            If DesignSettings Is Nothing Then
+                DesignSettings = GridDesignSettings.Default
+            End If
+
             ' 列設定（非表示、編集不可）
             _setCols()
         End Sub
@@ -902,8 +921,16 @@ Namespace Win
                 args.Index = col.Index
                 args.Column = col
                 args.ModelProperty = prop
-                RaiseEvent GridColmnSetting(Me, args)
+                OnGridColmnSetting(args)
             Next
+        End Sub
+
+        ''' <summary>
+        ''' グリッドの列情報設定イベント
+        ''' </summary>
+        ''' <param name="args"></param>
+        Protected Overridable Sub OnGridColmnSetting(ByVal args As GridColmnSettingEventArgs)
+            RaiseEvent GridColmnSetting(Me, args)
         End Sub
 
         ''' <summary>
@@ -1057,7 +1084,15 @@ Namespace Win
             End If
 
             col.ReadOnly = True
-            col.DefaultCellStyle = Styles(StyleNames.ReadOnly.ToString)
+
+            Dim style As DataGridViewCellStyle
+            style = Styles(StyleNames.ReadOnly.ToString)
+            col.DefaultCellStyle.BackColor = style.BackColor
+            col.DefaultCellStyle.Font = style.Font
+            col.DefaultCellStyle.ForeColor = style.ForeColor
+            col.DefaultCellStyle.SelectionBackColor = style.SelectionBackColor
+            col.DefaultCellStyle.SelectionForeColor = style.SelectionForeColor
+            col.DefaultCellStyle.Tag = style.Tag
         End Sub
 
         ''' <summary>

@@ -155,8 +155,12 @@
     <Compile Include="..\MocaControls\Declare.vb">
       <Link>Declare.vb</Link>
     </Compile>
-    <Compile Include="..\MocaControls\GridDesignSettings.Designer.vb">
-      <Link>GridDesignSettings.Designer.vb</Link>
+    <Compile Include="..\MocaControls\FlowLayoutPanelEx.vb">
+      <Link>FlowLayoutPanelEx.vb</Link>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="..\MocaControls\GridDesignSettings1.Designer.vb">
+      <Link>GridDesignSettings1.Designer.vb</Link>
     </Compile>
     <Compile Include="..\MocaControls\ModelGridView.vb">
       <Link>ModelGridView.vb</Link>
@@ -172,6 +176,10 @@
     </Compile>
     <Compile Include="..\MocaControls\resourceDummy.vb">
       <Link>resourceDummy.vb</Link>
+    </Compile>
+    <Compile Include="..\MocaControls\RichTextBoxEx.vb">
+      <Link>RichTextBoxEx.vb</Link>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="..\MocaControls\My Project\Resources.Designer.vb">

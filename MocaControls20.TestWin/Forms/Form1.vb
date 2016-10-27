@@ -8,7 +8,8 @@ Public Class Form1
             Dim row As New HogeRow With {
                 .ID = ii,
                 .Name = "テスト たろう" & ii,
-                .Note = ""}
+                .Note = "",
+                .Hoge = "test"}
             lst.Add(row)
         Next
 

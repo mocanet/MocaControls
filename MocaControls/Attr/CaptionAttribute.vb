@@ -12,6 +12,7 @@ Namespace Win
 #Region " Declare "
 
         Private _colspanOriginal As Integer
+        Private _rowspanOriginal As Integer
 
 #End Region
 
@@ -20,12 +21,14 @@ Namespace Win
         ''' <summary>
         ''' コンストラクタ
         ''' </summary>
-        ''' <param name="caption">列キャプション。省略時はTrue</param>
+        ''' <param name="caption">列キャプション</param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal caption As String, Optional ByVal colspan As Integer = 1)
+        Public Sub New(ByVal caption As String, Optional ByVal colspan As Integer = 1, Optional ByVal rowspan As Integer = 1)
             _Caption = caption
             _Colspan = colspan
             _colspanOriginal = colspan
+            _Rowspan = rowspan
+            _rowspanOriginal = rowspan
         End Sub
 
 #End Region
@@ -37,6 +40,9 @@ Namespace Win
 
         ''' <summary>Colspan</summary>
         Public Property Colspan() As Integer
+
+        ''' <summary>Rowspan</summary>
+        Public Property Rowspan() As Integer
 
         Public ReadOnly Property IsAdded As Boolean
             Get

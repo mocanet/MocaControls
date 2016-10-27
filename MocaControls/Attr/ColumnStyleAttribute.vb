@@ -27,7 +27,8 @@ Namespace Win
                    Optional ByVal imeMode As ImeMode = ImeMode.NoControl,
                    Optional ByVal wordWrap As Boolean = False,
                    Optional ByVal inputFormat As String = "",
-                   Optional ByVal nullValue As Object = "")
+                   Optional ByVal nullValue As Object = "",
+                   Optional ByVal rightBorderNone As Boolean = False)
             Me.Width = width
             Me.Align = align
             Me.Format = format
@@ -61,6 +62,8 @@ Namespace Win
         Public Property InputFormat As String
 
         Public Property NullValue As Object
+
+        Public Property RightBorderNone As Boolean
 
 #End Region
 
