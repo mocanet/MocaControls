@@ -21,10 +21,14 @@ Component to assist in the binding of item and data input
 Debugging mark
 * MocaDi  
 Controller in order to use the AOP
+* ModelGridView
+bind in the entity DataGridView 
 * NullableDateTimePicker  
 Control was extended to handle Null in the standard DateTimePicker
 * RadioButtonGroup  
 Treated as a group multiple radio buttons
+* RichTextBoxEx
+Line is displayed in a flat style + Readonly
 * TextBoxEx  
 Control was extended to handle standard TextBox input restrictions, etc.
 * ToolStripMenuItemGroup  

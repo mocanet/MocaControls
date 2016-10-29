@@ -241,7 +241,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="GridDesignSettings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>GridDesignSettings1.Designer.vb</LastGenOutput>
     </None>
     <None Include="Key.snk" />

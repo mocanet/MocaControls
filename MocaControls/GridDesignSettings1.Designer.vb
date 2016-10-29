@@ -15,7 +15,7 @@ Option Explicit On
 
 <Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
  Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")>  _
-Partial Friend NotInheritable Class GridDesignSettings
+Partial Public NotInheritable Class GridDesignSettings
     Inherits Global.System.Configuration.ApplicationSettingsBase
     
     Private Shared defaultInstance As GridDesignSettings = CType(Global.System.Configuration.ApplicationSettingsBase.Synchronized(New GridDesignSettings()),GridDesignSettings)
