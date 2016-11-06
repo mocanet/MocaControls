@@ -10,6 +10,8 @@ Public Enum CellType As Integer
     Button = 0
     ''' <summary>チェックボックス</summary>
     CheckBox
+    ''' <summary>画像チェックボックス</summary>
+    CheckBoxImage
     ''' <summary>コンボボックス</summary>
     ComboBox
     ''' <summary>イメージ</summary>

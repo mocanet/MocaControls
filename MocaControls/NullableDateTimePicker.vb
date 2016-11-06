@@ -284,9 +284,9 @@ Namespace Win
             MyBase.WndProc(m)
 
             If m.Msg = WM_PAINT Then
-                If _borderStyle = ButtonBorderStyle.None Then
-                    Return
-                End If
+                'If _borderStyle = ButtonBorderStyle.None Then
+                '    Return
+                'End If
                 Dim g As Graphics = Graphics.FromHwnd(Handle)
                 Dim bounds As New Rectangle(0, 0, Width, Height)
                 If Not Focused OrElse Not Enabled Then

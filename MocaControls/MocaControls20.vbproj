@@ -103,6 +103,8 @@
     <Compile Include="DataGridViewCalendarEditingControl.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="DataGridViewCheckBoxImageCell.vb" />
+    <Compile Include="DataGridViewCheckBoxImageColumn.vb" />
     <Compile Include="DataGridViewMaskedTextBoxCell.vb" />
     <Compile Include="DataGridViewMaskedTextBoxColumn.vb" />
     <Compile Include="DataGridViewMaskedTextBoxEditingControl.vb">
@@ -279,6 +281,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\RowEdit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Checked.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\UnChecked.png" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

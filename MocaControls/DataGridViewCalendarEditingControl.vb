@@ -27,6 +27,8 @@ Namespace Win
             ImeModeBase = ImeMode.Disable
             MinDate = DateTime.MinValue
             MaxDate = DateTime.MaxValue
+            BorderStyle = ButtonBorderStyle.None
+            BorderColor = Color.Transparent
         End Sub
 
 #End Region

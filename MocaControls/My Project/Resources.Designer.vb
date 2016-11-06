@@ -63,9 +63,29 @@ Namespace My.Resources
         '''<summary>
         '''  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
         '''</summary>
+        Friend ReadOnly Property Checked() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Checked", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        '''</summary>
         Friend ReadOnly Property RowEdit() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("RowEdit", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        '''</summary>
+        Friend ReadOnly Property UnChecked() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("UnChecked", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
