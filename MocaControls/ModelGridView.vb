@@ -206,6 +206,23 @@ Namespace Win
         End Property
         Private _styles As IDictionary(Of String, DataGridViewCellStyle)
 
+#Region " GetEntity "
+
+        ''' <summary>
+        ''' 指定された行番号の行データを指定されたエンティティへ格納して返す
+        ''' </summary>
+        ''' <typeparam name="T">格納するエンティティ</typeparam>
+        ''' <param name="index">行番号</param>
+        ''' <returns>エンティティ</returns>
+        ''' <remarks></remarks>
+        Public Overloads Function GetEntity(Of T)(ByVal index As Integer) As T
+            Dim nowRow As T
+            nowRow = CType(Me.Rows(index).DataBoundItem, T)
+            Return nowRow
+        End Function
+
+#End Region
+
 #End Region
 
 #Region " Overrides "
@@ -326,7 +343,9 @@ Namespace Win
             End If
             cur.Modify()
             If Styles.ContainsKey(StyleNames.Modify.ToString) Then
-                CurrentCell.Style.Font = Styles(StyleNames.Modify.ToString).Font
+                CurrentCell.Style.Font = New Font(Styles(StyleNames.Modify.ToString).Font.FontFamily,
+                                                  CurrentCell.OwningColumn.InheritedStyle.Font.Size,
+                                                  Styles(StyleNames.Modify.ToString).Font.Style)
             End If
             CurrentRow.HeaderCell.ToolTipText = _getGridDesignSetting("ModifyToolTipText")
         End Sub
@@ -928,10 +947,11 @@ Namespace Win
                 Return
             End If
 
+            Dim column As DataGridViewColumn = Me.Columns.Item(col)
             Using grdPen As New Pen(GridColor)
                 Dim startRectangle As Rectangle = GetCellDisplayRectangle(col, row1, True)
-                Dim backColor As Color = DefaultCellStyle.BackColor
-                Dim foreColor As Color = DefaultCellStyle.ForeColor
+                Dim backColor As Color = IIf(column.DefaultCellStyle.BackColor = Color.Empty, DefaultCellStyle.BackColor, column.DefaultCellStyle.BackColor)
+                Dim foreColor As Color = IIf(column.DefaultCellStyle.ForeColor = Color.Empty, DefaultCellStyle.ForeColor, column.DefaultCellStyle.ForeColor)
                 Dim currentRectangle As Object = Nothing
                 Dim recX As Integer = startRectangle.X
                 Dim recY As Integer = startRectangle.Y
@@ -1046,6 +1066,7 @@ Namespace Win
 
             Dim cell As DataGridViewLinkCell = CType(Me(col.Index, rowIndex), DataGridViewLinkCell)
             cell.LinkColor = DefaultCellStyle.SelectionForeColor
+            cell.VisitedLinkColor = DefaultCellStyle.SelectionForeColor
         End Sub
 
         Private Sub _changeLinkUnSelectedStyle(ByVal col As DataGridViewColumn, ByVal rowIndex As Integer)
@@ -1056,6 +1077,7 @@ Namespace Win
             Dim lnk As DataGridViewLinkColumn = col
             Dim cell As DataGridViewLinkCell = CType(Me(col.Index, rowIndex), DataGridViewLinkCell)
             cell.LinkColor = lnk.DefaultCellStyle.ForeColor
+            cell.VisitedLinkColor = lnk.DefaultCellStyle.ForeColor
         End Sub
 
         ''' <summary>
@@ -1361,11 +1383,17 @@ Namespace Win
             Dim type As CellType = attr.CellType
             Dim col As DataGridViewColumn
 
-            If prop.PropertyType.BaseType.Equals(GetType(Image)) Then
+            If prop.PropertyType.Equals(GetType(Image)) Then
+                type = CellType.Image
+            End If
+            If prop.PropertyType.IsSubclassOf(GetType(Image)) Then
                 type = CellType.Image
             End If
             If prop.PropertyType.Equals(GetType(Date)) Then
                 type = CellType.Calendar
+            End If
+            If prop.PropertyType.Equals(GetType(Boolean)) AndAlso Not type.Equals(CellType.CheckBoxImage) Then
+                type = CellType.CheckBox
             End If
 
             Select Case type
