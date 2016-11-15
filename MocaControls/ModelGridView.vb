@@ -677,6 +677,43 @@ Namespace Win
             Return _setComboBoxItems(col, dataSource, displayMember, valueMember)
         End Function
 
+        ''' <summary>
+        ''' コンボボックスへ表示するデータをバインドする
+        ''' </summary>
+        ''' <param name="index">列位置</param>
+        ''' <param name="dataSource">コンボボックスへバインドするデータソース</param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Function SetComboBoxItems(ByVal index As Integer, ByVal dataSource As Moca.ConstantDataSet.ConstantDataTable) As DataGridViewComboBoxColumn
+            Dim col As DataGridViewColumn
+            col = Me.Columns.Item(index)
+            Return SetComboBoxItems(col, dataSource)
+        End Function
+
+        ''' <summary>
+        ''' コンボボックスへ表示するデータをバインドする
+        ''' </summary>
+        ''' <param name="col">列</param>
+        ''' <param name="dataSource">コンボボックスへバインドするデータソース</param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Function SetComboBoxItems(ByVal col As DataGridViewColumn, ByVal dataSource As Moca.ConstantDataSet.ConstantDataTable) As DataGridViewComboBoxColumn
+            Return _setComboBoxItems(col, dataSource, dataSource.TextColumn.ColumnName, dataSource.ValueTextColumn.ColumnName)
+        End Function
+
+        ''' <summary>
+        ''' コンボボックスへ表示するデータをバインドする
+        ''' </summary>
+        ''' <param name="col">列</param>
+        ''' <param name="dataSource">コンボボックスへバインドするデータソース</param>
+        ''' <param name="displayMember">コンボ ボックスに表示する文字列の取得先となるプロパティまたは列を指定する文字列を取得または設定します。 </param>
+        ''' <param name="valueMember">ドロップダウン リストの選択項目に対応する値の取得先となる、プロパティまたは列を指定する文字列を取得または設定します。 </param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Function SetComboBoxItems(ByVal col As DataGridViewColumn, ByVal dataSource As Object, ByVal displayMember As String, ByVal valueMember As String) As DataGridViewComboBoxColumn
+            Return _setComboBoxItems(col, dataSource, displayMember, valueMember)
+        End Function
+
 #End Region
 #Region " Cols "
 
@@ -1233,8 +1270,6 @@ Namespace Win
                 Return
             End If
 
-            MyBase.DataSource = obj
-
             If RowEntityType Is Nothing Then
                 RowEntityType = obj.List.GetType.GetGenericArguments(0)
                 'RowEntityType = obj.List.GetType.GetGenericArguments.First
@@ -1246,6 +1281,8 @@ Namespace Win
 
             ' 列設定（非表示、編集不可）
             _setCols()
+
+            MyBase.DataSource = obj
         End Sub
 
         ''' <summary>

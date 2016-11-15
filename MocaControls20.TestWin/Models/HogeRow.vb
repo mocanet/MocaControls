@@ -14,8 +14,12 @@ Public Class HogeRow
     <ColumnStyle(100, RightBorderNone:=True)>
     Public Property UserCode As String
 
+    <ColumnStyle(50, CellType:=Moca.CellType.ComboBox)>
+    Public Property Cbo As String
+
     <DisplayName("名前")>
     <ColumnStyle(100, ImeMode:=ImeMode.Hiragana)>
+    <ValidateTypes(Moca.Util.ValidateTypes.LenghtMax)>
     <Frozen()>
     Public Property Name As String
 
