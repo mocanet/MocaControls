@@ -23,8 +23,6 @@ Partial Class Form1
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim GridDesignSettings1 As Moca.GridDesignSettings = New Moca.GridDesignSettings()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.FlowLayoutPanelEx1 = New Moca.Win.FlowLayoutPanelEx()
@@ -33,6 +31,7 @@ Partial Class Form1
         Me.Button2 = New System.Windows.Forms.Button()
         Me.NullableDateTimePicker1 = New Moca.Win.NullableDateTimePicker()
         Me.TextBoxEx1 = New Moca.Win.TextBoxEx(Me.components)
+        Me.TextBoxEx2 = New Moca.Win.TextBoxEx(Me.components)
         Me.ModelGridView1 = New Moca.Win.ModelGridView()
         Me.FlowLayoutPanelEx1.SuspendLayout()
         CType(Me.ModelGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -111,6 +110,7 @@ Partial Class Form1
         Me.TextBoxEx1.BackColor = System.Drawing.SystemColors.Control
         Me.TextBoxEx1.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.TextBoxEx1.BottomBorderColor = System.Drawing.Color.Blue
+        Me.TextBoxEx1.CustomChars = Nothing
         Me.TextBoxEx1.ImeMode = System.Windows.Forms.ImeMode.Disable
         Me.TextBoxEx1.InputFormat = Moca.Win.TextBoxEx.InputFormatType.None
         Me.TextBoxEx1.Location = New System.Drawing.Point(156, 34)
@@ -125,29 +125,34 @@ Partial Class Form1
         Me.TextBoxEx1.TabIndex = 3
         Me.TextBoxEx1.TabStop = False
         '
+        'TextBoxEx2
+        '
+        Me.TextBoxEx2.BottomBorderColor = System.Drawing.Color.Empty
+        Me.TextBoxEx2.CustomChars = Nothing
+        Me.TextBoxEx2.ImeMode = System.Windows.Forms.ImeMode.Disable
+        Me.TextBoxEx2.InputFormat = Moca.Win.TextBoxEx.InputFormatType.None
+        Me.TextBoxEx2.Location = New System.Drawing.Point(1051, 68)
+        Me.TextBoxEx2.Name = "TextBoxEx2"
+        Me.TextBoxEx2.NegativeColor = System.Drawing.Color.Red
+        Me.TextBoxEx2.NumericScale = 0
+        Me.TextBoxEx2.Percision = 0
+        Me.TextBoxEx2.PercisionSign = False
+        Me.TextBoxEx2.Separator = ""
+        Me.TextBoxEx2.Size = New System.Drawing.Size(174, 31)
+        Me.TextBoxEx2.TabIndex = 7
+        '
         'ModelGridView1
         '
-        Me.ModelGridView1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ModelGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.White
-        DataGridViewCellStyle1.Font = New System.Drawing.Font("Meiryo UI", 9.0!)
-        DataGridViewCellStyle1.ForeColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(33, Byte), Integer), CType(CType(33, Byte), Integer))
-        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.ModelGridView1.DefaultCellStyle = DataGridViewCellStyle1
-        GridDesignSettings1.SettingsKey = ""
-        Me.ModelGridView1.DesignSettings = GridDesignSettings1
-        Me.ModelGridView1.Location = New System.Drawing.Point(12, 181)
+        Me.ModelGridView1.DesignSettings = Nothing
+        Me.ModelGridView1.Location = New System.Drawing.Point(12, 152)
         Me.ModelGridView1.Name = "ModelGridView1"
+        Me.ModelGridView1.RowEditImage = CType(resources.GetObject("ModelGridView1.RowEditImage"), System.Drawing.Image)
         Me.ModelGridView1.RowEntityType = Nothing
         Me.ModelGridView1.RowTemplate.Height = 33
-        Me.ModelGridView1.Size = New System.Drawing.Size(1317, 486)
+        Me.ModelGridView1.Size = New System.Drawing.Size(1317, 515)
         Me.ModelGridView1.Styles = CType(resources.GetObject("ModelGridView1.Styles"), System.Collections.Generic.IDictionary(Of String, System.Windows.Forms.DataGridViewCellStyle))
-        Me.ModelGridView1.TabIndex = 6
+        Me.ModelGridView1.TabIndex = 8
         '
         'Form1
         '
@@ -155,6 +160,7 @@ Partial Class Form1
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1341, 824)
         Me.Controls.Add(Me.ModelGridView1)
+        Me.Controls.Add(Me.TextBoxEx2)
         Me.Controls.Add(Me.FlowLayoutPanelEx1)
         Me.Controls.Add(Me.NullableDateTimePicker1)
         Me.Controls.Add(Me.TextBoxEx1)
@@ -175,5 +181,6 @@ Partial Class Form1
     Friend WithEvents Button2 As Button
     Friend WithEvents Button1 As Button
     Friend WithEvents Button3 As Button
+    Friend WithEvents TextBoxEx2 As Moca.Win.TextBoxEx
     Friend WithEvents ModelGridView1 As Moca.Win.ModelGridView
 End Class

@@ -113,6 +113,9 @@
     <Compile Include="..\mocacontrols\attr\ColumnStyleAttribute.vb">
       <Link>Attr\ColumnStyleAttribute.vb</Link>
     </Compile>
+    <Compile Include="..\MocaControls\Attr\EditConditionAttribute.vb">
+      <Link>Attr\EditConditionAttribute.vb</Link>
+    </Compile>
     <Compile Include="..\mocacontrols\attr\FrozenAttribute.vb">
       <Link>Attr\FrozenAttribute.vb</Link>
     </Compile>
@@ -156,6 +159,16 @@
     </Compile>
     <Compile Include="..\MocaControls\DataGridViewMaskedTextBoxEditingControl.vb">
       <Link>DataGridViewMaskedTextBoxEditingControl.vb</Link>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="..\MocaControls\DataGridViewTextBoxExCell.vb">
+      <Link>DataGridViewTextBoxExCell.vb</Link>
+    </Compile>
+    <Compile Include="..\MocaControls\DataGridViewTextBoxExColumn.vb">
+      <Link>DataGridViewTextBoxExColumn.vb</Link>
+    </Compile>
+    <Compile Include="..\MocaControls\DataGridViewTextBoxExEditingControl.vb">
+      <Link>DataGridViewTextBoxExEditingControl.vb</Link>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="..\MocaControls\Declare.vb">

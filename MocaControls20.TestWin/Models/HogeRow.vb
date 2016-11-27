@@ -9,6 +9,7 @@ Public Class HogeRow
     Public Property Selected As Boolean
 
     <ColumnStyle(20, RightBorderNone:=True)>
+    <EditCondition(DataRowState.Added)>
     Public Property ID As String
 
     <ColumnStyle(100, RightBorderNone:=True)>

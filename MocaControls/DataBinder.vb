@@ -303,8 +303,9 @@ Namespace Win
 		End Sub
 
 		Public Sub DataBinding(ByVal ctrl As Label, ByVal dataMember As DbInfoColumn, Optional ByVal dataSourceNullValue As Object = Nothing, Optional ByVal nullValue As Object = Nothing)
-			_dataBinding(ctrl, "Text", dataMember.Name, dataSourceNullValue, nullValue)
-		End Sub
+            Dim propName As Object = Moca.Db.DbUtil.GetColumnNames(_current.GetType)(dataMember.Name)
+            _dataBinding(ctrl, "Text", propName, dataSourceNullValue, nullValue)
+        End Sub
 
 		''' <summary>
 		''' テキストボックスのデータバインディング
@@ -345,11 +346,16 @@ Namespace Win
 		End Sub
 
 		Public Sub DataBinding(ByVal ctrl As ComboBox, ByVal dataMember As DbInfoColumn, Optional ByVal dataSourceNullValue As Object = Nothing, Optional ByVal nullValue As Object = Nothing)
-			_dataBinding(ctrl, "SelectedValue", dataMember.Name, dataSourceNullValue, nullValue)
-			If dataMember.UniCode Then
-				ctrl.MaxLength = dataMember.MaxLengthB
-			Else
-				ctrl.MaxLength = dataMember.MaxLength
+            Dim propName As Object = Moca.Db.DbUtil.GetColumnNames(_current.GetType)(dataMember.Name)
+            _dataBinding(ctrl, "SelectedValue", propName, dataSourceNullValue, nullValue)
+            If dataMember.MaxLength < 0 Then
+                ctrl.MaxLength = 0
+                Return
+            End If
+            If dataMember.UniCode Then
+                ctrl.MaxLength = dataMember.MaxLengthB
+            Else
+                ctrl.MaxLength = dataMember.MaxLength
 			End If
 		End Sub
 
@@ -366,8 +372,9 @@ Namespace Win
 		End Sub
 
 		Public Sub DataBinding(ByVal ctrl As CheckBox, ByVal dataMember As DbInfoColumn, Optional ByVal dataSourceNullValue As Object = Nothing, Optional ByVal nullValue As Object = Nothing)
-			_dataBinding(ctrl, "Checked", dataMember.Name, dataSourceNullValue, nullValue)
-		End Sub
+            Dim propName As Object = Moca.Db.DbUtil.GetColumnNames(_current.GetType)(dataMember.Name)
+            _dataBinding(ctrl, "Checked", propName, dataSourceNullValue, nullValue)
+        End Sub
 
 		''' <summary>
 		''' 標準のDateTimePickerでNullを扱えるように拡張したコントロールのデータバインディング
@@ -382,8 +389,9 @@ Namespace Win
 		End Sub
 
 		Public Sub DataBinding(ByVal ctrl As DateTimePicker, ByVal dataMember As DbInfoColumn, Optional ByVal dataSourceNullValue As Object = Nothing, Optional ByVal nullValue As Object = Nothing)
-			_dataBinding(ctrl, "Value", dataMember.Name, dataSourceNullValue, nullValue)
-		End Sub
+            Dim propName As Object = Moca.Db.DbUtil.GetColumnNames(_current.GetType)(dataMember.Name)
+            _dataBinding(ctrl, "Value", propName, dataSourceNullValue, nullValue)
+        End Sub
 
 		''' <summary>
 		''' 標準のNullableDateTimePickerでNullを扱えるように拡張したコントロールのデータバインディング
@@ -398,8 +406,9 @@ Namespace Win
 		End Sub
 
 		Public Sub DataBinding(ByVal ctrl As NullableDateTimePicker, ByVal dataMember As DbInfoColumn, Optional ByVal dataSourceNullValue As Object = Nothing, Optional ByVal nullValue As Object = Nothing)
-			_dataBinding(ctrl, "Value", dataMember.Name, dataSourceNullValue, nullValue)
-		End Sub
+            Dim propName As Object = Moca.Db.DbUtil.GetColumnNames(_current.GetType)(dataMember.Name)
+            _dataBinding(ctrl, "Value", propName, dataSourceNullValue, nullValue)
+        End Sub
 
 		''' <summary>
 		''' 複数のラジオボタンをグループとして扱うコンポーネントのデータバインディング
@@ -414,8 +423,9 @@ Namespace Win
 		End Sub
 
 		Public Sub DataBinding(ByVal ctrl As RadioButtonGroup, ByVal dataMember As DbInfoColumn, Optional ByVal dataSourceNullValue As Object = Nothing, Optional ByVal nullValue As Object = Nothing)
-			_dataBinding(ctrl, "SelectedValue", dataMember.Name, dataSourceNullValue, nullValue)
-		End Sub
+            Dim propName As Object = Moca.Db.DbUtil.GetColumnNames(_current.GetType)(dataMember.Name)
+            _dataBinding(ctrl, "SelectedValue", propName, dataSourceNullValue, nullValue)
+        End Sub
 
 		''' <summary>
 		''' テキストボックスExのデータバインディング
@@ -439,11 +449,16 @@ Namespace Win
 		''' <param name="formatString"></param>
 		''' <remarks></remarks>
 		Public Sub DataBinding(ByVal ctrl As TextBoxEx, ByVal dataMember As DbInfoColumn, Optional ByVal dataSourceNullValue As Object = Nothing, Optional ByVal nullValue As Object = Nothing, Optional ByVal formatString As String = "")
-			_dataBinding(ctrl, "Text", dataMember.Name, dataSourceNullValue, nullValue, formatString)
-			If dataMember.UniCode Then
-				ctrl.MaxLength = dataMember.MaxLengthB
-			Else
-				ctrl.MaxLength = dataMember.MaxLength
+            Dim propName As Object = Moca.Db.DbUtil.GetColumnNames(_current.GetType)(dataMember.Name)
+            _dataBinding(ctrl, "Text", propName, dataSourceNullValue, nullValue, formatString)
+            If dataMember.MaxLength < 0 Then
+                ctrl.MaxLength = 0
+                Return
+            End If
+            If dataMember.UniCode Then
+                ctrl.MaxLength = dataMember.MaxLengthB
+            Else
+                ctrl.MaxLength = dataMember.MaxLength
 			End If
 		End Sub
 

@@ -74,10 +74,14 @@ Public Class Form1
         }
         lst.Add(row)
 
+        'ModelGridView1.AllowUserToAddRows = False
         ModelGridView1.DataSource = lst
+
+        TextBoxEx2.InputFormat = TextBoxEx.InputFormatType.Number Or TextBoxEx.InputFormatType.Custom
+        TextBoxEx2.CustomChars = "*-"
     End Sub
 
-    Private Sub ModelGridView1_DataError(sender As Object, e As DataGridViewDataErrorEventArgs) Handles ModelGridView1.DataError
+    Private Sub ModelGridView1_DataError(sender As Object, e As DataGridViewDataErrorEventArgs)
         Debug.Print(e.Exception.ToString)
     End Sub
 

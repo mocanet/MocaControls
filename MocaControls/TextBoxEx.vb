@@ -67,6 +67,8 @@ Namespace Win
             SignWithColor = Sign * 2
             ''' <summary>記号</summary>
             Symbol = SignWithColor * 2
+            ''' <summary>カスタム</summary>
+            Custom = Symbol * 2
         End Enum
 
 #End Region
@@ -107,6 +109,8 @@ Namespace Win
 
         Private _bottomBorderColor As Color
         Private _bottomBorder As Label
+
+        Private _customChars As String
 
 #End Region
 
@@ -300,6 +304,18 @@ Namespace Win
             End Get
         End Property
 
+        ''' <summary>
+        ''' カスタム指定有無
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public ReadOnly Property IsCustom() As Boolean
+            Get
+                Return _isFormat(InputFormatType.Custom)
+            End Get
+        End Property
+
         <Category("Appearance")>
         <Description("下線の色")>
         Public Property BottomBorderColor As Color
@@ -311,6 +327,20 @@ Namespace Win
                 If _bottomBorder IsNot Nothing Then
                     _bottomBorder.BackColor = _bottomBorderColor
                 End If
+            End Set
+        End Property
+
+        ''' <summary>
+        ''' 許可する特定の文字
+        ''' </summary>
+        ''' <returns></returns>
+        <Description("許可する特定の文字を場合の文字。InputFormat プロパティに Custom を追加指定してください。")>
+        Public Property CustomChars As String
+            Get
+                Return _customChars
+            End Get
+            Set(value As String)
+                _customChars = value
             End Set
         End Property
 
@@ -419,7 +449,14 @@ Namespace Win
 
             ' 何も指定なしはここまで
             If Me.InputFormat = InputFormatType.None Then
-                Exit Sub
+                Return
+            End If
+
+            ' カスタム指定のとき
+            If IsCustom() Then
+                If Not _exclusionCharCustom(e.KeyChar) Then
+                    Return
+                End If
             End If
 
             Select Case e.KeyChar
@@ -487,6 +524,18 @@ Namespace Win
             ' 先頭が「-」でカーソルが先頭のときは色をデフォルトへ戻す
             MyBase.ForeColor = _orgForeColor
         End Sub
+
+        ''' <summary>
+        ''' カスタム指定の時のチェック
+        ''' </summary>
+        ''' <param name="KeyChar"></param>
+        ''' <returns></returns>
+        Private Function _exclusionCharCustom(ByVal KeyChar As Char) As Boolean
+            If CustomChars.Contains(KeyChar) Then
+                Return False
+            End If
+            Return True
+        End Function
 
         ''' <summary>
         ''' 0 ～ 9 キー押下

@@ -88,6 +88,7 @@
     <Compile Include="Attr\AllowMergingAttribute.vb" />
     <Compile Include="Attr\CaptionAttribute.vb" />
     <Compile Include="Attr\ColumnStyleAttribute.vb" />
+    <Compile Include="Attr\EditConditionAttribute.vb" />
     <Compile Include="Attr\FrozenAttribute.vb" />
     <Compile Include="Attr\HiddenColumnAttribute.vb" />
     <Compile Include="Attr\RequiredColumnAttribute.vb" />
@@ -108,6 +109,11 @@
     <Compile Include="DataGridViewMaskedTextBoxCell.vb" />
     <Compile Include="DataGridViewMaskedTextBoxColumn.vb" />
     <Compile Include="DataGridViewMaskedTextBoxEditingControl.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DataGridViewTextBoxExCell.vb" />
+    <Compile Include="DataGridViewTextBoxExColumn.vb" />
+    <Compile Include="DataGridViewTextBoxExEditingControl.vb">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Declare.vb" />

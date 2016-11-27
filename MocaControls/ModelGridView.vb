@@ -76,6 +76,8 @@ Namespace Win
         ''' <summary>テーブル定義</summary>
         Private _tblDef As New TableDefinition
 
+        Private _editConditions As IDictionary(Of DataGridViewColumn, EditConditionAttribute)
+
 #End Region
 
 #Region " コンストラクタ "
@@ -85,6 +87,10 @@ Namespace Win
         ''' </summary>
         Public Sub New()
             MyBase.New()
+
+            If DesignMode Then
+                Return
+            End If
 
             ' セットアップ
             _setupGrid()
@@ -217,11 +223,26 @@ Namespace Win
         ''' <remarks></remarks>
         Public Overloads Function GetEntity(Of T)(ByVal index As Integer) As T
             Dim nowRow As T
+            If index < 0 Then
+                Return Nothing
+            End If
+            If NewRowIndex.Equals(index) Then
+                Return Nothing
+            End If
+            If index >= RowCount Then
+                Return Nothing
+            End If
             nowRow = CType(Me.Rows(index).DataBoundItem, T)
             Return nowRow
         End Function
 
 #End Region
+
+        ''' <summary>
+        ''' 行が編集されたときに、行ヘッダー列へ表示するアイコン
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property RowEditImage As Image = My.Resources.RowEdit
 
 #End Region
 
@@ -348,10 +369,15 @@ Namespace Win
                                                   Styles(StyleNames.Modify.ToString).Font.Style)
             End If
             CurrentRow.HeaderCell.ToolTipText = _getGridDesignSetting("ModifyToolTipText")
-        End Sub
 
-        Protected Overrides Sub OnEditingControlShowing(e As DataGridViewEditingControlShowingEventArgs)
-            MyBase.OnEditingControlShowing(e)
+            If NewRowIndex < 0 Then
+                Return
+            End If
+            If Not NewRowIndex.Equals(e.RowIndex + 1) Then
+                Return
+            End If
+
+            cur.Add()
         End Sub
 
         ''' <summary>
@@ -461,18 +487,12 @@ Namespace Win
                                 Dim backParts As DataGridViewPaintParts = e.PaintParts And (DataGridViewPaintParts.Background Or DataGridViewPaintParts.SelectionBackground)
                                 e.Paint(e.ClipBounds, backParts)
 
-                                'Using gridBrush As Brush = New SolidBrush(GridColor)
-                                '    Using backColorBrush As Brush = New SolidBrush(Color.Orange)
-                                '        Using gridLinePen As New Pen(gridBrush)
-                                '            e.Graphics.FillRectangle(backColorBrush, e.CellBounds)
-                                '        End Using
-                                '    End Using
-                                'End Using
-
-                                Const paddingRight As Integer = 7
-                                Dim srcRect As Rectangle = New Rectangle(0, 0, My.Resources.RowEdit.Width, My.Resources.RowEdit.Height)
-                                Dim destPoints As Rectangle = New Rectangle(e.CellBounds.Left + e.CellBounds.Width - srcRect.Width - paddingRight, e.CellBounds.Height / 2 - srcRect.Height / 2 + e.CellBounds.Top - 1, srcRect.Width, srcRect.Height)
-                                e.Graphics.DrawImage(My.Resources.RowEdit, destPoints, srcRect, GraphicsUnit.Pixel)
+                                If RowEditImage IsNot Nothing Then
+                                    Const paddingRight As Integer = 7
+                                    Dim srcRect As Rectangle = New Rectangle(0, 0, RowEditImage.Width, RowEditImage.Height)
+                                    Dim destPoints As Rectangle = New Rectangle(e.CellBounds.Left + e.CellBounds.Width - srcRect.Width - paddingRight, e.CellBounds.Height / 2 - srcRect.Height / 2 + e.CellBounds.Top - 1, srcRect.Width, srcRect.Height)
+                                    e.Graphics.DrawImage(RowEditImage, destPoints, srcRect, GraphicsUnit.Pixel)
+                                End If
 
                                 '背景以外が描画されるようにする
                                 Dim paintParts As DataGridViewPaintParts = e.PaintParts And Not backParts
@@ -497,6 +517,16 @@ Namespace Win
                             e.PaintContent(r2)
                             e.Handled = True
                         Case Else
+                            If Not _editConditions.Count.Equals(0) Then
+                                Dim col As DataGridViewColumn = Me.Cols(e.ColumnIndex)
+                                If _editConditions.ContainsKey(col) Then
+                                    Dim attr As EditConditionAttribute = _editConditions(col)
+                                    Dim rowStatus = Me.GetEntity(Of RowModelBase)(e.RowIndex).Status
+                                    If Not rowStatus = attr.Status Then
+                                        Me(e.ColumnIndex, e.RowIndex).Style = Me.Styles(Moca.StyleNames.ReadOnly.ToString())
+                                    End If
+                                End If
+                            End If
                     End Select
 
                     Dim column As DataGridViewColumn = Columns(e.ColumnIndex)
@@ -529,6 +559,33 @@ Namespace Win
 
             ' 列マージ
             _mergeCellsInColumn(e.Graphics)
+        End Sub
+
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="e"></param>
+        Protected Overrides Sub OnCellBeginEdit(e As DataGridViewCellCancelEventArgs)
+            MyBase.OnCellBeginEdit(e)
+
+            If _editConditions.Count.Equals(0) Then
+                Return
+            End If
+
+            Dim column As DataGridViewColumn = Me.Cols(e.ColumnIndex)
+            If Not _editConditions.ContainsKey(column) Then
+                Return
+            End If
+
+            Dim attr As EditConditionAttribute = _editConditions(column)
+            Dim row As RowModelBase = Me.GetEntity(Of RowModelBase)(e.RowIndex)
+            If row Is Nothing Then
+                Return
+            End If
+            Dim rowStatus = row.Status
+            If Not rowStatus = attr.Status Then
+                e.Cancel = True
+            End If
         End Sub
 
         ''' <summary>
@@ -1327,8 +1384,8 @@ Namespace Win
                 ' 必須
                 _setColStyleRequired(prop, col)
 
-                '' マージ
-                '_setColStyleMerging(prop, col)
+                ' 編集条件
+                _setColStyleEditCondition(prop, col)
 
                 col.Tag = prop
 
@@ -1475,11 +1532,30 @@ Namespace Win
                     Dim mask As DataGridViewMaskedTextBoxColumn = DirectCast(col, DataGridViewMaskedTextBoxColumn)
                     mask.Mask = attr.InputFormat
                 Case Else
-                    col = New DataGridViewTextBoxColumn()
+                    If attr.InputControl = TextBoxEx.InputFormatType.None Then
+                        col = New DataGridViewTextBoxColumn()
+                    Else
+                        col = New DataGridViewTextBoxExColumn()
+                        Dim txt As DataGridViewTextBoxExColumn = DirectCast(col, DataGridViewTextBoxExColumn)
+                        txt.InputFormat = attr.InputControl
+                    End If
             End Select
 
             Return col
         End Function
+
+        Private Sub _setColStyleEditCondition(ByVal prop As PropertyInfo, ByVal col As DataGridViewColumn)
+            If _editConditions Is Nothing Then
+                _editConditions = New Dictionary(Of DataGridViewColumn, EditConditionAttribute)
+            End If
+            Dim attr As EditConditionAttribute
+            attr = ClassUtil.GetCustomAttribute(Of EditConditionAttribute)(prop)
+            If attr Is Nothing Then
+                Return
+            End If
+
+            _editConditions.Add(col, attr)
+        End Sub
 
         ''' <summary>
         ''' 必須列設定
