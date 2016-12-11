@@ -77,7 +77,8 @@ Public Class Form1
         'ModelGridView1.AllowUserToAddRows = False
         ModelGridView1.DataSource = lst
 
-        TextBoxEx2.InputFormat = TextBoxEx.InputFormatType.Number Or TextBoxEx.InputFormatType.Custom
+        'TextBoxEx2.InputFormat = TextBoxEx.InputFormatType.Number Or TextBoxEx.InputFormatType.Custom
+        TextBoxEx2.InputFormat = TextBoxEx.InputFormatType.Custom
         TextBoxEx2.CustomChars = "*-"
     End Sub
 

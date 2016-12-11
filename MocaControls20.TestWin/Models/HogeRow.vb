@@ -12,7 +12,9 @@ Public Class HogeRow
     <EditCondition(DataRowState.Added)>
     Public Property ID As String
 
-    <ColumnStyle(100, RightBorderNone:=True)>
+    <ColumnStyle(100, RightBorderNone:=True,
+                 InputControl:=TextBoxEx.InputFormatType.Number Or TextBoxEx.InputFormatType.Custom,
+                 InputControlCustomChars:="-")>
     Public Property UserCode As String
 
     <ColumnStyle(50, CellType:=Moca.CellType.ComboBox)>

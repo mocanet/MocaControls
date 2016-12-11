@@ -24,6 +24,7 @@ Namespace Win
         ''' <param name="nullValue">Nullのときの値</param>
         ''' <param name="rightBorderNone">右線の有無</param>
         ''' <param name="InputControl">入力文字制御指定</param>
+        ''' <param name="InputControlCustomChars">入力文字制御指定に Custom が指定された時の許可する文字</param>
         ''' <remarks></remarks>
         Public Sub New(Optional ByVal width As Integer = -1,
                        Optional ByVal align As DataGridViewContentAlignment = DataGridViewContentAlignment.MiddleLeft,
@@ -34,7 +35,8 @@ Namespace Win
                        Optional ByVal inputFormat As String = "",
                        Optional ByVal nullValue As Object = "",
                        Optional ByVal rightBorderNone As Boolean = False,
-                       Optional ByVal InputControl As TextBoxEx.InputFormatType = TextBoxEx.InputFormatType.None)
+                       Optional ByVal InputControl As TextBoxEx.InputFormatType = TextBoxEx.InputFormatType.None,
+                       Optional ByVal InputControlCustomChars As String = "")
             Me.Width = width
             Me.Align = align
             Me.Format = format
@@ -78,6 +80,9 @@ Namespace Win
 
         ''' <summary>入力文字制御指定</summary>
         Public Property InputControl As TextBoxEx.InputFormatType
+
+        ''' <summary>入力文字制御指定に Custom が指定された時の許可する文字</summary>
+        Public Property InputControlCustomChars As String
 
 #End Region
 

@@ -34,6 +34,16 @@ Namespace Win
             End Set
         End Property
 
+        Private _InputControlCustomChars As String = String.Empty
+        Public Property InputControlCustomChars As String
+            Get
+                Return _InputControlCustomChars
+            End Get
+            Set(value As String)
+                _InputControlCustomChars = value
+            End Set
+        End Property
+
 #End Region
 
 #Region " Overrides "
@@ -46,6 +56,7 @@ Namespace Win
         Public Overrides Function Clone() As Object
             Dim col As DataGridViewTextBoxExColumn = DirectCast(MyBase.Clone(), DataGridViewTextBoxExColumn)
             col.InputFormat = Me.InputFormat
+            col.InputControlCustomChars = Me.InputControlCustomChars
             Return col
         End Function
 

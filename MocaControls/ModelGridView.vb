@@ -523,7 +523,13 @@ Namespace Win
                                     Dim attr As EditConditionAttribute = _editConditions(col)
                                     Dim rowStatus = Me.GetEntity(Of RowModelBase)(e.RowIndex).Status
                                     If Not rowStatus = attr.Status Then
-                                        Me(e.ColumnIndex, e.RowIndex).Style = Me.Styles(Moca.StyleNames.ReadOnly.ToString())
+                                        Dim style As DataGridViewCellStyle
+                                        style = Me.Styles(Moca.StyleNames.ReadOnly.ToString())
+                                        Me(e.ColumnIndex, e.RowIndex).Style.BackColor = style.BackColor
+                                        Me(e.ColumnIndex, e.RowIndex).Style.Font = style.Font
+                                        Me(e.ColumnIndex, e.RowIndex).Style.ForeColor = style.ForeColor
+                                        Me(e.ColumnIndex, e.RowIndex).Style.SelectionBackColor = style.SelectionBackColor
+                                        Me(e.ColumnIndex, e.RowIndex).Style.SelectionForeColor = style.SelectionForeColor
                                     End If
                                 End If
                             End If
@@ -1538,6 +1544,7 @@ Namespace Win
                         col = New DataGridViewTextBoxExColumn()
                         Dim txt As DataGridViewTextBoxExColumn = DirectCast(col, DataGridViewTextBoxExColumn)
                         txt.InputFormat = attr.InputControl
+
                     End If
             End Select
 

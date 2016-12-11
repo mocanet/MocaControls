@@ -333,21 +333,27 @@ Namespace Win
             End If
         End Sub
 
-		''' <summary>
-		''' コンボボックスのデータバインディング
-		''' </summary>
-		''' <param name="ctrl">コンボボックス</param>
-		''' <param name="dataMember">バインドするデータソースの項目名</param>
-		''' <param name="dataSourceNullValue">コントロールの値が null 参照 (Visual Basic では Nothing) または空の場合にデータ ソースに格納される値を取得または設定します。 </param>
-		''' <param name="nullValue">データ ソースに <see cref="DBNull"/> 値が格納されている場合にコントロール プロパティとして設定される <see cref="Object" /> を取得または設定します。</param>
-		''' <remarks></remarks>
-		Public Sub DataBinding(ByVal ctrl As ComboBox, ByVal dataMember As String, Optional ByVal dataSourceNullValue As Object = Nothing, Optional ByVal nullValue As Object = Nothing)
-			_dataBinding(ctrl, "SelectedValue", dataMember, dataSourceNullValue, nullValue)
-		End Sub
+        ''' <summary>
+        ''' コンボボックスのデータバインディング
+        ''' </summary>
+        ''' <param name="ctrl">コンボボックス</param>
+        ''' <param name="dataMember">バインドするデータソースの項目名</param>
+        ''' <param name="dataSourceNullValue">コントロールの値が null 参照 (Visual Basic では Nothing) または空の場合にデータ ソースに格納される値を取得または設定します。 </param>
+        ''' <param name="nullValue">データ ソースに <see cref="DBNull"/> 値が格納されている場合にコントロール プロパティとして設定される <see cref="Object" /> を取得または設定します。</param>
+        ''' <remarks></remarks>
+        Public Sub DataBinding(ByVal ctrl As ComboBox, ByVal dataMember As String, Optional ByVal dataSourceNullValue As Object = Nothing, Optional ByVal nullValue As Object = Nothing)
+            Dim propertyName As String
+            If ctrl.DropDownStyle = ComboBoxStyle.DropDownList Then
+                propertyName = "SelectedValue"
+            Else
+                propertyName = "Text"
+            End If
+            _dataBinding(ctrl, propertyName, dataMember, dataSourceNullValue, nullValue)
+        End Sub
 
-		Public Sub DataBinding(ByVal ctrl As ComboBox, ByVal dataMember As DbInfoColumn, Optional ByVal dataSourceNullValue As Object = Nothing, Optional ByVal nullValue As Object = Nothing)
+        Public Sub DataBinding(ByVal ctrl As ComboBox, ByVal dataMember As DbInfoColumn, Optional ByVal dataSourceNullValue As Object = Nothing, Optional ByVal nullValue As Object = Nothing)
             Dim propName As Object = Moca.Db.DbUtil.GetColumnNames(_current.GetType)(dataMember.Name)
-            _dataBinding(ctrl, "SelectedValue", propName, dataSourceNullValue, nullValue)
+            DataBinding(ctrl, propName.ToString, dataSourceNullValue, nullValue)
             If dataMember.MaxLength < 0 Then
                 ctrl.MaxLength = 0
                 Return

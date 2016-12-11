@@ -344,6 +344,9 @@ Namespace Win
             End Set
         End Property
 
+        <Description("必須項目かどうか")>
+        Public Property Required As Boolean
+
 #End Region
 
 #Region "　Overrides　"
