@@ -34,7 +34,7 @@ Namespace Win
             ctl.MaxDate = col.MaxDate
 
             If (Me.Value Is Nothing) Then
-                ctl.Value = CType(Me.DefaultNewRowValue, DateTime)
+                ctl.Value = Me.DefaultNewRowValue
             Else
                 Dim val As DateTime = CType(Me.Value, DateTime)
                 If ctl.MinDate <= val AndAlso val <= ctl.MaxDate Then
