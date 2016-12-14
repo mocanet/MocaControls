@@ -522,7 +522,7 @@ Namespace Win
                                 If _editConditions.ContainsKey(col) Then
                                     Dim attr As EditConditionAttribute = _editConditions(col)
                                     Dim rowStatus = Me.GetEntity(Of RowModelBase)(e.RowIndex).Status
-                                    If Not rowStatus = attr.Status Then
+                                    If Not rowStatus = attr.Status AndAlso String.IsNullOrEmpty(e.ErrorText) Then
                                         Dim style As DataGridViewCellStyle
                                         style = Me.Styles(Moca.StyleNames.ReadOnly.ToString())
                                         Me(e.ColumnIndex, e.RowIndex).Style.BackColor = style.BackColor
