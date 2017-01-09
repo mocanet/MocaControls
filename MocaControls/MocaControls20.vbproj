@@ -99,6 +99,9 @@
     <Compile Include="ComboBoxEx.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="ContextMenuPanel.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="DataGridViewCalendarCell.vb" />
     <Compile Include="DataGridViewCalendarColumn.vb" />
     <Compile Include="DataGridViewCalendarEditingControl.vb">
@@ -132,6 +135,9 @@
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="RadioButtonEx.vb">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="resourceDummy.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />

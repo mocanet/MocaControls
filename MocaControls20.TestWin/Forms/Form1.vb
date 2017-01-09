@@ -15,7 +15,8 @@ Public Class Form1
                 .Merge1 = "aaa",
                 .Merge2 = "111",
                 .Hoge = "test",
-                .Cbo = "003"
+                .Cbo = "003",
+                .LinkText = "http://www.hoge.com/"
         }
         lst.Add(row)
         ii += 1
@@ -76,10 +77,14 @@ Public Class Form1
 
         'ModelGridView1.AllowUserToAddRows = False
         ModelGridView1.DataSource = lst
+        ModelGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect
+        ModelGridView1.TransparentRowSelection = True
 
         'TextBoxEx2.InputFormat = TextBoxEx.InputFormatType.Number Or TextBoxEx.InputFormatType.Custom
         TextBoxEx2.InputFormat = TextBoxEx.InputFormatType.Custom
         TextBoxEx2.CustomChars = "*-"
+
+        Me.DoubleBuffered = True
     End Sub
 
     Private Sub ModelGridView1_DataError(sender As Object, e As DataGridViewDataErrorEventArgs)
@@ -98,6 +103,10 @@ Public Class Form1
         dt.AddRow("Hoge 3", "003")
         cbo.DataSource = dt
         ModelGridView1.SetComboBoxItems(e.Column, dt)
+    End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+
     End Sub
 
 End Class

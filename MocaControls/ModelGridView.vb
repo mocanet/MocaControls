@@ -12,8 +12,8 @@ Namespace Win
     ''' DataGridView の操作を補助する拡張コントロール
     ''' </summary>
     <Description("DataGridView の操作を補助する拡張コントロール"),
- ToolboxItem(True),
- DesignTimeVisible(True)>
+     ToolboxItem(True),
+     DesignTimeVisible(True)>
     Public Class ModelGridView
         Inherits DataGridView
 
@@ -244,6 +244,24 @@ Namespace Win
         ''' <returns></returns>
         Public Property RowEditImage As Image = My.Resources.RowEdit
 
+        <Category("行選択のカスタマイズ")>
+        <Description("選択行に対して枠線を表示するように設定します")>
+        Public Property TransparentRowSelection As Boolean
+            Get
+                Return _transparentRowSelection
+            End Get
+            Set(value As Boolean)
+                _transparentRowSelection = value
+            End Set
+        End Property
+        Private _transparentRowSelection As Boolean
+
+        Public ReadOnly Property LastColumnDisplay As DataGridViewColumn
+            Get
+                Return Columns.GetLastColumn(DataGridViewElementStates.Displayed, DataGridViewElementStates.None)
+            End Get
+        End Property
+
 #End Region
 
 #Region " Overrides "
@@ -404,6 +422,11 @@ Namespace Win
         End Sub
 
         Protected Overrides Sub OnCellFormatting(e As DataGridViewCellFormattingEventArgs)
+            If _transparentRowSelection Then
+                e.CellStyle.SelectionBackColor = e.CellStyle.BackColor
+                e.CellStyle.SelectionForeColor = e.CellStyle.ForeColor
+            End If
+
             MyBase.OnCellFormatting(e)
 
             If e.Value IsNot Nothing Then
@@ -691,6 +714,53 @@ Namespace Win
                         _changeLinkUnSelectedStyle(col, e.RowIndex)
                     Next
             End Select
+        End Sub
+
+        Protected Overrides Sub OnCellToolTipTextNeeded(e As DataGridViewCellToolTipTextNeededEventArgs)
+            MyBase.OnCellToolTipTextNeeded(e)
+
+            If e.ColumnIndex < 0 Then
+                Return
+            End If
+            If e.RowIndex < 0 Then
+                Return
+            End If
+
+            Dim errorText As String
+            errorText = Me(e.ColumnIndex, e.RowIndex).ErrorText
+            e.ToolTipText = String.Empty
+            If String.IsNullOrEmpty(errorText) Then
+                Return
+            End If
+            e.ToolTipText = errorText
+        End Sub
+
+        Protected Overrides Sub OnRowPostPaint(e As DataGridViewRowPostPaintEventArgs)
+            MyBase.OnRowPostPaint(e)
+
+            If e.RowIndex < 0 Then
+                Return
+            End If
+
+            If Not _transparentRowSelection Then
+                Return
+            End If
+            If Not Me.Rows(e.RowIndex).Selected Then
+                Return
+            End If
+
+            e.PaintCells(e.RowBounds, DataGridViewPaintParts.All And Not DataGridViewPaintParts.Border)
+
+            Dim borderWidth As Integer = 2
+            Dim r As Rectangle = Me.GetRowDisplayRectangle(e.RowIndex, False)
+            Dim r2 As Rectangle = Me.GetColumnDisplayRectangle(LastColumnDisplay.Index, False)
+            Dim r2width As Integer = r2.X + r2.Width
+            Dim rect = New Rectangle(r.X, r.Y, IIf(r.Width > r2width, r2width, r.Width), r.Height - 1)
+            ControlPaint.DrawBorder(e.Graphics, rect,
+                                        SystemColors.Highlight, borderWidth, ButtonBorderStyle.Solid,
+                                        SystemColors.Highlight, borderWidth, ButtonBorderStyle.Solid,
+                                        SystemColors.Highlight, borderWidth, ButtonBorderStyle.Solid,
+                                        SystemColors.Highlight, borderWidth, ButtonBorderStyle.Solid)
         End Sub
 
 #End Region
@@ -1165,8 +1235,13 @@ Namespace Win
             End If
 
             Dim cell As DataGridViewLinkCell = CType(Me(col.Index, rowIndex), DataGridViewLinkCell)
-            cell.LinkColor = DefaultCellStyle.SelectionForeColor
-            cell.VisitedLinkColor = DefaultCellStyle.SelectionForeColor
+            If TransparentRowSelection Then
+                cell.LinkColor = col.DefaultCellStyle.ForeColor
+                cell.VisitedLinkColor = cell.LinkColor
+            Else
+                cell.LinkColor = DefaultCellStyle.SelectionForeColor
+                cell.VisitedLinkColor = DefaultCellStyle.SelectionForeColor
+            End If
         End Sub
 
         Private Sub _changeLinkUnSelectedStyle(ByVal col As DataGridViewColumn, ByVal rowIndex As Integer)

@@ -135,6 +135,10 @@
       <Link>ComboBoxEx.vb</Link>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="..\MocaControls\ContextMenuPanel.vb">
+      <Link>ContextMenuPanel.vb</Link>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="..\MocaControls\DataGridViewCalendarCell.vb">
       <Link>DataGridViewCalendarCell.vb</Link>
     </Compile>
@@ -192,6 +196,10 @@
       <Link>My Project\Application.Designer.vb</Link>
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="..\MocaControls\RadioButtonEx.vb">
+      <Link>RadioButtonEx.vb</Link>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="..\MocaControls\resourceDummy.vb">
       <Link>resourceDummy.vb</Link>

@@ -26,6 +26,9 @@ Public Class HogeRow
     <Frozen()>
     Public Property Name As String
 
+    <ColumnStyle(100, CellType:=Moca.CellType.Link)>
+    Public Property LinkText As String
+
     <ColumnStyle(50)>
     <AllowMerging()>
     Public Property Merge1 As String
