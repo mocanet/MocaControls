@@ -3,6 +3,8 @@ Imports Moca.Win
 
 Public Class Form1
 
+    Private dat As New Hoge2Row
+
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Dim lst As IList(Of HogeRow)
         lst = New List(Of HogeRow)
@@ -85,6 +87,24 @@ Public Class Form1
         TextBoxEx2.CustomChars = "*-"
 
         Me.DoubleBuffered = True
+
+        Dim dt As New DataTable
+        dt.Columns.Add("ID", GetType(Integer))
+        dt.Columns.Add("Name", GetType(String))
+        dt.Rows.Add(1, "hoge1")
+        dt.Rows.Add(10, "hoge10")
+
+        ComboBoxEx1.DropDownStyle = ComboBoxStyle.DropDown
+        ComboBoxEx1.DropDownStyle = ComboBoxStyle.DropDownList
+        ComboBoxEx1.DataSource = dt
+        ComboBoxEx1.DisplayMember = "Name"
+        ComboBoxEx1.ValueMember = "ID"
+
+        Dim lst2 As New List(Of Hoge2Row)
+        lst2.Add(dat)
+        DataBinder1.DataSource = lst2
+        DataBinder1.DataBinding(ComboBoxEx1, "Dat")
+
     End Sub
 
     Private Sub ModelGridView1_DataError(sender As Object, e As DataGridViewDataErrorEventArgs)
@@ -109,4 +129,7 @@ Public Class Form1
 
     End Sub
 
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        Debug.Print(dat.Dat)
+    End Sub
 End Class

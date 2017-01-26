@@ -344,7 +344,11 @@ Namespace Win
         Public Sub DataBinding(ByVal ctrl As ComboBox, ByVal dataMember As String, Optional ByVal dataSourceNullValue As Object = Nothing, Optional ByVal nullValue As Object = Nothing)
             Dim propertyName As String
             If ctrl.DropDownStyle = ComboBoxStyle.DropDownList Then
-                propertyName = "SelectedValue"
+                If ctrl.DataSource Is Nothing Then
+                    propertyName = "SelectedItem"
+                Else
+                    propertyName = "SelectedValue"
+                End If
             Else
                 propertyName = "Text"
             End If

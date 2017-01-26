@@ -493,6 +493,11 @@ Namespace Win
                 Return
             End If
 
+            If TransparentRowSelection Then
+                e.CellStyle.SelectionBackColor = e.CellStyle.BackColor
+                e.CellStyle.SelectionForeColor = e.CellStyle.ForeColor
+            End If
+
             Select Case e.ColumnIndex
                 Case < 0
                     ' 行ヘッダー部

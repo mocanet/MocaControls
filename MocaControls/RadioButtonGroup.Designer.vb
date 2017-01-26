@@ -23,11 +23,11 @@ Namespace Win
 			'この呼び出しは、コンポーネント デザイナで必要です。
 			InitializeComponent()
 
-			_aryButton = New List(Of RadioButton)
-		End Sub
+            _dicButton = New Dictionary(Of RadioButton, Object)
+        End Sub
 
-		'Component は、コンポーネント一覧に後処理を実行するために dispose をオーバーライドします。
-		<System.Diagnostics.DebuggerNonUserCode()> _
+        'Component は、コンポーネント一覧に後処理を実行するために dispose をオーバーライドします。
+        <System.Diagnostics.DebuggerNonUserCode()> _
 		Protected Overrides Sub Dispose(ByVal disposing As Boolean)
 			Try
 				If disposing AndAlso components IsNot Nothing Then

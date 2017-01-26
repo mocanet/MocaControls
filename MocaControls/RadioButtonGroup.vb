@@ -1,5 +1,4 @@
-﻿
-Imports System.ComponentModel
+﻿Imports System.ComponentModel
 
 Namespace Win
 
@@ -11,8 +10,8 @@ Namespace Win
     ''' パネルコントロールなどでグループ化するには複雑過ぎる画面などでの使用を想定しています。<br/>
     ''' データバインディングは SelectedValue が対応しています。<br/>
     ''' </remarks>
-    <System.ComponentModel.Description("複数のラジオボタンをグループとして扱う"), _
-    ToolboxItem(True)> _
+    <System.ComponentModel.Description("複数のラジオボタンをグループとして扱う"),
+    ToolboxItem(True)>
     Public Class RadioButtonGroup
         Implements IBindableComponent, INotifyPropertyChanged
 
@@ -26,7 +25,7 @@ Namespace Win
         End Enum
 
         ''' <summary>ラジオボタン化するItemを格納する</summary>
-        Private _aryButton As IList(Of RadioButton)
+        Private _dicButton As IDictionary(Of RadioButton, Object)
 
 #Region " Implements "
 
@@ -79,7 +78,7 @@ Namespace Win
         ''' <remarks>
         ''' タグプロパティに値が設定されている事が前提ですので、<see cref="Add" /> メソッドは Value 指定してください。
         ''' </remarks>
-        <Bindable(True)> _
+        <Bindable(True)>
         Public Property SelectedValue() As Object
             Get
                 Return _getSelectedValue()
@@ -113,7 +112,7 @@ Namespace Win
         ''' <remarks></remarks>
         Public WriteOnly Property Enabled() As Boolean
             Set(ByVal value As Boolean)
-                For Each btn As RadioButton In _aryButton
+                For Each btn As RadioButton In _dicButton.Keys
                     btn.Enabled = value
                 Next
             End Set
@@ -147,7 +146,7 @@ Namespace Win
                 Exit Sub
             End If
 
-            For Each btn2 As RadioButton In _aryButton
+            For Each btn2 As RadioButton In _dicButton.Keys
                 If btn.Equals(btn2) Then
                     Continue For
                 End If
@@ -204,17 +203,11 @@ Namespace Win
         ''' value にて指定された値を Tag プロパティにて保持します。
         ''' </remarks>
         Public Sub Add(ByRef ctrl As RadioButton, ByVal value As Object)
-            _aryButton.Add(ctrl)
+            _dicButton.Add(ctrl, value)
             ctrl.Checked = False
             'AddHandler ctrl.Click, AddressOf _radioButton_Click
             AddHandler ctrl.CheckedChanged, AddressOf _radioButton_CheckedChanged
             AddHandler ctrl.PreviewKeyDown, AddressOf _radioButton_PreviewKeyDown
-
-            If value Is Nothing Then
-                Exit Sub
-            End If
-
-            ctrl.Tag = value
         End Sub
 
         ''' <summary>
@@ -224,13 +217,13 @@ Namespace Win
         ''' <remarks>
         ''' 未選択時は Nothing を返します。
         ''' </remarks>
-        <Obsolete("use RadioButtonGroup.SelectedButton Property")> _
+        <Obsolete("use RadioButtonGroup.SelectedButton Property")>
         Public Function GetSelected() As RadioButton
             Return _getSelected()
         End Function
 
         Private Function _getSelected() As RadioButton
-            For Each btn As RadioButton In _aryButton
+            For Each btn As RadioButton In _dicButton.Keys
                 If btn.Checked Then
                     Return btn
                 End If
@@ -246,7 +239,7 @@ Namespace Win
         ''' <remarks>
         ''' タグプロパティに値が設定されている事が前提ですので、<see cref="Add" /> メソッドは Value 指定してください。
         ''' </remarks>
-        <Obsolete("use RadioButtonGroup.SelectedValue Property")> _
+        <Obsolete("use RadioButtonGroup.SelectedValue Property")>
         Public Function GetSelectedValue() As Object
             Return _getSelectedValue()
         End Function
@@ -259,7 +252,7 @@ Namespace Win
                 Return Nothing
             End If
 
-            Return sel.Tag
+            Return _dicButton(sel)
         End Function
 
         ''' <summary>
@@ -268,7 +261,7 @@ Namespace Win
         ''' <param name="btn">選択したいRadioButtonを設定</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        <Obsolete("use RadioButtonGroup.SelectedButton Property")> _
+        <Obsolete("use RadioButtonGroup.SelectedButton Property")>
         Public Function SetSelected(ByVal btn As RadioButton) As RadioButton
             Me.SelectedButton = btn
             Return Me.SelectedButton
@@ -277,7 +270,7 @@ Namespace Win
         Private Function _setSelected(ByVal btn As RadioButton) As RadioButton
             Dim radButton As RadioButton
 
-            For Each radButton In _aryButton
+            For Each radButton In _dicButton.Keys
                 If Not radButton.Equals(btn) Then
                     radButton.Checked = False
                 Else
@@ -296,7 +289,7 @@ Namespace Win
         ''' <remarks>
         ''' タグプロパティに値が設定されている事が前提ですので、<see cref="Add" /> メソッドは Value 指定してください。
         ''' </remarks>
-        <Obsolete("use RadioButtonGroup.SelectedValue Property")> _
+        <Obsolete("use RadioButtonGroup.SelectedValue Property")>
         Public Function SetSelected(ByVal value As Object) As RadioButton
             Me.SelectedValue = value
             Return Me.SelectedButton
@@ -307,8 +300,8 @@ Namespace Win
 
             Dim result As RadioButton = Nothing
 
-            For Each btn In _aryButton
-                If btn.Tag.Equals(value) Then
+            For Each btn In _dicButton.Keys
+                If _dicButton(btn).Equals(value) Then
                     btn.Checked = True
                     result = btn
                 Else
@@ -335,8 +328,10 @@ Namespace Win
             btn = DirectCast(sender, RadioButton)
             idx = 0
 
-            For ii As Integer = 0 To _aryButton.Count - 1
-                btn = _aryButton(ii)
+            Dim ary As New ArrayList(_dicButton.Keys)
+
+            For ii As Integer = 0 To ary.Count - 1
+                btn = ary(ii)
                 If sender.Equals(btn) Then
                     If type = MoveType.forward Then
                         idx = ii - 1
@@ -348,13 +343,13 @@ Namespace Win
             Next
 
             If idx < 0 Then
-                idx = _aryButton.Count - 1
+                idx = _dicButton.Keys.Count - 1
             End If
-            If idx >= _aryButton.Count Then
+            If idx >= _dicButton.Keys.Count Then
                 idx = 0
             End If
 
-            Me.SelectedButton = _aryButton(idx)
+            Me.SelectedButton = ary(idx)
         End Sub
 
 #End Region
