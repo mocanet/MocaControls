@@ -473,41 +473,43 @@ Namespace Win
 		End Sub
 
 
-		''' <summary>
-		''' データバインディングする
-		''' </summary>
-		''' <param name="obj">対象のコントロール</param>
-		''' <param name="propertyName">バインドするコントロールのプロパティ名</param>
-		''' <param name="dataMember">バインドするデータソースの項目名</param>
-		''' <param name="dataSourceNullValue">コントロールの値が null 参照 (Visual Basic では Nothing) または空の場合にデータ ソースに格納される値を取得または設定します。 </param>
-		''' <param name="nullValue">データ ソースに <see cref="DBNull"/> 値が格納されている場合にコントロール プロパティとして設定される <see cref="Object" /> を取得または設定します。</param>
-		''' <remarks>
-		''' コントロール プロパティの値が変更されるたびに、データ ソースが更新されます。
-		''' </remarks>
-		Private Sub _dataBinding(ByVal obj As IBindableComponent, ByVal propertyName As String, ByVal dataMember As String, ByVal dataSourceNullValue As Object, ByVal nullValue As Object, Optional ByVal formatString As String = "")
-			Dim bind As Binding
-			bind = New Binding(propertyName, Me.BindSrc, dataMember)
-			bind.DataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged
-			bind.NullValue = nullValue
-			If dataSourceNullValue IsNot Nothing Then
-				bind.DataSourceNullValue = dataSourceNullValue
-			End If
-			If formatString.Length > 0 Then
-				bind.FormattingEnabled = True
-				bind.FormatString = formatString
-			End If
-			obj.DataBindings.Add(bind)
-		End Sub
+        ''' <summary>
+        ''' データバインディングする
+        ''' </summary>
+        ''' <param name="obj">対象のコントロール</param>
+        ''' <param name="propertyName">バインドするコントロールのプロパティ名</param>
+        ''' <param name="dataMember">バインドするデータソースの項目名</param>
+        ''' <param name="dataSourceNullValue">コントロールの値が null 参照 (Visual Basic では Nothing) または空の場合にデータ ソースに格納される値を取得または設定します。 </param>
+        ''' <param name="nullValue">データ ソースに <see cref="DBNull"/> 値が格納されている場合にコントロール プロパティとして設定される <see cref="Object" /> を取得または設定します。</param>
+        ''' <remarks>
+        ''' コントロール プロパティの値が変更されるたびに、データ ソースが更新されます。
+        ''' </remarks>
+        Private Sub _dataBinding(ByVal obj As IBindableComponent, ByVal propertyName As String, ByVal dataMember As String, ByVal dataSourceNullValue As Object, ByVal nullValue As Object, Optional ByVal formatString As String = "")
+            Dim bind As Binding
+            bind = New Binding(propertyName, Me.BindSrc, dataMember)
+            bind.DataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged
+            bind.NullValue = nullValue
+            bind.DataSourceNullValue = Nothing
+            If dataSourceNullValue IsNot Nothing Then
+                bind.DataSourceNullValue = dataSourceNullValue
+            End If
+            bind.FormattingEnabled = False
+            If formatString.Length > 0 Then
+                bind.FormattingEnabled = True
+                bind.FormatString = formatString
+            End If
+            obj.DataBindings.Add(bind)
+        End Sub
 
-		''' <summary>
-		''' ピクチャボックスのデータバインディング
-		''' </summary>
-		''' <param name="pbx">ピクチャボックス</param>
-		''' <param name="dataMember">バインドするデータソースの項目名</param>
-		''' <remarks>
-		''' 未使用。ピクチャボックスをバインディングするのはやめたので。
-		''' </remarks>
-		Public Sub DataBinding(ByVal pbx As PictureBox, ByVal dataMember As String)
+        ''' <summary>
+        ''' ピクチャボックスのデータバインディング
+        ''' </summary>
+        ''' <param name="pbx">ピクチャボックス</param>
+        ''' <param name="dataMember">バインドするデータソースの項目名</param>
+        ''' <remarks>
+        ''' 未使用。ピクチャボックスをバインディングするのはやめたので。
+        ''' </remarks>
+        Public Sub DataBinding(ByVal pbx As PictureBox, ByVal dataMember As String)
 			Dim bind As Binding
 			bind = New Binding("Image", Me.BindSrc, dataMember, True, DataSourceUpdateMode.OnPropertyChanged)
 			AddHandler bind.Parse, AddressOf ImageBinding_Parse

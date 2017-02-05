@@ -1,6 +1,6 @@
 ﻿
 Public Class Hoge2Row
 
-    Public Property Dat As String
+    Public Property Dat As Integer
 
 End Class

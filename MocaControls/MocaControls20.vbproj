@@ -119,6 +119,9 @@
     <Compile Include="DataGridViewTextBoxExEditingControl.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="DataGridView\DataGridViewEx.vb">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Declare.vb" />
     <Compile Include="FlowLayoutPanelEx.vb">
       <SubType>Component</SubType>

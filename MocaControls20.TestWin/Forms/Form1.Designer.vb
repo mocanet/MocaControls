@@ -23,13 +23,16 @@ Partial Class Form1
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim GridDesignSettings3 As Moca.GridDesignSettings = New Moca.GridDesignSettings()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim GridDesignSettings1 As Moca.GridDesignSettings = New Moca.GridDesignSettings()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim GridDesignSettings2 As Moca.GridDesignSettings = New Moca.GridDesignSettings()
         Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.RadioButtonEx2 = New Moca.Win.RadioButtonEx()
         Me.RadioButtonEx1 = New Moca.Win.RadioButtonEx()
+        Me.ComboBoxEx1 = New Moca.Win.ComboBoxEx()
         Me.ContextMenuPanel1 = New Moca.Win.ContextMenuPanel()
         Me.Button4 = New System.Windows.Forms.Button()
         Me.Button1 = New System.Windows.Forms.Button()
@@ -40,12 +43,13 @@ Partial Class Form1
         Me.Button2 = New System.Windows.Forms.Button()
         Me.NullableDateTimePicker1 = New Moca.Win.NullableDateTimePicker()
         Me.TextBoxEx1 = New Moca.Win.TextBoxEx(Me.components)
-        Me.ComboBoxEx1 = New Moca.Win.ComboBoxEx()
         Me.DataBinder1 = New Moca.Win.DataBinder(Me.components)
+        Me.DataGridViewEx1 = New Moca.Win.DataGridViewEx()
         Me.Panel1.SuspendLayout()
         Me.ContextMenuPanel1.SuspendLayout()
         CType(Me.ModelGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.FlowLayoutPanelEx1.SuspendLayout()
+        CType(Me.DataGridViewEx1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'TextBox1
@@ -97,6 +101,18 @@ Partial Class Form1
         Me.RadioButtonEx1.Text = "Radio 1"
         Me.RadioButtonEx1.UseVisualStyleBackColor = True
         '
+        'ComboBoxEx1
+        '
+        Me.ComboBoxEx1.BorderColor = System.Drawing.Color.FromArgb(CType(CType(100, Byte), Integer), CType(CType(100, Byte), Integer), CType(CType(100, Byte), Integer))
+        Me.ComboBoxEx1.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid
+        Me.ComboBoxEx1.FormattingEnabled = True
+        Me.ComboBoxEx1.Items.AddRange(New Object() {"", "Hoge1", "Hoge2"})
+        Me.ComboBoxEx1.Location = New System.Drawing.Point(565, 21)
+        Me.ComboBoxEx1.Name = "ComboBoxEx1"
+        Me.ComboBoxEx1.Size = New System.Drawing.Size(209, 32)
+        Me.ComboBoxEx1.TabIndex = 11
+        Me.ComboBoxEx1.UnfocusedBorderColor = System.Drawing.SystemColors.ControlDark
+        '
         'ContextMenuPanel1
         '
         Me.ContextMenuPanel1.Controls.Add(Me.Button4)
@@ -132,23 +148,23 @@ Partial Class Form1
         'ModelGridView1
         '
         Me.ModelGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle3.BackColor = System.Drawing.Color.White
-        DataGridViewCellStyle3.Font = New System.Drawing.Font("Meiryo UI", 9.0!)
-        DataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(33, Byte), Integer), CType(CType(33, Byte), Integer))
-        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.ModelGridView1.DefaultCellStyle = DataGridViewCellStyle3
-        GridDesignSettings3.SettingsKey = ""
-        Me.ModelGridView1.DesignSettings = GridDesignSettings3
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.White
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Meiryo UI", 9.0!)
+        DataGridViewCellStyle1.ForeColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(33, Byte), Integer), CType(CType(33, Byte), Integer))
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.ModelGridView1.DefaultCellStyle = DataGridViewCellStyle1
+        GridDesignSettings1.SettingsKey = ""
+        Me.ModelGridView1.DesignSettings = GridDesignSettings1
         Me.ModelGridView1.Location = New System.Drawing.Point(13, 152)
         Me.ModelGridView1.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
         Me.ModelGridView1.Name = "ModelGridView1"
         Me.ModelGridView1.RowEditImage = CType(resources.GetObject("ModelGridView1.RowEditImage"), System.Drawing.Image)
         Me.ModelGridView1.RowEntityType = Nothing
         Me.ModelGridView1.RowTemplate.Height = 33
-        Me.ModelGridView1.Size = New System.Drawing.Size(1317, 516)
+        Me.ModelGridView1.Size = New System.Drawing.Size(984, 516)
         Me.ModelGridView1.Styles = CType(resources.GetObject("ModelGridView1.Styles"), System.Collections.Generic.IDictionary(Of String, System.Windows.Forms.DataGridViewCellStyle))
         Me.ModelGridView1.TabIndex = 8
         Me.ModelGridView1.TransparentRowSelection = False
@@ -241,28 +257,45 @@ Partial Class Form1
         Me.TextBoxEx1.TabIndex = 3
         Me.TextBoxEx1.TabStop = False
         '
-        'ComboBoxEx1
-        '
-        Me.ComboBoxEx1.BorderColor = System.Drawing.Color.FromArgb(CType(CType(100, Byte), Integer), CType(CType(100, Byte), Integer), CType(CType(100, Byte), Integer))
-        Me.ComboBoxEx1.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid
-        Me.ComboBoxEx1.FormattingEnabled = True
-        Me.ComboBoxEx1.Location = New System.Drawing.Point(565, 21)
-        Me.ComboBoxEx1.Name = "ComboBoxEx1"
-        Me.ComboBoxEx1.Size = New System.Drawing.Size(209, 32)
-        Me.ComboBoxEx1.TabIndex = 11
-        Me.ComboBoxEx1.UnfocusedBorderColor = System.Drawing.SystemColors.ControlDark
-        '
         'DataBinder1
         '
         Me.DataBinder1.DataMember = ""
         Me.DataBinder1.DataSource = Nothing
         Me.DataBinder1.Position = -1
         '
+        'DataGridViewEx1
+        '
+        Me.DataGridViewEx1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.DataGridViewEx1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.DataGridViewEx1.DBInfoColumns = Nothing
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle2.BackColor = System.Drawing.Color.White
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Meiryo UI", 9.0!)
+        DataGridViewCellStyle2.ForeColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(33, Byte), Integer), CType(CType(33, Byte), Integer))
+        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.DataGridViewEx1.DefaultCellStyle = DataGridViewCellStyle2
+        GridDesignSettings2.SettingsKey = ""
+        Me.DataGridViewEx1.DesignSettings = GridDesignSettings2
+        Me.DataGridViewEx1.HorizontalScrollBarAlwaysShow = False
+        Me.DataGridViewEx1.Location = New System.Drawing.Point(1011, 152)
+        Me.DataGridViewEx1.Name = "DataGridViewEx1"
+        Me.DataGridViewEx1.RowEditImage = CType(resources.GetObject("DataGridViewEx1.RowEditImage"), System.Drawing.Image)
+        Me.DataGridViewEx1.RowTemplate.Height = 33
+        Me.DataGridViewEx1.Size = New System.Drawing.Size(774, 516)
+        Me.DataGridViewEx1.Styles = CType(resources.GetObject("DataGridViewEx1.Styles"), System.Collections.Generic.IDictionary(Of String, System.Windows.Forms.DataGridViewCellStyle))
+        Me.DataGridViewEx1.TabIndex = 12
+        Me.DataGridViewEx1.VerticalScrollBarAlwaysShow = False
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(13.0!, 24.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1341, 824)
+        Me.ClientSize = New System.Drawing.Size(1797, 824)
+        Me.Controls.Add(Me.DataGridViewEx1)
         Me.Controls.Add(Me.ComboBoxEx1)
         Me.Controls.Add(Me.ContextMenuPanel1)
         Me.Controls.Add(Me.Panel1)
@@ -279,6 +312,7 @@ Partial Class Form1
         Me.ContextMenuPanel1.ResumeLayout(False)
         CType(Me.ModelGridView1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.FlowLayoutPanelEx1.ResumeLayout(False)
+        CType(Me.DataGridViewEx1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -299,4 +333,5 @@ Partial Class Form1
     Friend WithEvents Button4 As Button
     Friend WithEvents ComboBoxEx1 As Moca.Win.ComboBoxEx
     Friend WithEvents DataBinder1 As Moca.Win.DataBinder
+    Friend WithEvents DataGridViewEx1 As Moca.Win.DataGridViewEx
 End Class

@@ -105,6 +105,19 @@ Public Class Form1
         DataBinder1.DataSource = lst2
         DataBinder1.DataBinding(ComboBoxEx1, "Dat")
 
+        Dim dt2 As New DataTable
+        dt2.Columns.Add("ID", GetType(Integer))
+        dt2.Columns.Add("Name", GetType(String))
+        dt2.Columns.Add("Day", GetType(DateTime))
+        dt2.Rows.Add(1, "hoge1", DBNull.Value)
+        dt2.Rows.Add(2, "hoge2", DBNull.Value)
+        dt2.Rows.Add(3, "hoge3", DBNull.Value)
+        dt2.AcceptChanges()
+
+        DataGridViewEx1.AutoGenerateColumns = False
+        DataGridViewEx1.DataSource = dt2
+        DataGridViewEx1.AllowUserToResizeColumns = True
+        DataGridViewEx1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None
     End Sub
 
     Private Sub ModelGridView1_DataError(sender As Object, e As DataGridViewDataErrorEventArgs)
@@ -132,4 +145,9 @@ Public Class Form1
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         Debug.Print(dat.Dat)
     End Sub
+
+    Private Sub DataGridViewEx1_DataError(sender As Object, e As DataGridViewDataErrorEventArgs) Handles DataGridViewEx1.DataError
+        Debug.Print(e.Exception.ToString)
+    End Sub
+
 End Class

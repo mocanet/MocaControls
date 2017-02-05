@@ -176,6 +176,10 @@
       <Link>DataGridViewTextBoxExEditingControl.vb</Link>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="..\MocaControls\DataGridView\DataGridViewEx.vb">
+      <Link>DataGridView\DataGridViewEx.vb</Link>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="..\MocaControls\Declare.vb">
       <Link>Declare.vb</Link>
     </Compile>
@@ -419,6 +423,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
