@@ -3,6 +3,7 @@ Imports System.Text.RegularExpressions
 
 Imports System.ComponentModel
 Imports System.Windows.Forms
+Imports System.Windows.Forms.Design
 
 Namespace Win
 
@@ -20,8 +21,19 @@ Namespace Win
     ''' </remarks>
     <Description("標準のTextBoxで入力制限等を扱えるように拡張したコントロール"),
     ToolboxItem(True),
+    Designer(GetType(TextBoxEx.TextBoxExDesigner)),
     DesignTimeVisible(True)>
     Public Class TextBoxEx
+
+        Friend Class TextBoxExDesigner
+            Inherits ControlDesigner
+
+            Protected Overrides Sub PostFilterProperties(properties As IDictionary)
+                MyBase.PostFilterProperties(properties)
+                properties.Remove("Percision")
+                properties.Remove("PercisionSign")
+            End Sub
+        End Class
 
 #Region " Declare "
 
