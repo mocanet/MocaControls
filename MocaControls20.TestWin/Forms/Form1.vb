@@ -124,18 +124,32 @@ Public Class Form1
         Debug.Print(e.Exception.ToString)
     End Sub
 
+    Private Sub ModelGridView1_DataBindingComplete(sender As Object, e As DataGridViewBindingCompleteEventArgs) Handles ModelGridView1.DataBindingComplete
+        For Each row As DataGridViewRow In ModelGridView1.Rows
+            If row.DataBoundItem Is Nothing Then
+                Continue For
+            End If
+            Dim item As HogeRow = row.DataBoundItem
+            Select Case item.ID
+                Case "2", "3", "5"
+                    CType(row.Cells(2), Moca.DataGridViewDisableButtonCell).Enabled = False
+            End Select
+        Next
+    End Sub
+
     Private Sub ModelGridView1_GridColmnSetting(sender As Object, e As GridColmnSettingEventArgs) Handles ModelGridView1.GridColmnSetting
-        If Not e.Index.Equals(3) Then
-            Return
-        End If
-        Dim cbo As DataGridViewComboBoxColumn = e.Column
-        Dim dt As Moca.ConstantDataSet.ConstantDataTable
-        dt = New Moca.ConstantDataSet("Hoge", True).Constant
-        dt.AddRow("Hoge 1", "001")
-        dt.AddRow("Hoge 2", "002")
-        dt.AddRow("Hoge 3", "003")
-        cbo.DataSource = dt
-        ModelGridView1.SetComboBoxItems(e.Column, dt)
+        Select Case e.Index
+            Case 4
+                Dim cbo As DataGridViewComboBoxColumn = e.Column
+                Dim dt As Moca.ConstantDataSet.ConstantDataTable
+                dt = New Moca.ConstantDataSet("Hoge", True).Constant
+                dt.AddRow("Hoge 1", "001")
+                dt.AddRow("Hoge 2", "002")
+                dt.AddRow("Hoge 3", "003")
+                cbo.DataSource = dt
+                ModelGridView1.SetComboBoxItems(e.Column, dt)
+            Case Else
+        End Select
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click

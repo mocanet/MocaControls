@@ -28,6 +28,8 @@ Public Class DataGridViewDisableButtonCell
         Me.enabledValue = True
     End Sub
 
+    Private _padding As Padding
+
     Protected Overrides Sub Paint(ByVal graphics As Graphics,
         ByVal clipBounds As Rectangle, ByVal cellBounds As Rectangle,
         ByVal rowIndex As Integer,
@@ -69,14 +71,20 @@ Public Class DataGridViewDisableButtonCell
             buttonArea.Width -= buttonAdjustment.Width
 
             ' Draw the disabled button.                
+            'ButtonRenderer.DrawButton(graphics, buttonArea,
+            '   System.Windows.Forms.VisualStyles.PushButtonState.Disabled)
             ButtonRenderer.DrawButton(graphics, buttonArea,
-               System.Windows.Forms.VisualStyles.PushButtonState.Disabled)
+                                    CStr(Me.FormattedValue),
+                                    cellStyle.Font,
+                                    False,
+                                    VisualStyles.PushButtonState.Disabled
+                            )
 
-            ' Draw the disabled button text. 
-            If TypeOf Me.FormattedValue Is String Then
-                TextRenderer.DrawText(graphics, CStr(Me.FormattedValue),
-                    cellStyle.Font, buttonArea, SystemColors.GrayText)
-            End If
+            '' Draw the disabled button text. 
+            'If TypeOf Me.FormattedValue Is String Then
+            '    TextRenderer.DrawText(graphics, CStr(Me.FormattedValue),
+            '        cellStyle.Font, buttonArea, SystemColors.GrayText)
+            'End If
 
         Else
             ' The button cell is enabled, so let the base class 

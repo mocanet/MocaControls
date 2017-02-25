@@ -1582,8 +1582,10 @@ Namespace Win
             Select Case type
                 Case CellType.Button
                     col = New DataGridViewButtonColumn()
+                    attr.Align = DataGridViewContentAlignment.MiddleCenter
                 Case CellType.DisableButton
-                    col = New DataGridViewDisableButtonColumn()
+                    col = New Moca.DataGridViewDisableButtonColumn()
+                    attr.Align = DataGridViewContentAlignment.MiddleCenter
                 Case CellType.CheckBox
                     col = New DataGridViewCheckBoxColumn()
                 Case CellType.CheckBoxImage
@@ -1616,7 +1618,6 @@ Namespace Win
                     Else
                         cal.PickerCustomFormat = attr.InputFormat
                     End If
-                    col.DefaultCellStyle.DataSourceNullValue = DBNull.Value
                     col.DefaultCellStyle.NullValue = Nothing
                 Case CellType.MaskedTextBox
                     col = New DataGridViewMaskedTextBoxColumn()
