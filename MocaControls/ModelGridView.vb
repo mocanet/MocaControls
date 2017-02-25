@@ -1160,11 +1160,13 @@ Namespace Win
 
                 ' マージ状態のセルを描画
                 Dim newCell As Rectangle = New Rectangle(recX - 1, recY - 1, recWidth, recHeight)
+                Dim currentPadding As Padding = CurrentCell.InheritedStyle.Padding
+                Dim txtRect As Rectangle = New Rectangle(newCell.Left + currentPadding.Left, newCell.Top + currentPadding.Top, newCell.Width - currentPadding.Right, newCell.Height - currentPadding.Bottom)
                 Dim formatFlg As TextFormatFlags = _getTextFormatFlags(Columns(col).DefaultCellStyle.Alignment, Columns(col).DefaultCellStyle.WrapMode)
                 Using backBrash As New SolidBrush(backColor)
                     g.FillRectangle(backBrash, newCell)
                     g.DrawRectangle(grdPen, newCell)
-                    TextRenderer.DrawText(g, recValue, DefaultCellStyle.Font, newCell, foreColor, formatFlg)
+                    TextRenderer.DrawText(g, recValue, DefaultCellStyle.Font, txtRect, foreColor, formatFlg)
                 End Using
 
                 If currentRectangle Is Nothing Then
@@ -1174,12 +1176,13 @@ Namespace Win
 
                 ' 選択セルを描画
                 newCell = New Rectangle(currentRectangle.X - 1, currentRectangle.Y, currentRectangle.Width, currentRectangle.Height - 1)
+                txtRect = New Rectangle(newCell.Left + currentPadding.Left, newCell.Top + currentPadding.Top, newCell.Width - currentPadding.Right, newCell.Height - currentPadding.Bottom)
                 backColor = DefaultCellStyle.SelectionBackColor
                 foreColor = DefaultCellStyle.SelectionForeColor
                 Using backBrash As New SolidBrush(backColor)
                     g.FillRectangle(backBrash, newCell)
                     g.DrawRectangle(grdPen, newCell)
-                    TextRenderer.DrawText(g, recValue, DefaultCellStyle.Font, newCell, foreColor, formatFlg)
+                    TextRenderer.DrawText(g, recValue, DefaultCellStyle.Font, txtRect, foreColor, formatFlg)
                 End Using
             End Using
         End Sub

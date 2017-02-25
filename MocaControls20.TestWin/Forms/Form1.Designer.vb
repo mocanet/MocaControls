@@ -180,8 +180,8 @@ Partial Class Form1
         Me.TextBoxEx2.Name = "TextBoxEx2"
         Me.TextBoxEx2.NegativeColor = System.Drawing.Color.Red
         Me.TextBoxEx2.NumericScale = 0
-        Me.TextBoxEx2.Percision = 0
-        Me.TextBoxEx2.PercisionSign = False
+        Me.TextBoxEx2.Precision = 0
+        Me.TextBoxEx2.PrecisionSign = False
         Me.TextBoxEx2.Required = False
         Me.TextBoxEx2.Separator = ""
         Me.TextBoxEx2.Size = New System.Drawing.Size(173, 32)
@@ -248,8 +248,8 @@ Partial Class Form1
         Me.TextBoxEx1.Name = "TextBoxEx1"
         Me.TextBoxEx1.NegativeColor = System.Drawing.Color.Red
         Me.TextBoxEx1.NumericScale = 0
-        Me.TextBoxEx1.Percision = 0
-        Me.TextBoxEx1.PercisionSign = False
+        Me.TextBoxEx1.Precision = 0
+        Me.TextBoxEx1.PrecisionSign = False
         Me.TextBoxEx1.ReadOnly = True
         Me.TextBoxEx1.Required = False
         Me.TextBoxEx1.Separator = ""

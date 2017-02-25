@@ -3,6 +3,7 @@ Imports System.Text.RegularExpressions
 
 Imports System.ComponentModel
 Imports System.Windows.Forms
+Imports System.Windows.Forms.Design
 
 Namespace Win
 
@@ -20,8 +21,19 @@ Namespace Win
     ''' </remarks>
     <Description("標準のTextBoxで入力制限等を扱えるように拡張したコントロール"),
     ToolboxItem(True),
+    Designer(GetType(TextBoxEx.TextBoxExDesigner)),
     DesignTimeVisible(True)>
     Public Class TextBoxEx
+
+        Friend Class TextBoxExDesigner
+            Inherits ControlDesigner
+
+            Protected Overrides Sub PostFilterProperties(properties As IDictionary)
+                MyBase.PostFilterProperties(properties)
+                properties.Remove("Percision")
+                properties.Remove("PercisionSign")
+            End Sub
+        End Class
 
 #Region " Declare "
 
@@ -95,9 +107,9 @@ Namespace Win
         Private _inputFormat As InputFormatType = InputFormatType.None
 
         ''' <summary>小数点以下の桁数</summary>
-        Private _percision As Integer = 0
+        Private _precision As Integer = 0
         ''' <summary>小数点入力済みフラグ</summary>
-        Private _percisionSign As Boolean = False
+        Private _precisionSign As Boolean = False
         ''' <summary>区切り</summary>
         Private _separator As String = String.Empty
         ''' <summary>小数点の右側にある保存できる最大文字</summary>
@@ -142,12 +154,21 @@ Namespace Win
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Property Percision() As System.Int32
+        Public Property Precision() As System.Int32
             Get
-                Return Me._percision
+                Return Me._precision
             End Get
             Set(ByVal value As System.Int32)
-                Me._percision = value
+                Me._precision = value
+            End Set
+        End Property
+        <Obsolete("Change to Precision Property")>
+        Public Property Percision() As System.Int32
+            Get
+                Return Me._precision
+            End Get
+            Set(ByVal value As System.Int32)
+                Me._precision = value
             End Set
         End Property
 
@@ -157,12 +178,21 @@ Namespace Win
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Public Property PercisionSign() As System.Boolean
+        Public Property PrecisionSign() As System.Boolean
             Get
-                Return Me._percisionSign
+                Return Me._precisionSign
             End Get
             Set(ByVal value As System.Boolean)
-                Me._percisionSign = value
+                Me._precisionSign = value
+            End Set
+        End Property
+        <Obsolete("Change to PrecisionSign Property")>
+        Public Property PercisionSign() As System.Boolean
+            Get
+                Return Me._precisionSign
+            End Get
+            Set(ByVal value As System.Boolean)
+                Me._precisionSign = value
             End Set
         End Property
 
@@ -436,8 +466,8 @@ Namespace Win
         Protected Overridable Sub OnChar(ByVal e As KeyPressEventArgs)
             ' 入力桁数算出
             _scale = _orgMaxLength
-            If Me.Percision > 0 Then
-                _scale = _orgMaxLength - Me.Percision - 1
+            If Me._precision > 0 Then
+                _scale = _orgMaxLength - Me._precision - 1
             End If
 
             If Char.IsControl(e.KeyChar) Then
@@ -548,6 +578,9 @@ Namespace Win
         ''' <remarks></remarks>
         Private Function _exclusionChar09(ByVal KeyChar As Char) As Boolean
             ' 数値、数字以外はスルー
+            If IsCustom Or IsAlpha Or IsSymbol Then
+                Return False
+            End If
             If Not Me.IsDigit AndAlso Not Me.IsNumber Then
                 Return True
             End If
@@ -585,7 +618,7 @@ Namespace Win
                         End If
                     Else
                         ' 小数点より奥
-                        If (Me.Text.Length - pos) > Percision Then
+                        If (Me.Text.Length - pos) > _precision Then
                             If Me.SelectionLength = 0 Then
                                 Return True
                             End If
@@ -616,8 +649,10 @@ Namespace Win
             If Me.IsDigit Then
                 ' 数値のとき
                 If Me.SelectionStart = 0 AndAlso KeyChar = "0"c Then
-                    ' カーソルが先頭で「０」を入力時は無効
-                    Return True
+                    If _precision.Equals(0) Then
+                        ' カーソルが先頭で「０」を入力時は無効
+                        Return True
+                    End If
                 End If
                 If Me.SelectionStart = 1 AndAlso KeyChar = "0"c AndAlso Me.Text.StartsWith("-") Then
                     ' カーソルが２桁目で「０」を入力で「-」始まり時は無効
@@ -736,7 +771,7 @@ Namespace Win
                 Return True
             End If
             ' 小数点無しのときは無効
-            If Me.Percision = 0 Then
+            If Me._precision = 0 Then
                 Return True
             End If
             ' ドットが既に存在するときは無効
@@ -811,6 +846,9 @@ Namespace Win
                 End If
                 If Me.IsWithSpace Then
                     cnv = cnv & " "
+                End If
+                If Me.IsCustom Then
+                    cnv = cnv & CustomChars
                 End If
 
                 newClip = _cnvNoDigit(stString, cnv)
@@ -923,7 +961,7 @@ Namespace Win
             Dim cnv As String
 
             cnv = Me.Text.Substring(0, idx - 1)
-            cnv = String.Format("{0,F" & Me.Percision.ToString & "}", cnv)
+            cnv = String.Format("{0,F" & Me._precision.ToString & "}", cnv)
             cnv = cnv & Me.Text.Substring(Me.Text.Length - idx + 1)
 
             Me.MaxLength = cnv.Length
@@ -1034,7 +1072,7 @@ Namespace Win
             Dim rc As String
 
             rc = String.Empty
-            _percisionSign = False
+            _precisionSign = False
 
             ' 文字列の選択範囲を考慮するため選択位置へコピー内容を挿入
             val = Me.Text.Substring(0, Me.SelectionStart) & val & Me.Text.Substring(Me.SelectionStart, Me.SelectionLength) & Me.Text.Substring(Me.SelectionStart + Me.SelectionLength)
@@ -1120,14 +1158,14 @@ Namespace Win
                     End If
                 Case Else
             End Select
-            If Me.Percision > 0 Then
+            If Me._precision > 0 Then
                 ' 小数点あり
                 Select Case Value
                     Case "."
-                        If _percisionSign Then
+                        If _precisionSign Then
                             Return String.Empty
                         End If
-                        _percisionSign = True
+                        _precisionSign = True
                     Case Else
                 End Select
             Else

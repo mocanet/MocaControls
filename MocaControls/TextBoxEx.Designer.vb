@@ -1,11 +1,11 @@
 ﻿
 Namespace Win
 
-    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+    <Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
     Partial Class TextBoxEx
         Inherits TextBox
 
-        <System.Diagnostics.DebuggerNonUserCode()> _
+        <System.Diagnostics.DebuggerNonUserCode()>
         Public Sub New(ByVal container As System.ComponentModel.IContainer)
             MyClass.New()
 
@@ -40,7 +40,7 @@ Namespace Win
         End Sub
 
         'Component は、コンポーネント一覧に後処理を実行するために dispose をオーバーライドします。
-        <System.Diagnostics.DebuggerNonUserCode()> _
+        <System.Diagnostics.DebuggerNonUserCode()>
         Protected Overrides Sub Dispose(ByVal disposing As Boolean)
             Try
                 If disposing AndAlso components IsNot Nothing Then
@@ -57,7 +57,7 @@ Namespace Win
         'メモ: 以下のプロシージャはコンポーネント デザイナで必要です。
         'コンポーネント デザイナを使って変更できます。
         'コード エディタを使って変更しないでください。
-        <System.Diagnostics.DebuggerStepThrough()> _
+        <System.Diagnostics.DebuggerStepThrough()>
         Private Sub InitializeComponent()
             components = New System.ComponentModel.Container()
         End Sub
