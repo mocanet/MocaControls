@@ -176,6 +176,12 @@
       <Link>DataGridViewTextBoxExEditingControl.vb</Link>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="..\MocaControls\DataGridView\DataGridViewDisableButtonCell.vb">
+      <Link>DataGridView\DataGridViewDisableButtonCell.vb</Link>
+    </Compile>
+    <Compile Include="..\MocaControls\DataGridView\DataGridViewDisableButtonColumn.vb">
+      <Link>DataGridView\DataGridViewDisableButtonColumn.vb</Link>
+    </Compile>
     <Compile Include="..\MocaControls\DataGridView\DataGridViewEx.vb">
       <Link>DataGridView\DataGridViewEx.vb</Link>
       <SubType>Component</SubType>
