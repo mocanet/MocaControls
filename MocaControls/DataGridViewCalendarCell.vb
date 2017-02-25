@@ -75,7 +75,7 @@ Namespace Win
 
         Public Overrides Function ParseFormattedValue(formattedValue As Object, cellStyle As DataGridViewCellStyle, formattedValueTypeConverter As TypeConverter, valueTypeConverter As TypeConverter) As Object
             If String.IsNullOrEmpty(formattedValue) Then
-                Return DBNull.Value
+                Return cellStyle.NullValue
             End If
             Return MyBase.ParseFormattedValue(formattedValue, cellStyle, formattedValueTypeConverter, valueTypeConverter)
         End Function

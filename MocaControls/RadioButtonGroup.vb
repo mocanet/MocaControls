@@ -118,6 +118,16 @@ Namespace Win
             End Set
         End Property
 
+        ''' <summary>
+        ''' ラジオボタンたち
+        ''' </summary>
+        ''' <returns></returns>
+        Public ReadOnly Property Buttons As ICollection(Of RadioButton)
+            Get
+                Return _dicButton.Keys
+            End Get
+        End Property
+
 #End Region
 #Region " イベント "
 

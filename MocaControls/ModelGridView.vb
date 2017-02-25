@@ -1613,6 +1613,8 @@ Namespace Win
                     Else
                         cal.PickerCustomFormat = attr.InputFormat
                     End If
+                    col.DefaultCellStyle.DataSourceNullValue = DBNull.Value
+                    col.DefaultCellStyle.NullValue = Nothing
                 Case CellType.MaskedTextBox
                     col = New DataGridViewMaskedTextBoxColumn()
                     Dim mask As DataGridViewMaskedTextBoxColumn = DirectCast(col, DataGridViewMaskedTextBoxColumn)
