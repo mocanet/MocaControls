@@ -70,17 +70,24 @@ Public Class Form1
                 .ID = ii,
                 .Name = "テスト たろう" & ii,
                 .Note = "onaji",
-                .Merge1 = "bbb",
+                .Merge1 = "ccc",
                 .Merge2 = "333",
                 .Hoge = "test",
                 .Cbo = "003"
         }
         lst.Add(row)
 
-        'ModelGridView1.AllowUserToAddRows = False
+        ModelGridView1.AllowUserToAddRows = False
         ModelGridView1.DataSource = lst
         ModelGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect
+        ModelGridView1.SelectionMode = DataGridViewSelectionMode.CellSelect
+        ModelGridView1.SelectionMode = DataGridViewSelectionMode.RowHeaderSelect
+        'ModelGridView1.SelectionMode = DataGridViewSelectionMode.ColumnHeaderSelect
         ModelGridView1.TransparentRowSelection = True
+        ModelGridView1.DefaultCellStyle.Padding = New Padding(5)
+        ModelGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None
+        ModelGridView1.RowTemplate.Height = 60
+        ModelGridView1.MultiSelect = False
 
         'TextBoxEx2.InputFormat = TextBoxEx.InputFormatType.Number Or TextBoxEx.InputFormatType.Custom
         TextBoxEx2.InputFormat = TextBoxEx.InputFormatType.Custom

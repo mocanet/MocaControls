@@ -367,6 +367,8 @@ Namespace Win
         Protected Overrides Sub OnCellEndEdit(e As DataGridViewCellEventArgs)
             MyBase.OnCellEndEdit(e)
 
+            Invalidate()
+
             Dim prop As PropertyInfo
             prop = CType(Columns(e.ColumnIndex).Tag, PropertyInfo)
             If prop Is Nothing Then
@@ -396,6 +398,12 @@ Namespace Win
             End If
 
             cur.Add()
+        End Sub
+
+        Protected Overrides Sub OnCellLeave(e As DataGridViewCellEventArgs)
+            MyBase.OnCellLeave(e)
+
+            Invalidate()
         End Sub
 
         ''' <summary>
@@ -561,10 +569,32 @@ Namespace Win
                                     End If
                                 End If
                             End If
+                            If (SelectionMode = DataGridViewSelectionMode.CellSelect OrElse
+                                SelectionMode = DataGridViewSelectionMode.RowHeaderSelect OrElse
+                                SelectionMode = DataGridViewSelectionMode.ColumnHeaderSelect) AndAlso
+                                TransparentRowSelection Then
+                                If Not Rows(e.RowIndex).Selected AndAlso
+                                        Not Cols(e.ColumnIndex).Selected AndAlso
+                                        e.ColumnIndex = CurrentCell.ColumnIndex AndAlso e.RowIndex = CurrentCell.RowIndex Then
+                                    e.Paint(e.CellBounds, DataGridViewPaintParts.All And Not DataGridViewPaintParts.Border)
+                                    Dim borderWidth As Integer = 2
+                                    Dim r As Rectangle = Me.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, False)
+                                    Dim r2 As Rectangle = Me.GetColumnDisplayRectangle(e.ColumnIndex, False)
+                                    Dim r2width As Integer = r2.X + r2.Width
+                                    Dim rect = New Rectangle(r.X, r.Y, IIf(r.Width > r2width, r2width, r.Width), r.Height)
+                                    ControlPaint.DrawBorder(e.Graphics, rect,
+                                                                SystemColors.Highlight, borderWidth, ButtonBorderStyle.Solid,
+                                                                SystemColors.Highlight, borderWidth, ButtonBorderStyle.Solid,
+                                                                SystemColors.Highlight, borderWidth + 1, ButtonBorderStyle.Solid,
+                                                                SystemColors.Highlight, borderWidth + 1, ButtonBorderStyle.Solid)
+
+                                    e.Handled = True
+                                End If
+                            End If
                     End Select
 
                     Dim column As DataGridViewColumn = Columns(e.ColumnIndex)
-                    Dim prop As PropertyInfo
+                        Dim prop As PropertyInfo
                     prop = CType(column.Tag, PropertyInfo)
                     If prop IsNot Nothing Then
                         Dim attr As ColumnStyleAttribute
@@ -577,6 +607,26 @@ Namespace Win
                     End If
 
             End Select
+
+            If (SelectionMode = DataGridViewSelectionMode.ColumnHeaderSelect) AndAlso
+                TransparentRowSelection Then
+                If Cols(e.ColumnIndex).Selected Then
+                    e.Paint(e.CellBounds, DataGridViewPaintParts.All And Not DataGridViewPaintParts.Border)
+                    Dim borderWidth As Integer = 2
+                    Dim r As Rectangle = Me.GetColumnDisplayRectangle(e.ColumnIndex, False)
+                    Dim r2 As Rectangle = Me.DisplayRectangle()
+                    Dim r3 As Rectangle = Me.GetRowDisplayRectangle(Rows.Count - 1, False)
+                    Dim r2Height As Integer = IIf(r3.Bottom = 0, r.Height, r3.Bottom - r.Top)
+                    Dim rect = New Rectangle(r.X, r.Y, r.Width, IIf(r2.Height > r2Height, r2Height, r2.Height))
+                    ControlPaint.DrawBorder(e.Graphics, rect,
+                                                SystemColors.Highlight, borderWidth, ButtonBorderStyle.Solid,
+                                                SystemColors.Highlight, borderWidth, ButtonBorderStyle.Solid,
+                                                SystemColors.Highlight, borderWidth + 1, ButtonBorderStyle.Solid,
+                                                SystemColors.Highlight, borderWidth + 1, ButtonBorderStyle.Solid)
+
+                    e.Handled = True
+                End If
+            End If
         End Sub
 
         '''<summary>
@@ -1161,7 +1211,10 @@ Namespace Win
                 ' マージ状態のセルを描画
                 Dim newCell As Rectangle = New Rectangle(recX - 1, recY - 1, recWidth, recHeight)
                 Dim currentPadding As Padding = CurrentCell.InheritedStyle.Padding
-                Dim txtRect As Rectangle = New Rectangle(newCell.Left + currentPadding.Left, newCell.Top + currentPadding.Top, newCell.Width - currentPadding.Right, newCell.Height - currentPadding.Bottom)
+                Dim txtRect As Rectangle = New Rectangle(newCell.Left + currentPadding.Left,
+                                                         newCell.Top + currentPadding.Top,
+                                                         newCell.Width - currentPadding.Left - currentPadding.Right,
+                                                         newCell.Height - currentPadding.Top - currentPadding.Bottom)
                 Dim formatFlg As TextFormatFlags = _getTextFormatFlags(Columns(col).DefaultCellStyle.Alignment, Columns(col).DefaultCellStyle.WrapMode)
                 Using backBrash As New SolidBrush(backColor)
                     g.FillRectangle(backBrash, newCell)
@@ -1173,10 +1226,19 @@ Namespace Win
                     ' カレントセルでないときはここまで
                     Return
                 End If
+                If SelectionMode = DataGridViewSelectionMode.FullRowSelect Then
+                    Return
+                End If
 
                 ' 選択セルを描画
-                newCell = New Rectangle(currentRectangle.X - 1, currentRectangle.Y, currentRectangle.Width, currentRectangle.Height - 1)
-                txtRect = New Rectangle(newCell.Left + currentPadding.Left, newCell.Top + currentPadding.Top, newCell.Width - currentPadding.Right, newCell.Height - currentPadding.Bottom)
+                newCell = New Rectangle(currentRectangle.X - 1,
+                                        currentRectangle.Y,
+                                        currentRectangle.Width,
+                                        currentRectangle.Height - 1)
+                txtRect = New Rectangle(newCell.Left + currentPadding.Left,
+                                        newCell.Top + currentPadding.Top,
+                                        newCell.Width - currentPadding.Left - currentPadding.Right,
+                                        newCell.Height - currentPadding.Top - currentPadding.Bottom)
                 backColor = DefaultCellStyle.SelectionBackColor
                 foreColor = DefaultCellStyle.SelectionForeColor
                 Using backBrash As New SolidBrush(backColor)
@@ -1518,6 +1580,7 @@ Namespace Win
                 col.HeaderText = _cnvColCaption(caption)
                 col.DataPropertyName = prop.Name
                 col.Name = prop.Name
+                col.SortMode = DataGridViewColumnSortMode.NotSortable
                 Me.Columns.Add(col)
                 Return col
             End If

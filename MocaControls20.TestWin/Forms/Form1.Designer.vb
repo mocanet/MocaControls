@@ -54,19 +54,20 @@ Partial Class Form1
         '
         'TextBox1
         '
-        Me.TextBox1.Location = New System.Drawing.Point(869, 82)
-        Me.TextBox1.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
+        Me.TextBox1.Location = New System.Drawing.Point(401, 41)
+        Me.TextBox1.Margin = New System.Windows.Forms.Padding(1, 2, 1, 2)
         Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(99, 31)
+        Me.TextBox1.Size = New System.Drawing.Size(48, 19)
         Me.TextBox1.TabIndex = 2
         '
         'Panel1
         '
         Me.Panel1.Controls.Add(Me.RadioButtonEx2)
         Me.Panel1.Controls.Add(Me.RadioButtonEx1)
-        Me.Panel1.Location = New System.Drawing.Point(213, 682)
+        Me.Panel1.Location = New System.Drawing.Point(98, 341)
+        Me.Panel1.Margin = New System.Windows.Forms.Padding(1, 2, 1, 2)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(370, 100)
+        Me.Panel1.Size = New System.Drawing.Size(171, 50)
         Me.Panel1.TabIndex = 10
         '
         'RadioButtonEx2
@@ -74,12 +75,13 @@ Partial Class Form1
         Me.RadioButtonEx2.ActiveBottomBorderColor = System.Drawing.Color.Blue
         Me.RadioButtonEx2.Appearance = System.Windows.Forms.Appearance.Button
         Me.RadioButtonEx2.BottomBorderColor = System.Drawing.Color.Blue
-        Me.RadioButtonEx2.BottomBorderHeight = 3
+        Me.RadioButtonEx2.BottomBorderHeight = 2
         Me.RadioButtonEx2.FlatAppearance.BorderSize = 0
         Me.RadioButtonEx2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.RadioButtonEx2.Location = New System.Drawing.Point(132, 23)
+        Me.RadioButtonEx2.Location = New System.Drawing.Point(61, 12)
+        Me.RadioButtonEx2.Margin = New System.Windows.Forms.Padding(1, 2, 1, 2)
         Me.RadioButtonEx2.Name = "RadioButtonEx2"
-        Me.RadioButtonEx2.Size = New System.Drawing.Size(106, 54)
+        Me.RadioButtonEx2.Size = New System.Drawing.Size(49, 27)
         Me.RadioButtonEx2.TabIndex = 10
         Me.RadioButtonEx2.TabStop = True
         Me.RadioButtonEx2.Text = "Radio 1"
@@ -90,12 +92,13 @@ Partial Class Form1
         Me.RadioButtonEx1.ActiveBottomBorderColor = System.Drawing.Color.Blue
         Me.RadioButtonEx1.Appearance = System.Windows.Forms.Appearance.Button
         Me.RadioButtonEx1.BottomBorderColor = System.Drawing.Color.Blue
-        Me.RadioButtonEx1.BottomBorderHeight = 3
+        Me.RadioButtonEx1.BottomBorderHeight = 2
         Me.RadioButtonEx1.FlatAppearance.BorderSize = 0
         Me.RadioButtonEx1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.RadioButtonEx1.Location = New System.Drawing.Point(13, 20)
+        Me.RadioButtonEx1.Location = New System.Drawing.Point(6, 10)
+        Me.RadioButtonEx1.Margin = New System.Windows.Forms.Padding(1, 2, 1, 2)
         Me.RadioButtonEx1.Name = "RadioButtonEx1"
-        Me.RadioButtonEx1.Size = New System.Drawing.Size(106, 54)
+        Me.RadioButtonEx1.Size = New System.Drawing.Size(49, 27)
         Me.RadioButtonEx1.TabIndex = 9
         Me.RadioButtonEx1.TabStop = True
         Me.RadioButtonEx1.Text = "Radio 1"
@@ -107,9 +110,10 @@ Partial Class Form1
         Me.ComboBoxEx1.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid
         Me.ComboBoxEx1.FormattingEnabled = True
         Me.ComboBoxEx1.Items.AddRange(New Object() {"", "Hoge1", "Hoge2"})
-        Me.ComboBoxEx1.Location = New System.Drawing.Point(565, 21)
+        Me.ComboBoxEx1.Location = New System.Drawing.Point(261, 10)
+        Me.ComboBoxEx1.Margin = New System.Windows.Forms.Padding(1, 2, 1, 2)
         Me.ComboBoxEx1.Name = "ComboBoxEx1"
-        Me.ComboBoxEx1.Size = New System.Drawing.Size(209, 32)
+        Me.ComboBoxEx1.Size = New System.Drawing.Size(99, 20)
         Me.ComboBoxEx1.TabIndex = 11
         Me.ComboBoxEx1.UnfocusedBorderColor = System.Drawing.SystemColors.ControlDark
         '
@@ -117,18 +121,20 @@ Partial Class Form1
         '
         Me.ContextMenuPanel1.Controls.Add(Me.Button4)
         Me.ContextMenuPanel1.DirectionType = Moca.Win.AnimateWindow.DirectionType.Top
-        Me.ContextMenuPanel1.Location = New System.Drawing.Point(53, 26)
+        Me.ContextMenuPanel1.Location = New System.Drawing.Point(24, 13)
+        Me.ContextMenuPanel1.Margin = New System.Windows.Forms.Padding(1, 2, 1, 2)
         Me.ContextMenuPanel1.Name = "ContextMenuPanel1"
         Me.ContextMenuPanel1.Opener = Me.Button1
-        Me.ContextMenuPanel1.Size = New System.Drawing.Size(236, 100)
+        Me.ContextMenuPanel1.Size = New System.Drawing.Size(109, 50)
         Me.ContextMenuPanel1.TabIndex = 7
         Me.ContextMenuPanel1.Visible = False
         '
         'Button4
         '
-        Me.Button4.Location = New System.Drawing.Point(3, 3)
+        Me.Button4.Location = New System.Drawing.Point(1, 2)
+        Me.Button4.Margin = New System.Windows.Forms.Padding(1, 2, 1, 2)
         Me.Button4.Name = "Button4"
-        Me.Button4.Size = New System.Drawing.Size(163, 41)
+        Me.Button4.Size = New System.Drawing.Size(75, 20)
         Me.Button4.TabIndex = 11
         Me.Button4.Text = "btn1"
         Me.Button4.UseVisualStyleBackColor = True
@@ -136,17 +142,19 @@ Partial Class Form1
         'Button1
         '
         Me.Button1.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.Button1.Location = New System.Drawing.Point(184, 6)
-        Me.Button1.Margin = New System.Windows.Forms.Padding(7, 6, 7, 6)
+        Me.Button1.Location = New System.Drawing.Point(84, 3)
         Me.Button1.Name = "Button1"
         Me.Button1.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.Button1.Size = New System.Drawing.Size(163, 46)
+        Me.Button1.Size = New System.Drawing.Size(75, 23)
         Me.Button1.TabIndex = 0
         Me.Button1.Text = "Button1"
         Me.Button1.UseVisualStyleBackColor = True
         '
         'ModelGridView1
         '
+        Me.ModelGridView1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ModelGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle1.BackColor = System.Drawing.Color.White
@@ -158,13 +166,13 @@ Partial Class Form1
         Me.ModelGridView1.DefaultCellStyle = DataGridViewCellStyle1
         GridDesignSettings1.SettingsKey = ""
         Me.ModelGridView1.DesignSettings = GridDesignSettings1
-        Me.ModelGridView1.Location = New System.Drawing.Point(13, 152)
-        Me.ModelGridView1.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
+        Me.ModelGridView1.Location = New System.Drawing.Point(6, 76)
+        Me.ModelGridView1.Margin = New System.Windows.Forms.Padding(1, 2, 1, 2)
         Me.ModelGridView1.Name = "ModelGridView1"
         Me.ModelGridView1.RowEditImage = CType(resources.GetObject("ModelGridView1.RowEditImage"), System.Drawing.Image)
         Me.ModelGridView1.RowEntityType = Nothing
         Me.ModelGridView1.RowTemplate.Height = 33
-        Me.ModelGridView1.Size = New System.Drawing.Size(984, 516)
+        Me.ModelGridView1.Size = New System.Drawing.Size(672, 258)
         Me.ModelGridView1.Styles = CType(resources.GetObject("ModelGridView1.Styles"), System.Collections.Generic.IDictionary(Of String, System.Windows.Forms.DataGridViewCellStyle))
         Me.ModelGridView1.TabIndex = 8
         Me.ModelGridView1.TransparentRowSelection = False
@@ -175,8 +183,8 @@ Partial Class Form1
         Me.TextBoxEx2.CustomChars = Nothing
         Me.TextBoxEx2.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.TextBoxEx2.InputFormat = Moca.Win.TextBoxEx.InputFormatType.None
-        Me.TextBoxEx2.Location = New System.Drawing.Point(1051, 68)
-        Me.TextBoxEx2.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
+        Me.TextBoxEx2.Location = New System.Drawing.Point(485, 34)
+        Me.TextBoxEx2.Margin = New System.Windows.Forms.Padding(1, 2, 1, 2)
         Me.TextBoxEx2.Name = "TextBoxEx2"
         Me.TextBoxEx2.NegativeColor = System.Drawing.Color.Red
         Me.TextBoxEx2.NumericScale = 0
@@ -184,7 +192,7 @@ Partial Class Form1
         Me.TextBoxEx2.PrecisionSign = False
         Me.TextBoxEx2.Required = False
         Me.TextBoxEx2.Separator = ""
-        Me.TextBoxEx2.Size = New System.Drawing.Size(173, 32)
+        Me.TextBoxEx2.Size = New System.Drawing.Size(82, 18)
         Me.TextBoxEx2.TabIndex = 7
         '
         'FlowLayoutPanelEx1
@@ -192,30 +200,27 @@ Partial Class Form1
         Me.FlowLayoutPanelEx1.Controls.Add(Me.Button3)
         Me.FlowLayoutPanelEx1.Controls.Add(Me.Button1)
         Me.FlowLayoutPanelEx1.Controls.Add(Me.Button2)
-        Me.FlowLayoutPanelEx1.Location = New System.Drawing.Point(650, 676)
-        Me.FlowLayoutPanelEx1.Margin = New System.Windows.Forms.Padding(7, 6, 7, 6)
+        Me.FlowLayoutPanelEx1.Location = New System.Drawing.Point(300, 338)
         Me.FlowLayoutPanelEx1.Name = "FlowLayoutPanelEx1"
         Me.FlowLayoutPanelEx1.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.FlowLayoutPanelEx1.Size = New System.Drawing.Size(624, 94)
+        Me.FlowLayoutPanelEx1.Size = New System.Drawing.Size(288, 47)
         Me.FlowLayoutPanelEx1.TabIndex = 5
         '
         'Button3
         '
-        Me.Button3.Location = New System.Drawing.Point(7, 6)
-        Me.Button3.Margin = New System.Windows.Forms.Padding(7, 6, 7, 6)
+        Me.Button3.Location = New System.Drawing.Point(3, 3)
         Me.Button3.Name = "Button3"
         Me.Button3.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.Button3.Size = New System.Drawing.Size(163, 46)
+        Me.Button3.Size = New System.Drawing.Size(75, 23)
         Me.Button3.TabIndex = 6
         Me.Button3.Text = "Button3"
         Me.Button3.UseVisualStyleBackColor = True
         '
         'Button2
         '
-        Me.Button2.Location = New System.Drawing.Point(361, 6)
-        Me.Button2.Margin = New System.Windows.Forms.Padding(7, 6, 7, 6)
+        Me.Button2.Location = New System.Drawing.Point(165, 3)
         Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(163, 46)
+        Me.Button2.Size = New System.Drawing.Size(75, 23)
         Me.Button2.TabIndex = 6
         Me.Button2.Text = "Button2"
         Me.Button2.UseVisualStyleBackColor = True
@@ -227,11 +232,11 @@ Partial Class Form1
         Me.NullableDateTimePicker1.BorderStyle = System.Windows.Forms.ButtonBorderStyle.None
         Me.NullableDateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.[Long]
         Me.NullableDateTimePicker1.FormatAsString = "yyyy'年'M'月'd'日'"
-        Me.NullableDateTimePicker1.Location = New System.Drawing.Point(884, 12)
-        Me.NullableDateTimePicker1.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
+        Me.NullableDateTimePicker1.Location = New System.Drawing.Point(408, 6)
+        Me.NullableDateTimePicker1.Margin = New System.Windows.Forms.Padding(1, 2, 1, 2)
         Me.NullableDateTimePicker1.Name = "NullableDateTimePicker1"
         Me.NullableDateTimePicker1.NullValue = ""
-        Me.NullableDateTimePicker1.Size = New System.Drawing.Size(247, 31)
+        Me.NullableDateTimePicker1.Size = New System.Drawing.Size(116, 19)
         Me.NullableDateTimePicker1.TabIndex = 4
         Me.NullableDateTimePicker1.UnfocusedBorderColor = System.Drawing.Color.White
         Me.NullableDateTimePicker1.Value = New Date(2016, 10, 6, 23, 50, 18, 238)
@@ -244,7 +249,7 @@ Partial Class Form1
         Me.TextBoxEx1.CustomChars = Nothing
         Me.TextBoxEx1.ImeMode = System.Windows.Forms.ImeMode.Disable
         Me.TextBoxEx1.InputFormat = Moca.Win.TextBoxEx.InputFormatType.None
-        Me.TextBoxEx1.Location = New System.Drawing.Point(500, 34)
+        Me.TextBoxEx1.Location = New System.Drawing.Point(231, 17)
         Me.TextBoxEx1.Name = "TextBoxEx1"
         Me.TextBoxEx1.NegativeColor = System.Drawing.Color.Red
         Me.TextBoxEx1.NumericScale = 0
@@ -253,7 +258,7 @@ Partial Class Form1
         Me.TextBoxEx1.ReadOnly = True
         Me.TextBoxEx1.Required = False
         Me.TextBoxEx1.Separator = ""
-        Me.TextBoxEx1.Size = New System.Drawing.Size(282, 92)
+        Me.TextBoxEx1.Size = New System.Drawing.Size(130, 46)
         Me.TextBoxEx1.TabIndex = 3
         Me.TextBoxEx1.TabStop = False
         '
@@ -265,8 +270,7 @@ Partial Class Form1
         '
         'DataGridViewEx1
         '
-        Me.DataGridViewEx1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.DataGridViewEx1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.DataGridViewEx1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DataGridViewEx1.DBInfoColumns = Nothing
@@ -281,20 +285,21 @@ Partial Class Form1
         GridDesignSettings2.SettingsKey = ""
         Me.DataGridViewEx1.DesignSettings = GridDesignSettings2
         Me.DataGridViewEx1.HorizontalScrollBarAlwaysShow = False
-        Me.DataGridViewEx1.Location = New System.Drawing.Point(1011, 152)
+        Me.DataGridViewEx1.Location = New System.Drawing.Point(680, 76)
+        Me.DataGridViewEx1.Margin = New System.Windows.Forms.Padding(1, 2, 1, 2)
         Me.DataGridViewEx1.Name = "DataGridViewEx1"
         Me.DataGridViewEx1.RowEditImage = CType(resources.GetObject("DataGridViewEx1.RowEditImage"), System.Drawing.Image)
         Me.DataGridViewEx1.RowTemplate.Height = 33
-        Me.DataGridViewEx1.Size = New System.Drawing.Size(774, 516)
+        Me.DataGridViewEx1.Size = New System.Drawing.Size(262, 258)
         Me.DataGridViewEx1.Styles = CType(resources.GetObject("DataGridViewEx1.Styles"), System.Collections.Generic.IDictionary(Of String, System.Windows.Forms.DataGridViewCellStyle))
         Me.DataGridViewEx1.TabIndex = 12
         Me.DataGridViewEx1.VerticalScrollBarAlwaysShow = False
         '
         'Form1
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(13.0!, 24.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1797, 824)
+        Me.ClientSize = New System.Drawing.Size(952, 412)
         Me.Controls.Add(Me.DataGridViewEx1)
         Me.Controls.Add(Me.ComboBoxEx1)
         Me.Controls.Add(Me.ContextMenuPanel1)
@@ -305,7 +310,7 @@ Partial Class Form1
         Me.Controls.Add(Me.NullableDateTimePicker1)
         Me.Controls.Add(Me.TextBoxEx1)
         Me.Controls.Add(Me.TextBox1)
-        Me.Margin = New System.Windows.Forms.Padding(2, 4, 2, 4)
+        Me.Margin = New System.Windows.Forms.Padding(1, 2, 1, 2)
         Me.Name = "Form1"
         Me.Text = "Form1"
         Me.Panel1.ResumeLayout(False)

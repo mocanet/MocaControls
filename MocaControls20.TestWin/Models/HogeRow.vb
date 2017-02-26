@@ -5,7 +5,7 @@ Imports Moca.Win
 Public Class HogeRow
     Inherits RowModelBase
 
-    <ColumnStyle(40, DataGridViewContentAlignment.MiddleCenter, CellType:=Moca.CellType.CheckBoxImage)>
+    '<ColumnStyle(40, DataGridViewContentAlignment.MiddleCenter, CellType:=Moca.CellType.CheckBoxImage)>
     Public Property Selected As Boolean
 
     <ColumnStyle(20)>

@@ -65,10 +65,10 @@ Public Class DataGridViewDisableButtonCell
             Dim buttonArea As Rectangle = cellBounds
             Dim buttonAdjustment As Rectangle =
                 Me.BorderWidths(advancedBorderStyle)
-            buttonArea.X += buttonAdjustment.X
-            buttonArea.Y += buttonAdjustment.Y
-            buttonArea.Height -= buttonAdjustment.Height
-            buttonArea.Width -= buttonAdjustment.Width
+            buttonArea.X += (buttonAdjustment.X + cellStyle.Padding.Left)
+            buttonArea.Y += (buttonAdjustment.Y + cellStyle.Padding.Top)
+            buttonArea.Height -= (buttonAdjustment.Height + cellStyle.Padding.Top + cellStyle.Padding.Bottom)
+            buttonArea.Width -= (buttonAdjustment.Width + cellStyle.Padding.Left + cellStyle.Padding.Right)
 
             ' Draw the disabled button.                
             'ButtonRenderer.DrawButton(graphics, buttonArea,
