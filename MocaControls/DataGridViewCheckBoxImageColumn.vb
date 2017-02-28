@@ -23,6 +23,7 @@ Namespace Win
 
         Public Property CheckedImage As Image
         Public Property UnCheckedImage As Image
+        Public Property ImageLayout As DataGridViewImageCellLayout
 
 #End Region
 
@@ -37,6 +38,7 @@ Namespace Win
             Dim col As DataGridViewCheckBoxImageColumn = DirectCast(MyBase.Clone(), DataGridViewCheckBoxImageColumn)
             col.CheckedImage = Me.CheckedImage
             col.UnCheckedImage = Me.UnCheckedImage
+            col.ImageLayout = Me.ImageLayout
             Return col
         End Function
 
@@ -53,7 +55,6 @@ Namespace Win
                     Throw New InvalidCastException("DataGridViewCheckBoxImageCell オブジェクトを指定してください。")
                 End If
                 Dim cell As DataGridViewCheckBoxImageCell = value
-                cell.ImageLayout = DataGridViewImageCellLayout.Zoom
                 MyBase.CellTemplate = cell
             End Set
         End Property

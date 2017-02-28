@@ -18,6 +18,7 @@ Namespace Win
         Protected Overrides Function GetFormattedValue(value As Object, rowIndex As Integer, ByRef cellStyle As DataGridViewCellStyle, valueTypeConverter As TypeConverter, formattedValueTypeConverter As TypeConverter, context As DataGridViewDataErrorContexts) As Object
             Try
                 Dim col As DataGridViewCheckBoxImageColumn = CType(OwningColumn, DataGridViewCheckBoxImageColumn)
+                Me.ImageLayout = col.ImageLayout
                 Dim val As Boolean = CBool(value)
                 If val Then
                     Return col.CheckedImage
