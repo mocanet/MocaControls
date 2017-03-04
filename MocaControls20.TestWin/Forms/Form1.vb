@@ -139,7 +139,7 @@ Public Class Form1
             Dim item As HogeRow = row.DataBoundItem
             Select Case item.ID
                 Case "2", "3", "5"
-                    CType(row.Cells(2), Moca.DataGridViewDisableButtonCell).Enabled = False
+                    CType(row.Cells(2), DataGridViewDisableButtonCell).Enabled = False
             End Select
         Next
     End Sub
@@ -169,6 +169,10 @@ Public Class Form1
 
     Private Sub DataGridViewEx1_DataError(sender As Object, e As DataGridViewDataErrorEventArgs) Handles DataGridViewEx1.DataError
         Debug.Print(e.Exception.ToString)
+    End Sub
+
+    Private Sub ModelGridView1_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles ModelGridView1.CellContentClick
+        Debug.Print("ModelGridView1_CellContentClick")
     End Sub
 
 End Class

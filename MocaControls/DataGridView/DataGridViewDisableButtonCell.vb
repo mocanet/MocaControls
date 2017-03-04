@@ -95,4 +95,14 @@ Public Class DataGridViewDisableButtonCell
         End If
     End Sub
 
+    Protected Overrides Sub OnMouseMove(e As DataGridViewCellMouseEventArgs)
+        If enabledValue Then
+            Me.DataGridView.Cursor = Cursors.Hand
+        Else
+            Me.DataGridView.Cursor = Cursors.Default
+        End If
+
+        MyBase.OnMouseMove(e)
+    End Sub
+
 End Class

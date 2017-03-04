@@ -552,7 +552,7 @@ Namespace Win
                 Case CellType.Button
                     col = New DataGridViewButtonColumn()
                 Case CellType.DisableButton
-                    col = New Moca.DataGridViewDisableButtonColumn()
+                    col = New DataGridViewDisableButtonColumn()
                 Case CellType.CheckBox
                     col = New DataGridViewCheckBoxColumn()
             'Case CellType.CheckBoxImage

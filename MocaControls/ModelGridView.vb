@@ -594,7 +594,7 @@ Namespace Win
                     End Select
 
                     Dim column As DataGridViewColumn = Columns(e.ColumnIndex)
-                        Dim prop As PropertyInfo
+                    Dim prop As PropertyInfo
                     prop = CType(column.Tag, PropertyInfo)
                     If prop IsNot Nothing Then
                         Dim attr As ColumnStyleAttribute
@@ -816,6 +816,21 @@ Namespace Win
                                         SystemColors.Highlight, borderWidth, ButtonBorderStyle.Solid,
                                         SystemColors.Highlight, borderWidth, ButtonBorderStyle.Solid,
                                         SystemColors.Highlight, borderWidth, ButtonBorderStyle.Solid)
+        End Sub
+
+        Protected Overrides Sub OnCellContentClick(e As DataGridViewCellEventArgs)
+            Dim cell As DataGridViewCell
+
+            cell = Me(e.ColumnIndex, e.RowIndex)
+            If TypeOf cell IsNot DataGridViewDisableButtonCell Then
+                Return
+            End If
+            Dim disableButtonCell As DataGridViewDisableButtonCell = cell
+            If Not disableButtonCell.Enabled Then
+                Return
+            End If
+
+            MyBase.OnCellContentClick(e)
         End Sub
 
 #End Region
@@ -1647,7 +1662,7 @@ Namespace Win
                     col = New DataGridViewButtonColumn()
                     attr.Align = DataGridViewContentAlignment.MiddleCenter
                 Case CellType.DisableButton
-                    col = New Moca.DataGridViewDisableButtonColumn()
+                    col = New DataGridViewDisableButtonColumn()
                     attr.Align = DataGridViewContentAlignment.MiddleCenter
                 Case CellType.CheckBox
                     col = New DataGridViewCheckBoxColumn()
