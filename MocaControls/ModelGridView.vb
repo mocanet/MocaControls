@@ -822,12 +822,11 @@ Namespace Win
             Dim cell As DataGridViewCell
 
             cell = Me(e.ColumnIndex, e.RowIndex)
-            If TypeOf cell IsNot DataGridViewDisableButtonCell Then
-                Return
-            End If
-            Dim disableButtonCell As DataGridViewDisableButtonCell = cell
-            If Not disableButtonCell.Enabled Then
-                Return
+            If TypeOf cell Is DataGridViewDisableButtonCell Then
+                Dim disableButtonCell As DataGridViewDisableButtonCell = cell
+                If Not disableButtonCell.Enabled Then
+                    Return
+                End If
             End If
 
             MyBase.OnCellContentClick(e)
@@ -1313,6 +1312,22 @@ Namespace Win
         End Function
 
 #End Region
+
+        ''' <summary>
+        ''' データ部かどうか
+        ''' </summary>
+        ''' <param name="rowIndex"></param>
+        ''' <param name="columnIndex"></param>
+        ''' <returns></returns>
+        Public Function IsDataPart(ByVal columnIndex As Integer, ByVal rowIndex As Integer) As Boolean
+            If rowIndex < 0 Then
+                Return False
+            End If
+            If columnIndex < 0 Then
+                Return False
+            End If
+            Return True
+        End Function
 
         Private Sub _changeLinkSelectedStyle(ByVal col As DataGridViewColumn, ByVal rowIndex As Integer)
             If Not TypeOf col Is DataGridViewLinkColumn Then
