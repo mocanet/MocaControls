@@ -821,11 +821,13 @@ Namespace Win
         Protected Overrides Sub OnCellContentClick(e As DataGridViewCellEventArgs)
             Dim cell As DataGridViewCell
 
-            cell = Me(e.ColumnIndex, e.RowIndex)
-            If TypeOf cell Is DataGridViewDisableButtonCell Then
-                Dim disableButtonCell As DataGridViewDisableButtonCell = cell
-                If Not disableButtonCell.Enabled Then
-                    Return
+            If e.RowIndex > 0 AndAlso e.ColumnIndex > 0 Then
+                cell = Me(e.ColumnIndex, e.RowIndex)
+                If TypeOf cell Is DataGridViewDisableButtonCell Then
+                    Dim disableButtonCell As DataGridViewDisableButtonCell = cell
+                    If Not disableButtonCell.Enabled Then
+                        Return
+                    End If
                 End If
             End If
 
