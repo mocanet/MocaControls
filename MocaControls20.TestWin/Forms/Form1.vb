@@ -157,6 +157,7 @@ Public Class Form1
                 ModelGridView1.SetComboBoxItems(e.Column, dt)
             Case Else
         End Select
+        ModelGridView1.ReadOnly = True
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click

@@ -327,7 +327,7 @@
   <ItemGroup>
     <EmbeddedResource Include="..\MocaControls\My Project\Resources.resx">
       <Link>My Project\Resources.resx</Link>
-      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <Generator>PublicVbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>

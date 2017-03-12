@@ -5,7 +5,9 @@ Imports Moca.Win
 Public Class HogeRow
     Inherits RowModelBase
 
-    '<ColumnStyle(40, DataGridViewContentAlignment.MiddleCenter, CellType:=Moca.CellType.CheckBoxImage)>
+    '<[ReadOnly](True)>
+    <[ReadOnly](False)>
+    <ColumnStyle(40, DataGridViewContentAlignment.MiddleCenter, CellType:=Moca.CellType.CheckBoxImage)>
     Public Property Selected As Boolean
 
     <ColumnStyle(20)>
@@ -52,7 +54,15 @@ Public Class HogeRow
 
     <DisplayName("画像")>
     <ColumnStyle(50, DataGridViewContentAlignment.MiddleCenter)>
-    Public Property Img As Bitmap
+    Public ReadOnly Property Img As Bitmap
+        Get
+            If Selected Then
+                Return Moca.My.Resources.Checked
+            Else
+                Return Moca.My.Resources.UnChecked
+            End If
+        End Get
+    End Property
 
     <DisplayName("備考")>
     <ColumnStyle(200, ImeMode:=ImeMode.Hiragana, WordWrap:=True)>
