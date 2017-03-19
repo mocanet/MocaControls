@@ -3,9 +3,11 @@
   <Metadata>
     <Identity Id="ccb393e3-f0f2-46db-86fa-5ad370408a68" Version="2.3.0" Language="en-US" Publisher="MiYABiS" />
     <DisplayName>Moca.NET Windows Forms Controls 2.0</DisplayName>
-    <Description xml:space="preserve">Moca.NET Windows Forms Toolbox Controls 2.0 for VS2012, VS2013, VS2015</Description>
+    <Description xml:space="preserve">Moca.NET Windows Forms Toolbox Controls 2.0 for VS2012, VS2013, VS2015, VS2017</Description>
     <MoreInfo>http://visualstudiogallery.msdn.microsoft.com/565e3bf2-48a1-4830-946f-8cf91c1dbcc4</MoreInfo>
     <License>License.txt</License>
+    <ReleaseNotes>ReleaseNote.rtf</ReleaseNotes>
+    <Icon>https://avatars1.githubusercontent.com/u/14543303</Icon>
     <PreviewImage>Resources\MocaControls.png</PreviewImage>
     <Tags>control</Tags>
   </Metadata>
@@ -15,10 +17,16 @@
     <InstallationTarget Version="[11.0,16.0)" Id="Microsoft.VisualStudio.Ultimate" />
     <InstallationTarget Version="[11.0,16.0)" Id="Microsoft.VisualStudio.Community" />
     <InstallationTarget Version="[11.0,16.0)" Id="Microsoft.VisualStudio.VSWinDesktopExpress" />
+    <InstallationTarget Version="[11.0,16.0)" Id="Microsoft.VisualStudio.Enterprise" />
+    <InstallationTarget Version="[11.0,16.0)" Id="Microsoft.VisualStudio.VSWinExpress" />
+    <InstallationTarget Version="[11.0,16.0)" Id="Microsoft.VisualStudio.VWDExpress" />
   </Installation>
   <Dependencies>
   </Dependencies>
   <Assets>
     <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
   </Assets>
+  <Prerequisites>
+    <Prerequisite Id="Microsoft.VisualStudio.Component.Roslyn.LanguageServices" Version="[15.0.26208.0,16.0)" DisplayName="C# および Visual Basic" />
+  </Prerequisites>
 </PackageManifest>

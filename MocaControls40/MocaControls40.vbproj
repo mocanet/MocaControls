@@ -23,7 +23,7 @@
     <SccProvider>SAK</SccProvider>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+    <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -122,6 +122,12 @@
     </Compile>
     <Compile Include="..\mocacontrols\attr\HiddenColumnAttribute.vb">
       <Link>Attr\HiddenColumnAttribute.vb</Link>
+    </Compile>
+    <Compile Include="..\MocaControls\Attr\KeyValueAttribute.vb">
+      <Link>Attr\KeyValueAttribute.vb</Link>
+    </Compile>
+    <Compile Include="..\MocaControls\Attr\PropertyOrderAttribute.vb">
+      <Link>Attr\PropertyOrderAttribute.vb</Link>
     </Compile>
     <Compile Include="..\mocacontrols\attr\RequiredColumnAttribute.vb">
       <Link>Attr\RequiredColumnAttribute.vb</Link>

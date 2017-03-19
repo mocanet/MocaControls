@@ -767,8 +767,8 @@ Namespace Win
         ''' <remarks></remarks>
         Private Function _exclusionCharDot(ByVal KeyChar As Char) As Boolean
             ' 数値のとき以外は有効
-            If Not Me.IsDigit And Not Me.IsSymbol Then
-                Return True
+            If Not Me.IsDigit Then
+                Return False
             End If
             ' 小数点無しのときは無効
             If Me._precision = 0 Then
@@ -836,9 +836,9 @@ Namespace Win
                 End If
                 If Me.IsAlpha Then
                     If Me.IsUpper Then
-                        cnv = cnv & "A-Za-z"
+                        cnv = cnv & "A-Z"
                     Else
-                        cnv = cnv & "a-z"
+                        cnv = cnv & "A-Za-z"
                     End If
                 End If
                 If Me.IsSymbol Then

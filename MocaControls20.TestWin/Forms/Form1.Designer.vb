@@ -45,6 +45,7 @@ Partial Class Form1
         Me.TextBoxEx1 = New Moca.Win.TextBoxEx(Me.components)
         Me.DataBinder1 = New Moca.Win.DataBinder(Me.components)
         Me.DataGridViewEx1 = New Moca.Win.DataGridViewEx()
+        Me.TextBoxEx3 = New Moca.Win.TextBoxEx(Me.components)
         Me.Panel1.SuspendLayout()
         Me.ContextMenuPanel1.SuspendLayout()
         CType(Me.ModelGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -295,11 +296,30 @@ Partial Class Form1
         Me.DataGridViewEx1.TabIndex = 12
         Me.DataGridViewEx1.VerticalScrollBarAlwaysShow = False
         '
+        'TextBoxEx3
+        '
+        Me.TextBoxEx3.BottomBorderColor = System.Drawing.Color.Empty
+        Me.TextBoxEx3.CustomChars = Nothing
+        Me.TextBoxEx3.ImeMode = System.Windows.Forms.ImeMode.Disable
+        Me.TextBoxEx3.InputFormat = Moca.Win.TextBoxEx.InputFormatType.None
+        Me.TextBoxEx3.Location = New System.Drawing.Point(627, 25)
+        Me.TextBoxEx3.Name = "TextBoxEx3"
+        Me.TextBoxEx3.NegativeColor = System.Drawing.Color.Red
+        Me.TextBoxEx3.NumericScale = 0
+        Me.TextBoxEx3.Precision = 0
+        Me.TextBoxEx3.PrecisionSign = False
+        Me.TextBoxEx3.Required = False
+        Me.TextBoxEx3.Separator = ""
+        Me.TextBoxEx3.Size = New System.Drawing.Size(149, 26)
+        Me.TextBoxEx3.TabIndex = 13
+        Me.TextBoxEx3.Text = "TextBoxEx3"
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(952, 412)
+        Me.Controls.Add(Me.TextBoxEx3)
         Me.Controls.Add(Me.DataGridViewEx1)
         Me.Controls.Add(Me.ComboBoxEx1)
         Me.Controls.Add(Me.ContextMenuPanel1)
@@ -339,4 +359,5 @@ Partial Class Form1
     Friend WithEvents ComboBoxEx1 As Moca.Win.ComboBoxEx
     Friend WithEvents DataBinder1 As Moca.Win.DataBinder
     Friend WithEvents DataGridViewEx1 As Moca.Win.DataGridViewEx
+    Friend WithEvents TextBoxEx3 As Moca.Win.TextBoxEx
 End Class

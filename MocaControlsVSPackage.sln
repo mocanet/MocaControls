@@ -1,19 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "MocaControlsVSPackage", "MocaControlsVSPackage\MocaControlsVSPackage.vbproj", "{3D7390E3-33C2-4CB3-A443-F73A88147072}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D473D8F1-5FBB-4CF6-9904-771F13E351A4}"
 	ProjectSection(SolutionItems) = preProject
 		LICENSE.md = LICENSE.md
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "MocaControls20", "MocaControls\MocaControls20.vbproj", "{467638FB-8A19-43DE-8918-BCDA0F8A51C2}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Controls", "Controls", "{EB1918B5-52EB-40E5-B48F-72DD377CABA9}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "MocaControlsVSPackage", "MocaControlsVSPackage\MocaControlsVSPackage.vbproj", "{3D7390E3-33C2-4CB3-A443-F73A88147072}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "MocaControls20", "MocaControls\MocaControls20.vbproj", "{467638FB-8A19-43DE-8918-BCDA0F8A51C2}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "MocaControls35", "MocaControls35\MocaControls35.vbproj", "{3C0FBF57-E8FE-43C5-9C47-1F9564B34D2B}"
 EndProject

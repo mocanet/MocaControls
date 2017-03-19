@@ -5,21 +5,23 @@ Imports Moca.Win
 Public Class HogeRow
     Inherits RowModelBase
 
-    '<[ReadOnly](True)>
-    <[ReadOnly](False)>
-    <ColumnStyle(40, DataGridViewContentAlignment.MiddleCenter, CellType:=Moca.CellType.CheckBoxImage)>
-    Public Property Selected As Boolean
-
     <ColumnStyle(20)>
     <EditCondition(DataRowState.Added)>
     Public Property ID As String
 
     <ColumnStyle(80, CellType:=Moca.CellType.DisableButton)>
+    <PropertyOrder(1)>
     Public ReadOnly Property Btn As String
         Get
             Return "Test"
         End Get
     End Property
+
+    '<[ReadOnly](True)>
+    <[ReadOnly](False)>
+    <ColumnStyle(40, DataGridViewContentAlignment.MiddleCenter, CellType:=Moca.CellType.CheckBoxImage)>
+    <PropertyOrder(0)>
+    Public Property Selected As Boolean
 
     <ColumnStyle(100, RightBorderNone:=True,
                  InputControl:=TextBoxEx.InputFormatType.Number Or TextBoxEx.InputFormatType.Custom,

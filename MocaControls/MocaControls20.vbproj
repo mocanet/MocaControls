@@ -23,7 +23,7 @@
     <SccProvider>SAK</SccProvider>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+    <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -88,10 +88,12 @@
     <Compile Include="Args\GridSettingEventArgs.vb" />
     <Compile Include="Attr\AllowMergingAttribute.vb" />
     <Compile Include="Attr\CaptionAttribute.vb" />
+    <Compile Include="Attr\KeyValueAttribute.vb" />
     <Compile Include="Attr\ColumnStyleAttribute.vb" />
     <Compile Include="Attr\EditConditionAttribute.vb" />
     <Compile Include="Attr\FrozenAttribute.vb" />
     <Compile Include="Attr\HiddenColumnAttribute.vb" />
+    <Compile Include="Attr\PropertyOrderAttribute.vb" />
     <Compile Include="Attr\RequiredColumnAttribute.vb" />
     <Compile Include="Attr\ValidateTypesAttribute.vb" />
     <Compile Include="ComboBoxEx.Designer.vb">

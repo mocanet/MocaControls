@@ -93,6 +93,12 @@ Public Class Form1
         TextBoxEx2.InputFormat = TextBoxEx.InputFormatType.Custom
         TextBoxEx2.CustomChars = "*-"
 
+        TextBoxEx3.InputFormat = TextBoxEx.InputFormatType.Alpha Or
+            TextBoxEx.InputFormatType.Number Or
+            TextBoxEx.InputFormatType.Upper Or
+            TextBoxEx.InputFormatType.Symbol
+        TextBoxEx3.Text = String.Empty
+
         Me.DoubleBuffered = True
 
         Dim dt As New DataTable
@@ -139,7 +145,7 @@ Public Class Form1
             Dim item As HogeRow = row.DataBoundItem
             Select Case item.ID
                 Case "2", "3", "5"
-                    CType(row.Cells(2), DataGridViewDisableButtonCell).Enabled = False
+                    CType(row.Cells("Btn"), DataGridViewDisableButtonCell).Enabled = False
             End Select
         Next
     End Sub
@@ -157,7 +163,7 @@ Public Class Form1
                 ModelGridView1.SetComboBoxItems(e.Column, dt)
             Case Else
         End Select
-        ModelGridView1.ReadOnly = True
+        'ModelGridView1.ReadOnly = True
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click

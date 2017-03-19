@@ -1534,12 +1534,28 @@ Namespace Win
             End If
 
             Dim args As GridColmnSettingEventArgs
+            Dim sortProps As New SortedList(Of Integer, PropertyInfo)
+            Dim propOrder As Integer
 
             args = New GridColmnSettingEventArgs
             _modelProps = ClassUtil.GetProperties(Me.RowEntityType)
             _modelPropDic = New Dictionary(Of String, PropertyInfo)
+            propOrder = _modelProps.Length
+
             For Each prop As PropertyInfo In _modelProps
                 _modelPropDic.Add(prop.Name, prop)
+
+                Dim index As Integer = propOrder
+                Dim attr As PropertyOrderAttribute
+                attr = ClassUtil.GetCustomAttribute(Of PropertyOrderAttribute)(prop)
+                If attr Is Nothing Then
+                    index = propOrder
+                    propOrder += 1
+                Else
+                    index = attr.Index
+                End If
+
+                sortProps.Add(index, prop)
             Next
 
             If _dataBinder.DataSource Is Nothing Then
@@ -1549,11 +1565,14 @@ Namespace Win
             Dim attrColspans As IList(Of CaptionAttribute)
             attrColspans = New List(Of CaptionAttribute)
 
-            For Each prop As PropertyInfo In _modelProps
+            For Each idx As Integer In sortProps.Keys
+                Dim prop As PropertyInfo = sortProps(idx)
                 Dim col As DataGridViewColumn
 
                 ' スタイル
                 col = _setColStyle(prop)
+
+                _setColumnProperty(prop, col)
 
                 ' 読取専用
                 _setColStyleReadOnly(prop, col)
@@ -1768,6 +1787,21 @@ Namespace Win
             col.DefaultCellStyle.SelectionBackColor = style.SelectionBackColor
             col.DefaultCellStyle.SelectionForeColor = style.SelectionForeColor
             col.DefaultCellStyle.Tag = style.Tag
+        End Sub
+
+        ''' <summary>
+        ''' 列のプロパティを設定
+        ''' </summary>
+        ''' <param name="prop"></param>
+        ''' <param name="col"></param>
+        Private Sub _setColumnProperty(ByVal prop As PropertyInfo, ByVal col As DataGridViewColumn)
+            Dim attr As KeyValueAttribute
+            attr = ClassUtil.GetCustomAttribute(Of KeyValueAttribute)(prop)
+            If attr Is Nothing Then
+                Return
+            End If
+
+            col.GetType().GetProperty(attr.Key).SetValue(col, attr.Value, New Object() {})
         End Sub
 
         ''' <summary>

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <version>1.3.0-beta23</version>
+    <version>1.3.0-beta24</version>
     <authors>MiYABiS</authors>
     <owners>MiYABiS</owners>
     <id>Moca.NETControls</id>
@@ -13,7 +13,8 @@
     </releaseNotes>
     <copyright>Copyright © 2016 MiYABiS All Rights Reserved.</copyright>
     <language>en-US</language>
-    <licenseUrl>http://moca.codeplex.com/license</licenseUrl>
+    <iconUrl>https://avatars1.githubusercontent.com/u/14543303</iconUrl>
+    <licenseUrl>https://opensource.org/licenses/MS-PL</licenseUrl>
     <projectUrl>https://github.com/mocanet/MocaControls</projectUrl>
     <references></references>
     <tags></tags>
