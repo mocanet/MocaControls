@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.4
+VisualStudioVersion = 15.0.26228.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D473D8F1-5FBB-4CF6-9904-771F13E351A4}"
 	ProjectSection(SolutionItems) = preProject
@@ -24,6 +24,13 @@ EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "MocaControls46", "MocaControls46\MocaControls46.vbproj", "{249C42CE-F933-4830-9914-D702E47F637B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MocaControls", "NuGetPackage\MocaControls.csproj", "{0451BAEF-DF2E-4B98-8644-94EE9415E389}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F8AC941E-C798-46AE-B673-23610E97B84B} = {F8AC941E-C798-46AE-B673-23610E97B84B}
+		{BBD85D2F-13EE-45B7-890B-2F93E1BA2D72} = {BBD85D2F-13EE-45B7-890B-2F93E1BA2D72}
+		{3C0FBF57-E8FE-43C5-9C47-1F9564B34D2B} = {3C0FBF57-E8FE-43C5-9C47-1F9564B34D2B}
+		{249C42CE-F933-4830-9914-D702E47F637B} = {249C42CE-F933-4830-9914-D702E47F637B}
+		{467638FB-8A19-43DE-8918-BCDA0F8A51C2} = {467638FB-8A19-43DE-8918-BCDA0F8A51C2}
+	EndProjectSection
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "MocaControls20.TestWin", "MocaControls20.TestWin\MocaControls20.TestWin.vbproj", "{5AE5A4A1-B8F6-449C-B1ED-53B3FF2AED89}"
 EndProject
