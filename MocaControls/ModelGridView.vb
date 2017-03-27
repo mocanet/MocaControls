@@ -400,11 +400,11 @@ Namespace Win
             cur.Add()
         End Sub
 
-        Protected Overrides Sub OnCellLeave(e As DataGridViewCellEventArgs)
-            MyBase.OnCellLeave(e)
+        'Protected Overrides Sub OnCellLeave(e As DataGridViewCellEventArgs)
+        '    MyBase.OnCellLeave(e)
 
-            Invalidate()
-        End Sub
+        '    Invalidate()
+        'End Sub
 
         ''' <summary>
         ''' <see cref="DataGridView"/> コントロールで現在のセルが変更されたとき、またはこのコントロールが入力フォーカスを受け取ったとき
@@ -834,6 +834,34 @@ Namespace Win
             MyBase.OnCellContentClick(e)
         End Sub
 
+        Protected Overrides Sub OnMouseMove(e As MouseEventArgs)
+            MyBase.OnMouseMove(e)
+
+            If e.Button <> MouseButtons.Left Then
+                Return
+            End If
+
+            Dim hit As HitTestInfo
+            hit = HitTest(e.X, e.Y)
+            If hit.Type <> DataGridViewHitTestType.ColumnHeader AndAlso
+                hit.Type <> DataGridViewHitTestType.RowHeader Then
+                Return
+            End If
+
+            MyBase.DoubleBuffered = False
+        End Sub
+
+        ''' <summary>
+        ''' マウスのボタンが離された時
+        ''' </summary>
+        ''' <param name="e"></param>
+        ''' <remarks></remarks>
+        Protected Overrides Sub OnMouseUp(e As System.Windows.Forms.MouseEventArgs)
+            MyBase.OnMouseUp(e)
+
+            MyBase.DoubleBuffered = True
+        End Sub
+
 #End Region
 
 #Region " Method "
@@ -1104,6 +1132,10 @@ Namespace Win
                     toprow -= 1
                 End If
                 Me.FirstDisplayedScrollingRowIndex = toprow
+            End If
+
+            If Me.SelectedCells.Count.Equals(0) Then
+                CurrentCell.Selected = True
             End If
 
             Me.Focus()

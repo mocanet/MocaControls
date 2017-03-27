@@ -53,7 +53,7 @@ Namespace Win
         Public Property EditingControlFormattedValue As Object Implements IDataGridViewEditingControl.EditingControlFormattedValue
             Get
                 If Value Is Nothing Then
-                    Return String.Empty
+                    Return NullValue
                 End If
 
                 Return GetEditingControlFormattedValue(DataGridViewDataErrorContexts.Formatting)
@@ -147,7 +147,7 @@ Namespace Win
         '''<param name="context">データが必要とされるコンテキストを指定する <see cref="T:System.Windows.Forms.DataGridViewDataErrorContexts" /> 値のビットごとの組み合わせ。</param>
         Public Function GetEditingControlFormattedValue(context As DataGridViewDataErrorContexts) As Object Implements IDataGridViewEditingControl.GetEditingControlFormattedValue
             If Value Is Nothing Then
-                Return String.Empty
+                Return NullValue
             End If
 
             Return CType(Value, DateTime).ToString(CustomFormat)

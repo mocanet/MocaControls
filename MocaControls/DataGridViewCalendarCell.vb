@@ -75,7 +75,8 @@ Namespace Win
 
         Public Overrides Function ParseFormattedValue(formattedValue As Object, cellStyle As DataGridViewCellStyle, formattedValueTypeConverter As TypeConverter, valueTypeConverter As TypeConverter) As Object
             If String.IsNullOrEmpty(formattedValue) Then
-                Return cellStyle.NullValue
+                'Return cellStyle.NullValue
+                Return cellStyle.DataSourceNullValue
             End If
             Return MyBase.ParseFormattedValue(formattedValue, cellStyle, formattedValueTypeConverter, valueTypeConverter)
         End Function
@@ -102,7 +103,7 @@ Namespace Win
 
         Public Overrides ReadOnly Property DefaultNewRowValue As Object
             Get
-                Return Nothing
+                Return Me.Style.DataSourceNullValue
             End Get
         End Property
 
