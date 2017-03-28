@@ -1135,7 +1135,9 @@ Namespace Win
             End If
 
             If Me.SelectedCells.Count.Equals(0) Then
-                CurrentCell.Selected = True
+                If CurrentCell IsNot Nothing Then
+                    CurrentCell.Selected = True
+                End If
             End If
 
             Me.Focus()
