@@ -11,7 +11,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyConfiguration("")>
 <Assembly: AssemblyCompany("MiYABiS")> 
 <Assembly: AssemblyProduct("MocaControls")>
-<Assembly: AssemblyCopyright("Copyright © 2015 MiYABiS All Rights Reserved.")>
+<Assembly: AssemblyCopyright("Copyright © 2012 MiYABiS All Rights Reserved.")> 
 <Assembly: AssemblyTrademark("")>
 <Assembly: AssemblyCulture("")>
 
@@ -30,10 +30,10 @@ Imports System.Runtime.InteropServices
 ' You can specify all the values or you can default the Build and Revision Numbers 
 ' by using the '*' as shown below:
 ' [assembly: AssemblyVersion("1.0.*")]
-<Assembly: AssemblyVersion("4.6.0")>
-<Assembly: AssemblyFileVersion("4.6.0")>
+<Assembly: AssemblyVersion("4.5.2")>
+<Assembly: AssemblyFileVersion("4.5.2")>
 
 ' プログラム要素が CLS (Common Language Specification) に準拠しているかどうかを示します
-<Assembly: System.CLSCompliant(True)>
+<Assembly: System.CLSCompliant(True)> 
 
-<Assembly: Guid("90AB841F-834D-4BE7-BC3D-3045444BAB19")>
+<Assembly: GuidAttribute("5815799A-8433-48E2-8665-C60AA16F644F")> 

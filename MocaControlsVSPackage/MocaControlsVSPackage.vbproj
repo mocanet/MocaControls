@@ -201,6 +201,14 @@
       <Private>False</Private>
       <VSIXSubPath>net40</VSIXSubPath>
     </ProjectReference>
+    <ProjectReference Include="..\MocaControls452\MocaControls452.vbproj">
+      <Project>{c0393554-babd-4a58-8aed-854abbea9292}</Project>
+      <Name>MocaControls452</Name>
+      <VSIXSubPath>net452</VSIXSubPath>
+      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroup%3bPkgdefProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
+      <Private>False</Private>
+    </ProjectReference>
     <ProjectReference Include="..\MocaControls45\MocaControls45.vbproj">
       <Project>{bbd85d2f-13ee-45b7-890b-2f93e1ba2d72}</Project>
       <Name>MocaControls45</Name>
@@ -209,10 +217,26 @@
       <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\MocaControls462\MocaControls462.vbproj">
+      <Project>{89a41c71-56c3-458d-9390-bd7b2e36e35d}</Project>
+      <Name>MocaControls462</Name>
+      <VSIXSubPath>net462</VSIXSubPath>
+      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroup%3bPkgdefProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
+      <Private>False</Private>
+    </ProjectReference>
     <ProjectReference Include="..\MocaControls46\MocaControls46.vbproj">
       <Project>{249c42ce-f933-4830-9914-d702e47f637b}</Project>
       <Name>MocaControls46</Name>
       <VSIXSubPath>net46</VSIXSubPath>
+      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroup%3bPkgdefProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\MocaControls47\MocaControls47.vbproj">
+      <Project>{aaeeceb1-8c41-43b8-9beb-40809f53ec86}</Project>
+      <Name>MocaControls47</Name>
+      <VSIXSubPath>net47</VSIXSubPath>
       <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroup%3bPkgdefProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
       <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
       <Private>False</Private>

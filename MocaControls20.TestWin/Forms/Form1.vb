@@ -80,8 +80,8 @@ Public Class Form1
         ModelGridView1.AllowUserToAddRows = False
         ModelGridView1.DataSource = lst
         ModelGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect
-        ModelGridView1.SelectionMode = DataGridViewSelectionMode.CellSelect
-        ModelGridView1.SelectionMode = DataGridViewSelectionMode.RowHeaderSelect
+        'ModelGridView1.SelectionMode = DataGridViewSelectionMode.CellSelect
+        'ModelGridView1.SelectionMode = DataGridViewSelectionMode.RowHeaderSelect
         'ModelGridView1.SelectionMode = DataGridViewSelectionMode.ColumnHeaderSelect
         ModelGridView1.TransparentRowSelection = True
         ModelGridView1.DefaultCellStyle.Padding = New Padding(5)
@@ -145,7 +145,7 @@ Public Class Form1
             Dim item As HogeRow = row.DataBoundItem
             Select Case item.ID
                 Case "2", "3", "5"
-                    CType(row.Cells("Btn"), DataGridViewDisableButtonCell).Enabled = False
+                    'CType(row.Cells("Btn"), DataGridViewDisableButtonCell).Enabled = False
             End Select
         Next
     End Sub
@@ -161,6 +161,8 @@ Public Class Form1
                 dt.AddRow("Hoge 3", "003")
                 cbo.DataSource = dt
                 ModelGridView1.SetComboBoxItems(e.Column, dt)
+            Case 5, 6
+                e.Column.SortMode = DataGridViewColumnSortMode.Programmatic
             Case Else
         End Select
         'ModelGridView1.ReadOnly = True
@@ -182,4 +184,60 @@ Public Class Form1
         Debug.Print("ModelGridView1_CellContentClick")
     End Sub
 
+    Private Sub ModelGridView1_ColumnHeaderMouseClick(sender As Object, e As DataGridViewCellMouseEventArgs) Handles ModelGridView1.ColumnHeaderMouseClick
+        Select Case e.ColumnIndex
+            Case 5, 6
+                Dim clickedColumn As DataGridViewColumn = ModelGridView1.Columns(e.ColumnIndex)
+                If clickedColumn.SortMode <> DataGridViewColumnSortMode.Automatic Then
+                    Me.SortRows(clickedColumn, True)
+                End If
+        End Select
+    End Sub
+
+    ''' <summary>
+    ''' 指定された列を基準にして並び替えを行う
+    ''' </summary>
+    ''' <param name="sortColumn">基準にする列</param>
+    ''' <param name="orderToggle">並び替えの方向をトグルで変更する</param>
+    Private Sub SortRows(ByVal sortColumn As DataGridViewColumn,
+            ByVal orderToggle As Boolean)
+        If sortColumn Is Nothing Then
+            Return
+        End If
+
+        '今までの並び替えグリフを消す
+        If sortColumn.SortMode = DataGridViewColumnSortMode.Programmatic AndAlso
+            Not (ModelGridView1.SortedColumn Is Nothing) AndAlso
+            Not ModelGridView1.SortedColumn.Equals(sortColumn) Then
+            ModelGridView1.SortedColumn.HeaderCell.SortGlyphDirection =
+                SortOrder.None
+        End If
+
+        '並び替えの方向（昇順か降順か）を決める
+        Dim sortDirection As System.ComponentModel.ListSortDirection
+        If orderToggle Then
+            sortDirection = IIf(ModelGridView1.SortOrder = SortOrder.Descending,
+                System.ComponentModel.ListSortDirection.Ascending,
+                System.ComponentModel.ListSortDirection.Descending)
+        Else
+            sortDirection = IIf(ModelGridView1.SortOrder = SortOrder.Descending,
+                System.ComponentModel.ListSortDirection.Descending,
+                System.ComponentModel.ListSortDirection.Ascending)
+        End If
+        Dim sOrder As SortOrder =
+            IIf(sortDirection = System.ComponentModel.ListSortDirection.Ascending,
+                SortOrder.Ascending, SortOrder.Descending)
+
+        '並び替えを行う
+        'ModelGridView1.Sort(sortColumn, sortDirection)
+
+        ModelGridView1.DataBinder.BindSrc.Sort = sortColumn.Name
+
+        If sortColumn.SortMode = DataGridViewColumnSortMode.Programmatic Then
+            '並び替えグリフを変更
+            sortColumn.HeaderCell.SortGlyphDirection = sOrder
+        End If
+    End Sub
+
 End Class
+

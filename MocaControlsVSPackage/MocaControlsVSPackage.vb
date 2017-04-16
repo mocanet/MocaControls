@@ -91,12 +91,13 @@ Public NotInheritable Class MocaControlsVSPackage
         pkg.ResetDefaults(__VSPKGRESETFLAGS.PKGRF_TOOLBOXITEMS)
     End Sub
 
-    Private _componentPath() As String = {"net20", "net35", "net40", "net45", "net46"}
+    Private _componentPath() As String = {"net20", "net35", "net40", "net45", "net452", "net46", "net462", "net47"}
     Private _componentName As String = "MocaControls.dll"
     Private _categoryTabsOld() As String = {"Controls 2.0.0.0", "Controls 3.5.0.0", "Controls 4.0.0.0", "Controls 4.5.0.0", "Controls 4.6.0.0"}
     Private _categoryTabsOld2() As String = {"Controls 2.0.1.0", "Controls 3.5.1.0", "Controls 4.0.1.0", "Controls 4.5.1.0", "Controls 4.6.0.0"}
     Private _categoryTabsOld3() As String = {"Controls 2.0", "Controls 3.5", "Controls 4.0", "Controls 4.5", "Controls 4.6"}
-    Private _categoryTabs() As String = {"Fw 2.0", "Fw 3.5", "Fw 4.0", "Fw 4.5", "Fw 4.6"}
+    Private _categoryTabsOld4() As String = {"Fw 2.0", "Fw 3.5", "Fw 4.0", "Fw 4.5", "Fw 4.6"}
+    Private _categoryTabs() As String = {"Fw 2.0", "Fw 3.5", "Fw 4.0", "Fw 4.5", "Fw 4.5.2", "Fw 4.6", "Fw 4.6.2", "Fw 4.7"}
     Private _tabName As String = "Moca.NET "
 
     Private Sub OnRefreshToolbox(ByVal sender As Object, ByVal e As EventArgs) Handles Me.ToolboxInitialized, Me.ToolboxUpgraded
@@ -116,6 +117,7 @@ Public NotInheritable Class MocaControlsVSPackage
         Dim categoryTabOld As String = _tabName & _categoryTabsOld(index)
         Dim categoryTabOld2 As String = _tabName & _categoryTabsOld2(index)
         Dim categoryTabOld3 As String = _tabName & _categoryTabsOld3(index)
+        Dim categoryTabOld4 As String = _tabName & _categoryTabsOld4(index)
         Dim categoryTab As String = _tabName & _categoryTabs(index)
 
         For Each oldItem As ToolboxItem In service.GetToolboxItems(categoryTabOld)
@@ -130,6 +132,10 @@ Public NotInheritable Class MocaControlsVSPackage
             service.RemoveToolboxItem(oldItem)
         Next
         toolbox.RemoveTab(categoryTabOld3)
+        For Each oldItem As ToolboxItem In service.GetToolboxItems(categoryTabOld4)
+            service.RemoveToolboxItem(oldItem)
+        Next
+        toolbox.RemoveTab(categoryTabOld4)
 
         For Each oldItem As ToolboxItem In service.GetToolboxItems(categoryTab)
             service.RemoveToolboxItem(oldItem)

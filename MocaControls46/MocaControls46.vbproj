@@ -11,7 +11,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Moca</RootNamespace>
     <AssemblyName>MocaControls</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <GeneratePkgDefFile>false</GeneratePkgDefFile>
     <OptionStrict>Off</OptionStrict>
@@ -81,17 +81,14 @@
     <OptionCompare>Binary</OptionCompare>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net">
-      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Moca, Version=4.6.3.0, Culture=neutral, PublicKeyToken=42f7e4f7232a6bf5, processorArchitecture=MSIL">
-      <HintPath>..\packages\Moca.NETCore.2.3.1\lib\net46-full\Moca.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Moca, Version=4.6.0.0, Culture=neutral, PublicKeyToken=42f7e4f7232a6bf5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moca.NETCore.2.3.3\lib\net46-full\Moca.dll</HintPath>
     </Reference>
     <Reference Include="MocaWin, Version=4.6.0.0, Culture=neutral, PublicKeyToken=74dd2591eb474191, processorArchitecture=MSIL">
-      <HintPath>..\packages\Moca.NETWin.2.1.0\lib\net46-full\MocaWin.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Moca.NETWin.2.1.2\lib\net46-full\MocaWin.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -380,13 +377,13 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
     <None Include="Key.snk" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Import Include="Microsoft.VisualBasic" />
