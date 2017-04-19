@@ -470,6 +470,21 @@ Namespace Win
         End Sub
 
         ''' <summary>
+        ''' マウス ポインタが移動
+        ''' </summary>
+        ''' <param name="e"></param>
+        Protected Overrides Sub OnCellMouseMove(e As DataGridViewCellMouseEventArgs)
+            MyBase.OnCellMouseMove(e)
+
+            If e.RowIndex < 0 AndAlso e.ColumnIndex >= 0 Then
+                If Columns.Item(e.ColumnIndex).SortMode <> DataGridViewColumnSortMode.NotSortable Then
+                    Columns.Item(e.ColumnIndex).HeaderCell.Style.BackColor = Styles(Moca.StyleNames.SortColumnHeaderHover.ToString).BackColor
+                    Cursor = Cursors.Hand
+                End If
+            End If
+        End Sub
+
+        ''' <summary>
         ''' マウス ポインタがセルを離れる
         ''' </summary>
         ''' <param name="e"></param>
@@ -479,6 +494,13 @@ Namespace Win
             If TypeOf Cols(e.ColumnIndex) Is DataGridViewButtonColumn Then
                 Cursor = Cursors.Default
                 ShowCellToolTips = True
+            End If
+
+            If e.RowIndex < 0 AndAlso e.ColumnIndex >= 0 Then
+                If Columns.Item(e.ColumnIndex).SortMode <> DataGridViewColumnSortMode.NotSortable Then
+                    Columns.Item(e.ColumnIndex).HeaderCell.Style.BackColor = ColumnHeadersDefaultCellStyle.BackColor
+                    Cursor = Cursors.Default
+                End If
             End If
         End Sub
 
@@ -1677,7 +1699,7 @@ Namespace Win
             col.DataPropertyName = prop.Name
             col.Name = prop.Name
             col.DefaultCellStyle.Alignment = attr.Align
-            col.SortMode = DataGridViewColumnSortMode.NotSortable
+            col.SortMode = attr.SortMode
             col.DefaultCellStyle.NullValue = attr.NullValue
 
             colIndex = Me.Columns.Add(col)

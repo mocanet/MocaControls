@@ -36,7 +36,8 @@ Namespace Win
                        Optional ByVal nullValue As Object = "",
                        Optional ByVal rightBorderNone As Boolean = False,
                        Optional ByVal InputControl As TextBoxEx.InputFormatType = TextBoxEx.InputFormatType.None,
-                       Optional ByVal InputControlCustomChars As String = "")
+                       Optional ByVal InputControlCustomChars As String = "",
+                       Optional ByVal SortMode As DataGridViewColumnSortMode = DataGridViewColumnSortMode.NotSortable)
             Me.Width = width
             Me.Align = align
             Me.Format = format
@@ -45,6 +46,7 @@ Namespace Win
             Me.WordWrap = wordWrap
             Me.InputFormat = inputFormat
             Me.NullValue = nullValue
+            Me.SortMode = SortMode
         End Sub
 
 #End Region
@@ -83,6 +85,9 @@ Namespace Win
 
         ''' <summary>入力文字制御指定に Custom が指定された時の許可する文字</summary>
         Public Property InputControlCustomChars As String
+
+        ''' <summary>ソート</summary>
+        Public Property SortMode As DataGridViewColumnSortMode
 
 #End Region
 

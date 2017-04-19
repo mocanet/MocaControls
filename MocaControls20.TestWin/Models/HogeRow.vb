@@ -32,12 +32,12 @@ Public Class HogeRow
     Public Property Cbo As String
 
     <DisplayName("名前")>
-    <ColumnStyle(100, ImeMode:=ImeMode.Hiragana)>
+    <ColumnStyle(100, ImeMode:=ImeMode.Hiragana, SortMode:=DataGridViewColumnSortMode.Automatic)>
     <ValidateTypes(Moca.Util.ValidateTypes.LenghtMax)>
     <Frozen()>
     Public Property Name As String
 
-    <ColumnStyle(100, CellType:=Moca.CellType.Link)>
+    <ColumnStyle(100, CellType:=Moca.CellType.Link, SortMode:=DataGridViewColumnSortMode.Automatic)>
     Public Property LinkText As String
 
     <ColumnStyle(50)>

@@ -77,8 +77,10 @@ Public Class Form1
         }
         lst.Add(row)
 
+        ModelGridView1.EnableHeadersVisualStyles = False
         ModelGridView1.AllowUserToAddRows = False
-        ModelGridView1.DataSource = lst
+        Dim lstSort As New Moca.SortableBindingList(Of HogeRow)(lst)
+        ModelGridView1.DataSource = lstSort
         ModelGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect
         'ModelGridView1.SelectionMode = DataGridViewSelectionMode.CellSelect
         'ModelGridView1.SelectionMode = DataGridViewSelectionMode.RowHeaderSelect
@@ -161,8 +163,6 @@ Public Class Form1
                 dt.AddRow("Hoge 3", "003")
                 cbo.DataSource = dt
                 ModelGridView1.SetComboBoxItems(e.Column, dt)
-            Case 5, 6
-                e.Column.SortMode = DataGridViewColumnSortMode.Programmatic
             Case Else
         End Select
         'ModelGridView1.ReadOnly = True

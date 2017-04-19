@@ -62,6 +62,7 @@ Public Enum StyleNames As Integer
     NegativeValue
     Closed
     Modify
+    SortColumnHeaderHover
 End Enum
 
 #End Region
