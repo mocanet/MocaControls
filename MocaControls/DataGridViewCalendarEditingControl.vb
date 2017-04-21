@@ -1,4 +1,5 @@
 ﻿
+Imports System.ComponentModel
 Imports Moca.Win
 
 Namespace Win
@@ -6,6 +7,7 @@ Namespace Win
     ''' <summary>
     ''' <see cref="NullableDateTimePicker"/> の編集用コントロール
     ''' </summary>
+    <ToolboxItem(False)>
     Public Class DataGridViewCalendarEditingControl
         Inherits NullableDateTimePicker
         Implements IDataGridViewEditingControl

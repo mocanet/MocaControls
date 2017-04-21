@@ -1,10 +1,13 @@
 ﻿
+Imports System.ComponentModel
+
 Namespace Win
 
     ''' <summary>
     ''' DataGridViewMaskedTextBoxCellでホストされる
     ''' MaskedTextBoxコントロールを表します。
     ''' </summary>
+    <ToolboxItem(False)>
     Public Class DataGridViewMaskedTextBoxEditingControl
         Inherits MaskedTextBox
         Implements IDataGridViewEditingControl

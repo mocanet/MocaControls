@@ -1,10 +1,13 @@
 ﻿
+Imports System.ComponentModel
+
 Namespace Win
 
     ''' <summary>
     ''' DataGridViewTextBoxExCell でホストされる
     ''' TextBoxEx コントロールを表します。
     ''' </summary>
+    <ToolboxItem(False)>
     Public Class DataGridViewTextBoxExEditingControl
         Inherits TextBoxEx
         Implements IDataGridViewEditingControl
