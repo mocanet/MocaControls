@@ -104,6 +104,12 @@ Public NotInheritable Class MocaControlsVSPackage
         Dim service As IToolboxService = TryCast(GetService(GetType(IToolboxService)), IToolboxService)
         Dim toolbox As IVsToolbox = TryCast(GetService(GetType(IVsToolbox)), IVsToolbox)
 
+        _removeTab(service, toolbox, _categoryTabsOld)
+        _removeTab(service, toolbox, _categoryTabsOld2)
+        _removeTab(service, toolbox, _categoryTabsOld3)
+        _removeTab(service, toolbox, _categoryTabsOld4)
+        _removeTab(service, toolbox, _categoryTabs)
+
         For ii As Integer = 0 To _componentPath.Count - 1
             _OnRefreshToolbox(service, toolbox, ii)
         Next
@@ -113,34 +119,15 @@ Public NotInheritable Class MocaControlsVSPackage
     End Sub
 
     Private Sub _OnRefreshToolbox(ByVal service As IToolboxService, ByVal toolbox As IVsToolbox, ByVal index As Integer)
-        Dim target As AssemblyName = _getAssemblyName(index)
-        Dim categoryTabOld As String = _tabName & _categoryTabsOld(index)
-        Dim categoryTabOld2 As String = _tabName & _categoryTabsOld2(index)
-        Dim categoryTabOld3 As String = _tabName & _categoryTabsOld3(index)
-        Dim categoryTabOld4 As String = _tabName & _categoryTabsOld4(index)
         Dim categoryTab As String = _tabName & _categoryTabs(index)
+        'Dim items As ToolboxItemCollection = service.GetToolboxItems(categoryTab)
 
-        For Each oldItem As ToolboxItem In service.GetToolboxItems(categoryTabOld)
-            service.RemoveToolboxItem(oldItem)
-        Next
-        toolbox.RemoveTab(categoryTabOld)
-        For Each oldItem As ToolboxItem In service.GetToolboxItems(categoryTabOld2)
-            service.RemoveToolboxItem(oldItem)
-        Next
-        toolbox.RemoveTab(categoryTabOld2)
-        For Each oldItem As ToolboxItem In service.GetToolboxItems(categoryTabOld3)
-            service.RemoveToolboxItem(oldItem)
-        Next
-        toolbox.RemoveTab(categoryTabOld3)
-        For Each oldItem As ToolboxItem In service.GetToolboxItems(categoryTabOld4)
-            service.RemoveToolboxItem(oldItem)
-        Next
-        toolbox.RemoveTab(categoryTabOld4)
-
-        For Each oldItem As ToolboxItem In service.GetToolboxItems(categoryTab)
-            service.RemoveToolboxItem(oldItem)
-        Next
-        toolbox.RemoveTab(categoryTab)
+        'If items IsNot Nothing Then
+        '    For Each oldItem As ToolboxItem In items
+        '        service.RemoveToolboxItem(oldItem)
+        '    Next
+        '    toolbox.RemoveTab(categoryTab)
+        'End If
 
         toolbox.AddTab(categoryTab)
         _output("Add Tab : " & categoryTab)
@@ -148,6 +135,20 @@ Public NotInheritable Class MocaControlsVSPackage
         For Each item As ToolboxItem In ToolboxItemList(_componentPath(index))
             _output("Add Toolbox : " & item.DisplayName)
             service.AddToolboxItem(item, categoryTab)
+        Next
+    End Sub
+
+    Private Sub _removeTab(ByVal service As IToolboxService, ByVal toolbox As IVsToolbox, ByVal tabs() As String)
+        For Each tab As String In tabs
+            Dim categoryTabOld As String = _tabName & tab
+            Dim items As ToolboxItemCollection = service.GetToolboxItems(categoryTabOld)
+
+            If items IsNot Nothing Then
+                For Each oldItem As ToolboxItem In service.GetToolboxItems(categoryTabOld)
+                    service.RemoveToolboxItem(oldItem)
+                Next
+                toolbox.RemoveTab(categoryTabOld)
+            End If
         Next
     End Sub
 

@@ -7,7 +7,7 @@
     <MoreInfo>http://visualstudiogallery.msdn.microsoft.com/565e3bf2-48a1-4830-946f-8cf91c1dbcc4</MoreInfo>
     <License>License.txt</License>
     <ReleaseNotes>ReleaseNote.rtf</ReleaseNotes>
-    <Icon>https://avatars1.githubusercontent.com/u/14543303</Icon>
+    <Icon>MocaNET.png</Icon>
     <PreviewImage>Resources\MocaControls.png</PreviewImage>
     <Tags>control</Tags>
   </Metadata>

@@ -91,8 +91,8 @@ Public Class Form1
         ModelGridView1.RowTemplate.Height = 60
         ModelGridView1.MultiSelect = False
 
-        'TextBoxEx2.InputFormat = TextBoxEx.InputFormatType.Number Or TextBoxEx.InputFormatType.Custom
-        TextBoxEx2.InputFormat = TextBoxEx.InputFormatType.Custom
+        TextBoxEx2.InputFormat = TextBoxEx.InputFormatType.Number Or TextBoxEx.InputFormatType.Custom
+        'TextBoxEx2.InputFormat = TextBoxEx.InputFormatType.Custom
         TextBoxEx2.CustomChars = "*-"
 
         TextBoxEx3.InputFormat = TextBoxEx.InputFormatType.Alpha Or
@@ -147,7 +147,7 @@ Public Class Form1
             Dim item As HogeRow = row.DataBoundItem
             Select Case item.ID
                 Case "2", "3", "5"
-                    'CType(row.Cells("Btn"), DataGridViewDisableButtonCell).Enabled = False
+                    CType(row.Cells("Btn"), DataGridViewDisableButtonCell).Enabled = False
             End Select
         Next
     End Sub
@@ -239,5 +239,8 @@ Public Class Form1
         End If
     End Sub
 
+    Private Sub TextBoxEx2_TextChangedComplete(sender As Object, e As EventArgs) Handles TextBoxEx2.TextChangedComplete
+        Label1.Text = TextBoxEx2.Text
+    End Sub
 End Class
 

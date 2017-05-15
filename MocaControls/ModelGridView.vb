@@ -843,7 +843,7 @@ Namespace Win
         Protected Overrides Sub OnCellContentClick(e As DataGridViewCellEventArgs)
             Dim cell As DataGridViewCell
 
-            If e.RowIndex > 0 AndAlso e.ColumnIndex > 0 Then
+            If e.RowIndex >= 0 AndAlso e.ColumnIndex >= 0 Then
                 cell = Me(e.ColumnIndex, e.RowIndex)
                 If TypeOf cell Is DataGridViewDisableButtonCell Then
                     Dim disableButtonCell As DataGridViewDisableButtonCell = cell
@@ -882,6 +882,10 @@ Namespace Win
             MyBase.OnMouseUp(e)
 
             MyBase.DoubleBuffered = True
+        End Sub
+
+        Protected Overrides Sub OnColumnHeaderMouseClick(e As DataGridViewCellMouseEventArgs)
+            MyBase.OnColumnHeaderMouseClick(e)
         End Sub
 
 #End Region
@@ -1368,6 +1372,74 @@ Namespace Win
                 Throw ex
             End Try
         End Function
+
+#End Region
+#Region " ソート "
+
+        ''' <summary>
+        ''' 指定された列を基準にして並び替えを行う
+        ''' </summary>
+        ''' <param name="clickColumnIndex">クリックされた列位置</param>
+        ''' <param name="sortColumnIndex">基準にする列位置</param>
+        ''' <param name="orderToggle">並び替えの方向をトグルで変更する</param>
+        Public Sub SortRows(ByVal clickColumnIndex As Integer, ByVal sortColumnIndex As Integer, ByVal orderToggle As Boolean)
+            SortRows(Columns(clickColumnIndex), Columns(sortColumnIndex), orderToggle)
+        End Sub
+
+        ''' <summary>
+        ''' 指定された列を基準にして並び替えを行う
+        ''' </summary>
+        ''' <param name="clickColumnName">クリックされた列名</param>
+        ''' <param name="sortColumnName">基準にする列名</param>
+        ''' <param name="orderToggle">並び替えの方向をトグルで変更する</param>
+        Public Sub SortRows(ByVal clickColumnName As String, ByVal sortColumnName As String, ByVal orderToggle As Boolean)
+            SortRows(Columns(clickColumnName), Columns(sortColumnName), orderToggle)
+        End Sub
+
+        ''' <summary>
+        ''' 指定された列を基準にして並び替えを行う
+        ''' </summary>
+        ''' <param name="clickColumn">クリックされた列</param>
+        ''' <param name="sortColumn">基準にする列</param>
+        ''' <param name="orderToggle">並び替えの方向をトグルで変更する</param>
+        Public Sub SortRows(ByVal clickColumn As DataGridViewColumn, ByVal sortColumn As DataGridViewColumn, ByVal orderToggle As Boolean)
+            If sortColumn Is Nothing Then
+                Return
+            End If
+            If Me.RowCount.Equals(0) Then
+                Return
+            End If
+
+            '今までの並び替えグリフを消す
+            If clickColumn.SortMode = DataGridViewColumnSortMode.Programmatic AndAlso
+                Not (Me.SortedColumn Is Nothing) AndAlso
+                Not Me.SortedColumn.Equals(sortColumn) Then
+                Me.SortedColumn.HeaderCell.SortGlyphDirection = SortOrder.None
+            End If
+
+            '並び替えの方向（昇順か降順か）を決める
+            Dim sortDirection As ListSortDirection
+            If orderToggle Then
+                sortDirection = IIf(Me.SortOrder = SortOrder.Descending,
+                    ListSortDirection.Ascending,
+                    ListSortDirection.Descending)
+            Else
+                sortDirection = IIf(Me.SortOrder = SortOrder.Descending,
+                    ListSortDirection.Descending,
+                    ListSortDirection.Ascending)
+            End If
+            Dim sOrder As SortOrder = IIf(sortDirection = ListSortDirection.Ascending,
+                    SortOrder.Ascending,
+                    SortOrder.Descending)
+
+            '並び替えを行う
+            Me.Sort(sortColumn, sortDirection)
+
+            If clickColumn.SortMode = DataGridViewColumnSortMode.Programmatic Then
+                '並び替えグリフを変更
+                clickColumn.HeaderCell.SortGlyphDirection = sOrder
+            End If
+        End Sub
 
 #End Region
 

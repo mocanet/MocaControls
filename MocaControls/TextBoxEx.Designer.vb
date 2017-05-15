@@ -37,6 +37,9 @@ Namespace Win
                     .Visible = True}
             Controls.Add(_bottomBorder)
             AddHandler _bottomBorder.SizeChanged, AddressOf _sizeChanged
+
+            _timer = New Timers.Timer(TextChangedCompleteDelay)
+            AddHandler _timer.Elapsed, AddressOf _timer_Elapsed
         End Sub
 
         'Component は、コンポーネント一覧に後処理を実行するために dispose をオーバーライドします。
@@ -45,6 +48,14 @@ Namespace Win
             Try
                 If disposing AndAlso components IsNot Nothing Then
                     components.Dispose()
+
+                    If _timer IsNot Nothing Then
+                        _timer.Stop()
+                        _timer.Dispose()
+                    End If
+                    If _bottomBorder IsNot Nothing Then
+                        _bottomBorder.Dispose()
+                    End If
                 End If
             Finally
                 MyBase.Dispose(disposing)

@@ -91,12 +91,17 @@ Namespace Win
         ''' <summary>Enterキー押下イベント</summary>
         Public Event PressEnterKey()
 
+        ''' <summary>イベント</summary>
+        Public Event TextChangedComplete(ByVal sender As Object, ByVal e As EventArgs)
+
         ''' <summary>文字メッセージ</summary>
         Private Const WM_CHAR As Integer = &H102
         ''' <summary>貼り付けメッセージ</summary>
         Private Const WM_PASTE As Integer = &H302
         ''' <summary>キー押下メッセージ</summary>
         Private Const WM_KEYDOWN As Integer = &H100
+
+        Private Const WM_PAINT As Integer = &HF
 
         ''' <summary>貼り付け処理中フラグ</summary>
         Private _nowPaste As Boolean
@@ -123,6 +128,13 @@ Namespace Win
         Private _bottomBorder As Label
 
         Private _customChars As String
+
+        Private _timer As Timers.Timer
+
+        ''' <summary>境界線</summary>
+        Private _borderColor As Color = Color.FromArgb(100, 100, 100)
+        ''' <summary>境界線のスタイル</summary>
+        Private _lineStyle As ButtonBorderStyle = ButtonBorderStyle.Solid
 
 #End Region
 
@@ -377,6 +389,48 @@ Namespace Win
         <Description("必須項目かどうか")>
         Public Property Required As Boolean
 
+        Public Property TextChangedCompleteDelay As Integer = 1300
+
+        ''' <summary>
+        ''' 境界線
+        ''' </summary>
+        ''' <returns></returns>
+        <Category("Appearance")>
+        <Description("コントロールにフォーカスがないときの境界線の色を指定します")>
+        Public Property UnfocusedBorderColor() As Color = SystemColors.ControlDark
+
+        ''' <summary>
+        ''' 境界線
+        ''' </summary>
+        ''' <returns></returns>
+        <Category("Appearance")>
+        <Description("コントロールの境界線の色を指定します")>
+        Public Property BorderColor() As Color
+            Get
+                Return _borderColor
+            End Get
+            Set
+                _borderColor = Value
+                Invalidate()
+            End Set
+        End Property
+
+        ''' <summary>
+        ''' 境界線のスタイル
+        ''' </summary>
+        ''' <returns></returns>
+        <Category("Appearance")>
+        <Description("コントロールに境界線を付けるかどうかを指定します")>
+        Public Property LineStyle() As ButtonBorderStyle
+            Get
+                Return _lineStyle
+            End Get
+            Set
+                _lineStyle = Value
+                Invalidate()
+            End Set
+        End Property
+
 #End Region
 
 #Region "　Overrides　"
@@ -438,6 +492,20 @@ Namespace Win
                             Me.OnPaste(New System.EventArgs())
                             Return
                         End If
+                    End If
+
+                Case WM_PAINT
+                    If MyBase.BorderStyle = BorderStyle.FixedSingle Then
+                        MyBase.WndProc(m)
+
+                        Dim g As Graphics = Graphics.FromHwnd(Handle)
+                        Dim bounds As New Rectangle(0, 0, Width, Height)
+                        If Not Focused OrElse Not Enabled Then
+                            ControlPaint.DrawBorder(g, bounds, UnfocusedBorderColor, _lineStyle)
+                        Else
+                            ControlPaint.DrawBorder(g, bounds, _borderColor, _lineStyle)
+                        End If
+                        Return
                     End If
             End Select
 
@@ -890,6 +958,25 @@ Namespace Win
             _changeBackColor()
         End Sub
 
+        Protected Overrides Sub OnTextChanged(e As EventArgs)
+            If _timer.Enabled Then
+                _timer.Stop()
+                _timer.Start()
+            Else
+                _timer.Start()
+            End If
+
+            MyBase.OnTextChanged(e)
+        End Sub
+
+        Protected Overridable Sub OnTextChangedComplete(e As EventArgs)
+            RaiseEvent TextChangedComplete(Me, e)
+        End Sub
+
+        Private Sub _OnTextChangedComplete()
+            OnTextChangedComplete(EventArgs.Empty)
+        End Sub
+
         Private Sub _changeStyle()
             If BorderStyle <> System.Windows.Forms.BorderStyle.None OrElse Not [ReadOnly] OrElse _bottomBorder.Visible Then
                 BackColor = Color.White
@@ -986,6 +1073,11 @@ Namespace Win
         ''' <remarks></remarks>
         Private Sub TextBoxEx_KeyUp(sender As Object, e As System.Windows.Forms.KeyEventArgs) Handles Me.KeyUp
             _keyUpDigit(e)
+        End Sub
+
+        Private Sub _timer_Elapsed(sender As Object, e As Timers.ElapsedEventArgs)
+            _timer.Stop()
+            BeginInvoke(New MethodInvoker(AddressOf _OnTextChangedComplete))
         End Sub
 
 #End Region

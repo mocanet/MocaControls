@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <version>1.3.1</version>
+    <version>1.3.2</version>
     <authors>MiYABiS</authors>
     <owners>MiYABiS</owners>
     <id>Moca.NETControls</id>
@@ -9,7 +9,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>DI&amp;AOP framework Moca.NET Windows UI Controls</description>
     <summary>DI&amp;AOP framework Moca.NET Windows UI Controls</summary>
-    <releaseNotes>
+    <releaseNotes>GitHub #13, #14
     </releaseNotes>
     <copyright>Copyright © 2016 MiYABiS All Rights Reserved.</copyright>
     <language>en-US</language>

@@ -46,6 +46,7 @@ Partial Class Form1
         Me.DataBinder1 = New Moca.Win.DataBinder(Me.components)
         Me.DataGridViewEx1 = New Moca.Win.DataGridViewEx()
         Me.TextBoxEx3 = New Moca.Win.TextBoxEx(Me.components)
+        Me.Label1 = New System.Windows.Forms.Label()
         Me.Panel1.SuspendLayout()
         Me.ContextMenuPanel1.SuspendLayout()
         CType(Me.ModelGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -180,11 +181,15 @@ Partial Class Form1
         '
         'TextBoxEx2
         '
+        Me.TextBoxEx2.BackColor = System.Drawing.Color.White
+        Me.TextBoxEx2.BorderColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
+        Me.TextBoxEx2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.TextBoxEx2.BottomBorderColor = System.Drawing.Color.Empty
         Me.TextBoxEx2.CustomChars = Nothing
         Me.TextBoxEx2.ImeMode = System.Windows.Forms.ImeMode.NoControl
         Me.TextBoxEx2.InputFormat = Moca.Win.TextBoxEx.InputFormatType.None
-        Me.TextBoxEx2.Location = New System.Drawing.Point(485, 34)
+        Me.TextBoxEx2.LineStyle = System.Windows.Forms.ButtonBorderStyle.Solid
+        Me.TextBoxEx2.Location = New System.Drawing.Point(484, 45)
         Me.TextBoxEx2.Margin = New System.Windows.Forms.Padding(1, 2, 1, 2)
         Me.TextBoxEx2.Name = "TextBoxEx2"
         Me.TextBoxEx2.NegativeColor = System.Drawing.Color.Red
@@ -195,6 +200,8 @@ Partial Class Form1
         Me.TextBoxEx2.Separator = ""
         Me.TextBoxEx2.Size = New System.Drawing.Size(82, 18)
         Me.TextBoxEx2.TabIndex = 7
+        Me.TextBoxEx2.TextChangedCompleteDelay = 1300
+        Me.TextBoxEx2.UnfocusedBorderColor = System.Drawing.SystemColors.ControlDark
         '
         'FlowLayoutPanelEx1
         '
@@ -245,11 +252,13 @@ Partial Class Form1
         'TextBoxEx1
         '
         Me.TextBoxEx1.BackColor = System.Drawing.SystemColors.Control
+        Me.TextBoxEx1.BorderColor = System.Drawing.Color.FromArgb(CType(CType(100, Byte), Integer), CType(CType(100, Byte), Integer), CType(CType(100, Byte), Integer))
         Me.TextBoxEx1.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.TextBoxEx1.BottomBorderColor = System.Drawing.Color.Blue
         Me.TextBoxEx1.CustomChars = Nothing
         Me.TextBoxEx1.ImeMode = System.Windows.Forms.ImeMode.Disable
         Me.TextBoxEx1.InputFormat = Moca.Win.TextBoxEx.InputFormatType.None
+        Me.TextBoxEx1.LineStyle = System.Windows.Forms.ButtonBorderStyle.Solid
         Me.TextBoxEx1.Location = New System.Drawing.Point(231, 17)
         Me.TextBoxEx1.Name = "TextBoxEx1"
         Me.TextBoxEx1.NegativeColor = System.Drawing.Color.Red
@@ -262,6 +271,8 @@ Partial Class Form1
         Me.TextBoxEx1.Size = New System.Drawing.Size(130, 46)
         Me.TextBoxEx1.TabIndex = 3
         Me.TextBoxEx1.TabStop = False
+        Me.TextBoxEx1.TextChangedCompleteDelay = 1300
+        Me.TextBoxEx1.UnfocusedBorderColor = System.Drawing.SystemColors.ControlDark
         '
         'DataBinder1
         '
@@ -298,11 +309,13 @@ Partial Class Form1
         '
         'TextBoxEx3
         '
+        Me.TextBoxEx3.BorderColor = System.Drawing.Color.FromArgb(CType(CType(100, Byte), Integer), CType(CType(100, Byte), Integer), CType(CType(100, Byte), Integer))
         Me.TextBoxEx3.BottomBorderColor = System.Drawing.Color.Empty
         Me.TextBoxEx3.CustomChars = Nothing
         Me.TextBoxEx3.ImeMode = System.Windows.Forms.ImeMode.Disable
         Me.TextBoxEx3.InputFormat = Moca.Win.TextBoxEx.InputFormatType.None
-        Me.TextBoxEx3.Location = New System.Drawing.Point(627, 25)
+        Me.TextBoxEx3.LineStyle = System.Windows.Forms.ButtonBorderStyle.Solid
+        Me.TextBoxEx3.Location = New System.Drawing.Point(571, 12)
         Me.TextBoxEx3.Name = "TextBoxEx3"
         Me.TextBoxEx3.NegativeColor = System.Drawing.Color.Red
         Me.TextBoxEx3.NumericScale = 0
@@ -313,12 +326,24 @@ Partial Class Form1
         Me.TextBoxEx3.Size = New System.Drawing.Size(149, 26)
         Me.TextBoxEx3.TabIndex = 13
         Me.TextBoxEx3.Text = "TextBoxEx3"
+        Me.TextBoxEx3.TextChangedCompleteDelay = 1300
+        Me.TextBoxEx3.UnfocusedBorderColor = System.Drawing.SystemColors.ControlDark
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(570, 48)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(38, 12)
+        Me.Label1.TabIndex = 14
+        Me.Label1.Text = "Label1"
         '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(952, 412)
+        Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.TextBoxEx3)
         Me.Controls.Add(Me.DataGridViewEx1)
         Me.Controls.Add(Me.ComboBoxEx1)
@@ -360,4 +385,5 @@ Partial Class Form1
     Friend WithEvents DataBinder1 As Moca.Win.DataBinder
     Friend WithEvents DataGridViewEx1 As Moca.Win.DataGridViewEx
     Friend WithEvents TextBoxEx3 As Moca.Win.TextBoxEx
+    Friend WithEvents Label1 As Label
 End Class

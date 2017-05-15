@@ -87,24 +87,45 @@
     </Reference>
     <Reference Include="Microsoft.VisualStudio.CommandBars, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <SpecificVersion>False</SpecificVersion>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Common Files\Microsoft Shared\MSEnv\PublicAssemblies\Microsoft.VisualStudio.CommandBars.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.CoreUtility, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.OLE.Interop" />
     <Reference Include="Microsoft.VisualStudio.Shell.11.0">
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.Shell.11.0.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.Shell.Framework, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="Microsoft.VisualStudio.Shell.Framework, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Shell.Immutable.12.0, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\PublicAssemblies\Microsoft.VisualStudio.Shell.Immutable.12.0.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.Shell.Immutable.14.0, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\PublicAssemblies\Microsoft.VisualStudio.Shell.Immutable.14.0.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.Shell.Interop" />
+    <Reference Include="Microsoft.VisualStudio.Shell.Interop.12.0, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\PublicAssemblies\Microsoft.VisualStudio.Shell.Interop.12.0.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.Shell.Interop.8.0" />
     <Reference Include="Microsoft.VisualStudio.Shell.Interop.9.0" />
     <Reference Include="Microsoft.VisualStudio.Shell.Interop.10.0" />
     <Reference Include="Microsoft.VisualStudio.Shell.Interop.11.0">
-      <EmbedInteropTypes>true</EmbedInteropTypes>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.TextManager.Interop" />
     <Reference Include="Microsoft.VisualStudio.Shell.Immutable.10.0" />
     <Reference Include="Microsoft.VisualStudio.Shell.Immutable.11.0" />
+    <Reference Include="Microsoft.VisualStudio.Utilities, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
@@ -162,6 +183,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <Content Include="MocaNET.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="MocaNET32.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Content Include="ReleaseNote.rtf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
