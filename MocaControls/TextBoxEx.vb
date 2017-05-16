@@ -166,6 +166,7 @@ Namespace Win
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
+        <DefaultValue(0)>
         Public Property Precision() As System.Int32
             Get
                 Return Me._precision
@@ -190,6 +191,7 @@ Namespace Win
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
+        <DefaultValue(False)>
         Public Property PrecisionSign() As System.Boolean
             Get
                 Return Me._precisionSign
@@ -229,6 +231,7 @@ Namespace Win
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
+        <DefaultValue(0)>
         Public Property NumericScale() As System.Int32
             Get
                 Return Me._scale
@@ -387,9 +390,11 @@ Namespace Win
         End Property
 
         <Description("必須項目かどうか")>
+        <DefaultValue(False)>
         Public Property Required As Boolean
 
-        Public Property TextChangedCompleteDelay As Integer = 1300
+        <DefaultValue(0)>
+        Public Property TextChangedCompleteDelay As Integer = 0
 
         ''' <summary>
         ''' 境界線
@@ -421,6 +426,7 @@ Namespace Win
         ''' <returns></returns>
         <Category("Appearance")>
         <Description("コントロールに境界線を付けるかどうかを指定します")>
+        <DefaultValue(ButtonBorderStyle.Solid)>
         Public Property LineStyle() As ButtonBorderStyle
             Get
                 Return _lineStyle
@@ -959,10 +965,13 @@ Namespace Win
         End Sub
 
         Protected Overrides Sub OnTextChanged(e As EventArgs)
-            If _timer.Enabled Then
-                _timer.Stop()
-                _timer.Start()
+            If TextChangedCompleteDelay.Equals(0) Then
+                _timer.Enabled = False
             Else
+                _timer.Interval = TextChangedCompleteDelay
+                If _timer.Enabled Then
+                    _timer.Stop()
+                End If
                 _timer.Start()
             End If
 
@@ -1030,6 +1039,13 @@ Namespace Win
         ''' <param name="e"></param>
         ''' <remarks></remarks>
         Private Sub TextBoxEx_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.LostFocus
+            If _timer IsNot Nothing Then
+                If _timer.Enabled Then
+                    _timer.Stop()
+                    OnTextChangedComplete(EventArgs.Empty)
+                End If
+            End If
+
             If Me.Text.Length = 0 Then
                 Exit Sub
             End If

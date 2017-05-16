@@ -242,5 +242,6 @@ Public Class Form1
     Private Sub TextBoxEx2_TextChangedComplete(sender As Object, e As EventArgs) Handles TextBoxEx2.TextChangedComplete
         Label1.Text = TextBoxEx2.Text
     End Sub
+
 End Class
 
