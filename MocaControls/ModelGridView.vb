@@ -2043,6 +2043,10 @@ Namespace Win
             If attr Is Nothing Then
                 Return Nothing
             End If
+            ' AllowUserToAddRows = True のときは Nothing になる
+            If val Is Nothing Then
+                Return Nothing
+            End If
 
             If String.IsNullOrEmpty(attr.TableDefinitionFieldName) Then
                 _tblDef.GetTableDefinition(val)
@@ -2053,7 +2057,14 @@ Namespace Win
             Dim columnName As String
             Dim dbInfoCol As Moca.Db.DbInfoColumn
 
-            columnName = prop.Name
+            Dim attrColumn As Db.Attr.ColumnAttribute
+            attrColumn = ClassUtil.GetCustomAttribute(Of Db.Attr.ColumnAttribute)(prop)
+            If attrColumn Is Nothing Then
+                columnName = prop.Name
+            Else
+                columnName = attrColumn.ColumnName
+            End If
+
             If Not String.IsNullOrEmpty(attr.TableColumnName) Then
                 columnName = attr.TableColumnName
             End If

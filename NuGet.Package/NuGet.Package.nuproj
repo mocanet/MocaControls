@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|AnyCPU">
+      <Configuration>Debug</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|AnyCPU">
+      <Configuration>Release</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MocaControls35\MocaControls35.vbproj" />
+    <ProjectReference Include="..\MocaControls40\MocaControls40.vbproj" />
+    <ProjectReference Include="..\MocaControls452\MocaControls452.vbproj" />
+    <ProjectReference Include="..\MocaControls45\MocaControls45.vbproj" />
+    <ProjectReference Include="..\MocaControls462\MocaControls462.vbproj" />
+    <ProjectReference Include="..\MocaControls46\MocaControls46.vbproj" />
+    <ProjectReference Include="..\MocaControls47\MocaControls47.vbproj" />
+    <ProjectReference Include="..\MocaControls\MocaControls20.vbproj" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>66e947e1-8fb9-4b27-8ac3-56d19e04c9e0</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup>
+    <NuProjPath>..\packages\NuProj.0.11.14-beta\tools\</NuProjPath>
+  </PropertyGroup>
+  <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
+  <PropertyGroup Label="Configuration">
+    <Id>Moca.NETControls</Id>
+    <Version>1.3.3</Version>
+    <Title>Moca.NET Controls</Title>
+    <Authors>MiYABiS</Authors>
+    <Owners>MiYABiS</Owners>
+    <Summary>Moca.NET Controls</Summary>
+    <Description>Moca.NET Controls</Description>
+    <ReleaseNotes>
+    </ReleaseNotes>
+    <ProjectUrl>https://github.com/mocanet/MocaControls</ProjectUrl>
+    <LicenseUrl>https://opensource.org/licenses/MS-PL</LicenseUrl>
+    <Copyright>Copyright © 2016 MiYABiS All Rights Reserved.</Copyright>
+    <Tags>Moca</Tags>
+    <IconUrl>https://avatars1.githubusercontent.com/u/14543303</IconUrl>
+    <NoPackageAnalysis>false</NoPackageAnalysis>
+    <NoDefaultExcludes>false</NoDefaultExcludes>
+    <GenerateSymbolPackage>true</GenerateSymbolPackage>
+  </PropertyGroup>
+  <Import Project="$(NuProjPath)\NuProj.targets" />
+</Project>
