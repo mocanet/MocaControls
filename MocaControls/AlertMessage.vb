@@ -159,9 +159,11 @@ Namespace Win
         ''' <returns></returns>
         ''' <remarks></remarks>
         <Description("アニメーションの方向"), Browsable(True)>
+        <DefaultValue(AnimateWindow.DirectionType.Top)>
         Public Property DirectionType As Moca.Win.AnimateWindow.DirectionType = AnimateWindow.DirectionType.Top
 
         <Description("全体をクリックして閉じる"), Browsable(True)>
+        <DefaultValue(False)>
         Public Property FullClickClose As Boolean
             Get
                 Return Not btnAlertClose.Visible
@@ -172,12 +174,13 @@ Namespace Win
         End Property
 
         <Description("表示して何秒後に閉じるか指定する。０は閉じない。"), Browsable(True)>
+        <DefaultValue(0)>
         Public Property AutoCloseSecond As Integer
 
 #End Region
 #Region " Handles "
 
-        Private Sub AlertMessage_Load(sender As System.Object, e As System.EventArgs) Handles MyBase.Load
+        Protected Overrides Sub OnLoad(e As EventArgs)
             Me.lblAlert.BackColor = Me.DefaultMessageBackColor
             Me.lblAlert.ForeColor = Me.DefaultMessageForeColor
 
@@ -189,10 +192,25 @@ Namespace Win
 
             Me.TabStop = False
             Me.btnAlertClose.TabStop = False
+
+            MyBase.OnLoad(e)
         End Sub
 
-        Private Sub AlertMessage_Disposed(sender As Object, e As EventArgs) Handles Me.Disposed
-            _timer.Stop()
+        Protected Overrides Sub OnClick(e As EventArgs)
+            btnAlertClose_Click(btnAlertClose, e)
+
+            MyBase.OnClick(e)
+        End Sub
+
+        Protected Overrides Sub OnVisibleChanged(e As EventArgs)
+            If Visible Then
+                Return
+            End If
+            If Parent IsNot Nothing Then
+                Parent.Refresh()
+            End If
+
+            MyBase.OnVisibleChanged(e)
         End Sub
 
         Private Sub btnAlertClose_Click(sender As System.Object, e As System.EventArgs) Handles btnAlertClose.Click
@@ -211,10 +229,6 @@ Namespace Win
             End Select
             _animateWindow.SlideClose(Me, dt)
             Clear()
-        End Sub
-
-        Private Sub AlertMessage_Click(sender As Object, e As EventArgs)
-            btnAlertClose_Click(sender, e)
         End Sub
 
         Private Sub Timer_TicK(sender As Object, e As EventArgs)
@@ -332,6 +346,10 @@ Namespace Win
             _timer.Interval = second * 1000
             _timer.Stop()
             _timer.Start()
+        End Sub
+
+        Private Sub AlertMessage_Click(sender As Object, e As EventArgs)
+            btnAlertClose_Click(btnAlertClose, e)
         End Sub
 
 #End Region

@@ -11,8 +11,10 @@ Namespace Win
 			Try
 				If disposing AndAlso components IsNot Nothing Then
 					components.Dispose()
-				End If
-			Finally
+
+                    _timer.Stop()
+                End If
+            Finally
 				MyBase.Dispose(disposing)
 			End Try
 		End Sub

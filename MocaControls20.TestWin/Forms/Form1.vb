@@ -243,5 +243,10 @@ Public Class Form1
         Label1.Text = TextBoxEx2.Text
     End Sub
 
+
+    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+        AlertMessage1.Error("OK!!")
+    End Sub
+
 End Class
 

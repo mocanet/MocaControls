@@ -47,6 +47,7 @@ Partial Class Form1
         Me.DataGridViewEx1 = New Moca.Win.DataGridViewEx()
         Me.TextBoxEx3 = New Moca.Win.TextBoxEx(Me.components)
         Me.Label1 = New System.Windows.Forms.Label()
+        Me.AlertMessage1 = New Moca.Win.AlertMessage()
         Me.Panel1.SuspendLayout()
         Me.ContextMenuPanel1.SuspendLayout()
         CType(Me.ModelGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -154,8 +155,7 @@ Partial Class Form1
         '
         'ModelGridView1
         '
-        Me.ModelGridView1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.ModelGridView1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.ModelGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
@@ -174,7 +174,7 @@ Partial Class Form1
         Me.ModelGridView1.RowEditImage = CType(resources.GetObject("ModelGridView1.RowEditImage"), System.Drawing.Image)
         Me.ModelGridView1.RowEntityType = Nothing
         Me.ModelGridView1.RowTemplate.Height = 33
-        Me.ModelGridView1.Size = New System.Drawing.Size(672, 258)
+        Me.ModelGridView1.Size = New System.Drawing.Size(672, 235)
         Me.ModelGridView1.Styles = CType(resources.GetObject("ModelGridView1.Styles"), System.Collections.Generic.IDictionary(Of String, System.Windows.Forms.DataGridViewCellStyle))
         Me.ModelGridView1.TabIndex = 8
         Me.ModelGridView1.TransparentRowSelection = False
@@ -206,7 +206,7 @@ Partial Class Form1
         Me.FlowLayoutPanelEx1.Location = New System.Drawing.Point(300, 338)
         Me.FlowLayoutPanelEx1.Name = "FlowLayoutPanelEx1"
         Me.FlowLayoutPanelEx1.RightToLeft = System.Windows.Forms.RightToLeft.No
-        Me.FlowLayoutPanelEx1.Size = New System.Drawing.Size(288, 47)
+        Me.FlowLayoutPanelEx1.Size = New System.Drawing.Size(252, 47)
         Me.FlowLayoutPanelEx1.TabIndex = 5
         '
         'Button3
@@ -271,8 +271,7 @@ Partial Class Form1
         '
         'DataGridViewEx1
         '
-        Me.DataGridViewEx1.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.DataGridViewEx1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.DataGridViewEx1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DataGridViewEx1.DBInfoColumns = Nothing
         DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
@@ -291,7 +290,7 @@ Partial Class Form1
         Me.DataGridViewEx1.Name = "DataGridViewEx1"
         Me.DataGridViewEx1.RowEditImage = CType(resources.GetObject("DataGridViewEx1.RowEditImage"), System.Drawing.Image)
         Me.DataGridViewEx1.RowTemplate.Height = 33
-        Me.DataGridViewEx1.Size = New System.Drawing.Size(262, 258)
+        Me.DataGridViewEx1.Size = New System.Drawing.Size(262, 235)
         Me.DataGridViewEx1.Styles = CType(resources.GetObject("DataGridViewEx1.Styles"), System.Collections.Generic.IDictionary(Of String, System.Windows.Forms.DataGridViewCellStyle))
         Me.DataGridViewEx1.TabIndex = 12
         Me.DataGridViewEx1.VerticalScrollBarAlwaysShow = False
@@ -321,11 +320,30 @@ Partial Class Form1
         Me.Label1.TabIndex = 14
         Me.Label1.Text = "Label1"
         '
+        'AlertMessage1
+        '
+        Me.AlertMessage1.BackColor = System.Drawing.Color.FromArgb(CType(CType(186, Byte), Integer), CType(CType(186, Byte), Integer), CType(CType(186, Byte), Integer))
+        Me.AlertMessage1.DefaultMessageBackColor = System.Drawing.Color.FromArgb(CType(CType(236, Byte), Integer), CType(CType(241, Byte), Integer), CType(CType(245, Byte), Integer))
+        Me.AlertMessage1.DefaultMessageForeColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(26, Byte), Integer), CType(CType(26, Byte), Integer))
+        Me.AlertMessage1.DirectionType = Moca.Win.AnimateWindow.DirectionType.Bottom
+        Me.AlertMessage1.ErrorBackColor = System.Drawing.Color.FromArgb(CType(CType(242, Byte), Integer), CType(CType(222, Byte), Integer), CType(CType(222, Byte), Integer))
+        Me.AlertMessage1.ErrorForeColor = System.Drawing.Color.FromArgb(CType(CType(185, Byte), Integer), CType(CType(74, Byte), Integer), CType(CType(72, Byte), Integer))
+        Me.AlertMessage1.Location = New System.Drawing.Point(312, 471)
+        Me.AlertMessage1.Margin = New System.Windows.Forms.Padding(0)
+        Me.AlertMessage1.Name = "AlertMessage1"
+        Me.AlertMessage1.Size = New System.Drawing.Size(240, 42)
+        Me.AlertMessage1.SuccessBackColor = System.Drawing.Color.FromArgb(CType(CType(223, Byte), Integer), CType(CType(240, Byte), Integer), CType(CType(216, Byte), Integer))
+        Me.AlertMessage1.SuccessForeColor = System.Drawing.Color.FromArgb(CType(CType(70, Byte), Integer), CType(CType(136, Byte), Integer), CType(CType(71, Byte), Integer))
+        Me.AlertMessage1.TabIndex = 16
+        Me.AlertMessage1.WarnBackColor = System.Drawing.Color.FromArgb(CType(CType(252, Byte), Integer), CType(CType(248, Byte), Integer), CType(CType(227, Byte), Integer))
+        Me.AlertMessage1.WarnForeColor = System.Drawing.Color.FromArgb(CType(CType(145, Byte), Integer), CType(CType(111, Byte), Integer), CType(CType(53, Byte), Integer))
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(952, 412)
+        Me.ClientSize = New System.Drawing.Size(952, 522)
+        Me.Controls.Add(Me.AlertMessage1)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.TextBoxEx3)
         Me.Controls.Add(Me.DataGridViewEx1)
@@ -369,4 +387,5 @@ Partial Class Form1
     Friend WithEvents DataGridViewEx1 As Moca.Win.DataGridViewEx
     Friend WithEvents TextBoxEx3 As Moca.Win.TextBoxEx
     Friend WithEvents Label1 As Label
+    Friend WithEvents AlertMessage1 As Moca.Win.AlertMessage
 End Class

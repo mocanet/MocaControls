@@ -1,6 +1,7 @@
 ﻿
 Imports System.Globalization
 Imports System.ComponentModel
+Imports System.Runtime.InteropServices
 
 Namespace Win
 
@@ -122,6 +123,7 @@ Namespace Win
             Set(ByVal Value As DateTimePickerFormat)
                 _format = Value
                 _setFormat()
+                OnFormatChanged(EventArgs.Empty)
             End Set
         End Property
 
@@ -158,10 +160,10 @@ Namespace Win
                 End If
             End Get
             Set(ByVal Value As Object)
-                If IsDBNull(Value) Then
-                    _setToNullValue()
-                ElseIf Value Is Nothing Then
-                    _setToNullValue()
+                If Value Is Nothing OrElse IsDBNull(Value) Then
+                    _isNull = True
+                    MyBase.CustomFormat = CStr(IIf(_nullValue Is Nothing Or _nullValue = String.Empty, " ", "'" + NullValue + "'"))
+                    OnValueChanged(EventArgs.Empty)
                 Else
                     _setToDateTimeValue()
                     MyBase.Value = CType(Value, Date)
@@ -256,7 +258,6 @@ Namespace Win
         Protected Overrides Sub OnCloseUp(ByVal eventargs As System.EventArgs)
             If (Control.MouseButtons = MouseButtons.None And _isNull) Then
                 _setToDateTimeValue()
-                _isNull = False
             End If
             MyBase.OnCloseUp(eventargs)
         End Sub
@@ -270,10 +271,28 @@ Namespace Win
         ''' </remarks>
         Protected Overrides Sub OnKeyUp(ByVal e As System.Windows.Forms.KeyEventArgs)
             If (e.KeyCode = Keys.Delete) Then
-                Me.Value = vbNullString
-                OnValueChanged(EventArgs.Empty)
+                ResetText()
+                'If Not DataBindings.Count.Equals(0) Then
+                '    Dim bind As Binding = DataBindings(0)
+                '    Dim current As Object = bind.BindingManagerBase.Current
+                '    current.GetType.GetProperty(bind.BindingMemberInfo.BindingField).SetValue(current, bind.DataSourceNullValue, Nothing)
+                'Else
+                '    Me.Value = vbNullString
+                'End If
             End If
             MyBase.OnKeyUp(e)
+        End Sub
+
+        Public Overrides Sub ResetText()
+            If Not DataBindings.Count.Equals(0) Then
+                Dim bind As Binding = DataBindings(0)
+                Dim current As Object = bind.BindingManagerBase.Current
+                current.GetType.GetProperty(bind.BindingMemberInfo.BindingField).SetValue(current, bind.DataSourceNullValue, Nothing)
+            Else
+                Me.Value = vbNullString
+            End If
+
+            MyBase.ResetText()
         End Sub
 
 #End Region
@@ -284,9 +303,6 @@ Namespace Win
             MyBase.WndProc(m)
 
             If m.Msg = WM_PAINT Then
-                'If _borderStyle = ButtonBorderStyle.None Then
-                '    Return
-                'End If
                 Dim g As Graphics = Graphics.FromHwnd(Handle)
                 Dim bounds As New Rectangle(0, 0, Width, Height)
                 If Not Focused OrElse Not Enabled Then
@@ -354,21 +370,13 @@ Namespace Win
         ''' <remarks>
         ''' </remarks>
         Private Sub _setToDateTimeValue()
-            If _isNull Then
-                _setFormat()
-                _isNull = False
-                MyBase.OnValueChanged(New EventArgs)
+            If Not _isNull Then
+                Return
             End If
-        End Sub
 
-        ''' <summary>
-        ''' Null入力時のValue設定
-        ''' </summary>
-        ''' <remarks>
-        ''' </remarks>
-        Private Sub _setToNullValue()
-            _isNull = True
-            MyBase.CustomFormat = CStr(IIf(_nullValue Is Nothing Or _nullValue = String.Empty, " ", "’" + NullValue + "’"))
+            _setFormat()
+            _isNull = False
+            MyBase.OnValueChanged(New EventArgs)
         End Sub
 
 #End Region
