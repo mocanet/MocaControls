@@ -62,7 +62,7 @@
     <DocumentationFile>MocaControls.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugType>Full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineDebug>false</DefineDebug>
@@ -75,6 +75,7 @@
     <DeployExtension>False</DeployExtension>
     <Prefer32Bit>false</Prefer32Bit>
     <DocumentationFile>MocaControls.xml</DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <PropertyGroup>
     <OptionExplicit>On</OptionExplicit>
@@ -87,7 +88,7 @@
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Moca, Version=4.5.0.0, Culture=neutral, PublicKeyToken=42f7e4f7232a6bf5, processorArchitecture=MSIL">
-      <HintPath>..\packages\Moca.NETCore.2.3.4\lib\net45-full\Moca.dll</HintPath>
+      <HintPath>..\packages\Moca.NETCore.2.3.5\lib\net45\Moca.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="MocaWin, Version=4.5.0.0, Culture=neutral, PublicKeyToken=74dd2591eb474191, processorArchitecture=MSIL">
@@ -458,11 +459,11 @@
   <Target Name="AfterBuild">
     <!--<Copy SourceFiles="$(OutputPath)MocaControls.vsix" DestinationFolder="..\Release" />-->
   </Target>
-  <Import Project="..\packages\NuProj.Common.0.11.14-beta\build\dotnet\NuProj.Common.targets" Condition="Exists('..\packages\NuProj.Common.0.11.14-beta\build\dotnet\NuProj.Common.targets')" />
+  <Import Project="..\packages\NuProj.Common.0.11.28-beta\build\dotnet\NuProj.Common.targets" Condition="Exists('..\packages\NuProj.Common.0.11.28-beta\build\dotnet\NuProj.Common.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>このプロジェクトは、このコンピューター上にない NuGet パッケージを参照しています。それらのパッケージをダウンロードするには、[NuGet パッケージの復元] を使用します。詳細については、http://go.microsoft.com/fwlink/?LinkID=322105 を参照してください。見つからないファイルは {0} です。</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\NuProj.Common.0.11.14-beta\build\dotnet\NuProj.Common.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NuProj.Common.0.11.14-beta\build\dotnet\NuProj.Common.targets'))" />
+    <Error Condition="!Exists('..\packages\NuProj.Common.0.11.28-beta\build\dotnet\NuProj.Common.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NuProj.Common.0.11.28-beta\build\dotnet\NuProj.Common.targets'))" />
   </Target>
 </Project>

@@ -856,6 +856,18 @@ Namespace Win
             MyBase.OnCellContentClick(e)
         End Sub
 
+        Protected Overrides Sub OnCellClick(e As DataGridViewCellEventArgs)
+            If Not TypeOf Me(e.ColumnIndex, e.RowIndex) Is DataGridViewCheckBoxImageCell Then
+                MyBase.OnCellClick(e)
+                Return
+            End If
+
+            Dim cur As RowModelBase = Current()
+            cur.Modify()
+
+            MyBase.OnCellClick(e)
+        End Sub
+
         Protected Overrides Sub OnMouseMove(e As MouseEventArgs)
             MyBase.OnMouseMove(e)
 
