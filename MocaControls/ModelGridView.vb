@@ -857,13 +857,15 @@ Namespace Win
         End Sub
 
         Protected Overrides Sub OnCellClick(e As DataGridViewCellEventArgs)
-            If Not TypeOf Me(e.ColumnIndex, e.RowIndex) Is DataGridViewCheckBoxImageCell Then
-                MyBase.OnCellClick(e)
-                Return
-            End If
+            If e.RowIndex >= 0 AndAlso e.ColumnIndex >= 0 Then
+                If Not TypeOf Me(e.ColumnIndex, e.RowIndex) Is DataGridViewCheckBoxImageCell Then
+                    MyBase.OnCellClick(e)
+                    Return
+                End If
 
-            Dim cur As RowModelBase = Current()
-            cur.Modify()
+                Dim cur As RowModelBase = Current()
+                cur.Modify()
+            End If
 
             MyBase.OnCellClick(e)
         End Sub
