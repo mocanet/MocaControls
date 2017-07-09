@@ -11,14 +11,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MocaControls35\MocaControls35.vbproj" />
-    <ProjectReference Include="..\MocaControls40\MocaControls40.vbproj" />
-    <ProjectReference Include="..\MocaControls452\MocaControls452.vbproj" />
-    <ProjectReference Include="..\MocaControls45\MocaControls45.vbproj" />
-    <ProjectReference Include="..\MocaControls462\MocaControls462.vbproj" />
-    <ProjectReference Include="..\MocaControls46\MocaControls46.vbproj" />
-    <ProjectReference Include="..\MocaControls47\MocaControls47.vbproj" />
     <ProjectReference Include="..\MocaControls\MocaControls20.vbproj" />
+    <ProjectReference Include="..\MocaControls\MocaControls35.vbproj" />
+    <ProjectReference Include="..\MocaControls\MocaControls40.vbproj" />
+    <ProjectReference Include="..\MocaControls\MocaControls45.vbproj" />
+    <ProjectReference Include="..\MocaControls\MocaControls452.vbproj" />
+    <ProjectReference Include="..\MocaControls\MocaControls46.vbproj" />
+    <ProjectReference Include="..\MocaControls\MocaControls462.vbproj" />
+    <ProjectReference Include="..\MocaControls\MocaControls47.vbproj" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>66e947e1-8fb9-4b27-8ac3-56d19e04c9e0</ProjectGuid>
@@ -45,6 +45,7 @@
     <NoPackageAnalysis>false</NoPackageAnalysis>
     <NoDefaultExcludes>false</NoDefaultExcludes>
     <GenerateSymbolPackage>true</GenerateSymbolPackage>
+    <EmbedSourceFiles>true</EmbedSourceFiles>
   </PropertyGroup>
   <Import Project="$(NuProjPath)\NuProj.targets" />
 </Project>

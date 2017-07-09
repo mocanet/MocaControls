@@ -35,14 +35,14 @@ Imports Microsoft.VisualStudio.Shell.Interop
 'ProvideToolboxItemConfiguration(GetType(ToolboxConfig))>
 
 <PackageRegistration(UseManagedResourcesOnly:=True),
- InstalledProductRegistration("#110", "#112", "2.3.0", IconResourceID:=400),
- ProvideLoadKey("Standard", "2.3.0", "Moca.NET Windows Forms Controls 2.0", "MiYABiS", 1),
+ InstalledProductRegistration("#110", "#112", "2.2.0", IconResourceID:=400),
+ ProvideLoadKey("Standard", "2.2.0", "Moca.NET Windows Forms Controls 2.0", "MiYABiS", 1),
  Guid(GuidList.guidMocaControlsVSPackagePkgString),
- ProvideToolboxItems(5)>
+ ProvideToolboxItems(6)>
 Public NotInheritable Class MocaControlsVSPackage
     Inherits Package
 
-    Private ToolboxItemList As IDictionary(Of String, ArrayList)
+    Private _toolboxItemList As IDictionary(Of String, ArrayList)
 
     Private _outputPane As OutputWindowPane
 
@@ -70,7 +70,7 @@ Public NotInheritable Class MocaControlsVSPackage
         Dim mcs As OleMenuCommandService = GetService(GetType(IMenuCommandService))
         If mcs IsNot Nothing Then
             Dim menuCommandID As CommandID = New CommandID(GuidList.guidMocaControlsVSPackageCmdSet, CInt(PkgCmdIDList.cmdidInitializeToolbox))
-            Dim menuItem As MenuCommand = New MenuCommand(AddressOf MenuItemCallback, menuCommandID)
+            Dim menuItem As MenuCommand = New MenuCommand(AddressOf _menuItemCallback, menuCommandID)
             mcs.AddCommand(menuItem)
         End If
 
@@ -78,79 +78,13 @@ Public NotInheritable Class MocaControlsVSPackage
         dte = GetService(GetType(EnvDTE.DTE))
         _outputPane = New OutputWindowPane(dte)
 
-        ToolboxItemList = New Dictionary(Of String, ArrayList)
+        _toolboxItemList = New Dictionary(Of String, ArrayList)
         For ii As Integer = 0 To _componentPath.Count - 1
             _initToolboxItems(ii)
         Next
     End Sub
 
 #End Region
-
-    Private Sub MenuItemCallback(ByVal sender As Object, ByVal e As EventArgs)
-        Dim pkg As IVsPackage = GetService(GetType(Package))
-        pkg.ResetDefaults(__VSPKGRESETFLAGS.PKGRF_TOOLBOXITEMS)
-    End Sub
-
-    Private _componentPath() As String = {"net20", "net35", "net40", "net45", "net452", "net46", "net462", "net47"}
-    Private _componentName As String = "MocaControls.dll"
-    Private _categoryTabsOld() As String = {"Controls 2.0.0.0", "Controls 3.5.0.0", "Controls 4.0.0.0", "Controls 4.5.0.0", "Controls 4.6.0.0"}
-    Private _categoryTabsOld2() As String = {"Controls 2.0.1.0", "Controls 3.5.1.0", "Controls 4.0.1.0", "Controls 4.5.1.0", "Controls 4.6.0.0"}
-    Private _categoryTabsOld3() As String = {"Controls 2.0", "Controls 3.5", "Controls 4.0", "Controls 4.5", "Controls 4.6"}
-    Private _categoryTabsOld4() As String = {"Fw 2.0", "Fw 3.5", "Fw 4.0", "Fw 4.5", "Fw 4.6"}
-    Private _categoryTabs() As String = {"Fw 2.0", "Fw 3.5", "Fw 4.0", "Fw 4.5", "Fw 4.5.2", "Fw 4.6", "Fw 4.6.2", "Fw 4.7"}
-    Private _tabName As String = "Moca.NET "
-
-    Private Sub OnRefreshToolbox(ByVal sender As Object, ByVal e As EventArgs) Handles Me.ToolboxInitialized, Me.ToolboxUpgraded
-        Dim service As IToolboxService = TryCast(GetService(GetType(IToolboxService)), IToolboxService)
-        Dim toolbox As IVsToolbox = TryCast(GetService(GetType(IVsToolbox)), IVsToolbox)
-
-        _removeTab(service, toolbox, _categoryTabsOld)
-        _removeTab(service, toolbox, _categoryTabsOld2)
-        _removeTab(service, toolbox, _categoryTabsOld3)
-        _removeTab(service, toolbox, _categoryTabsOld4)
-        _removeTab(service, toolbox, _categoryTabs)
-
-        For ii As Integer = 0 To _componentPath.Count - 1
-            _OnRefreshToolbox(service, toolbox, ii)
-        Next
-
-        service.SelectedCategory = _tabName & _categoryTabs(0)
-        service.Refresh()
-    End Sub
-
-    Private Sub _OnRefreshToolbox(ByVal service As IToolboxService, ByVal toolbox As IVsToolbox, ByVal index As Integer)
-        Dim categoryTab As String = _tabName & _categoryTabs(index)
-        'Dim items As ToolboxItemCollection = service.GetToolboxItems(categoryTab)
-
-        'If items IsNot Nothing Then
-        '    For Each oldItem As ToolboxItem In items
-        '        service.RemoveToolboxItem(oldItem)
-        '    Next
-        '    toolbox.RemoveTab(categoryTab)
-        'End If
-
-        toolbox.AddTab(categoryTab)
-        _output("Add Tab : " & categoryTab)
-
-        For Each item As ToolboxItem In ToolboxItemList(_componentPath(index))
-            _output("Add Toolbox : " & item.DisplayName)
-            service.AddToolboxItem(item, categoryTab)
-        Next
-    End Sub
-
-    Private Sub _removeTab(ByVal service As IToolboxService, ByVal toolbox As IVsToolbox, ByVal tabs() As String)
-        For Each tab As String In tabs
-            Dim categoryTabOld As String = _tabName & tab
-            Dim items As ToolboxItemCollection = service.GetToolboxItems(categoryTabOld)
-
-            If items IsNot Nothing Then
-                For Each oldItem As ToolboxItem In service.GetToolboxItems(categoryTabOld)
-                    service.RemoveToolboxItem(oldItem)
-                Next
-                toolbox.RemoveTab(categoryTabOld)
-            End If
-        Next
-    End Sub
 
     Private Sub _initToolboxItems(ByVal index As Integer)
         Dim asm As AssemblyName
@@ -169,13 +103,84 @@ Public NotInheritable Class MocaControlsVSPackage
             End If
 
             _output("Get Toolbox Item Count : " & items.Count)
-            ToolboxItemList.Add(_componentPath(index), items)
+            _toolboxItemList.Add(_componentPath(index), items)
         Catch ex As ReflectionTypeLoadException
             _output(ex.LoaderExceptions.ToString)
             _output(ex.ToString)
         Catch ex As Exception
             _output(ex.ToString)
         End Try
+    End Sub
+
+    Private Sub _menuItemCallback(ByVal sender As Object, ByVal e As EventArgs)
+        Dim pkg As IVsPackage = GetService(GetType(Package))
+        pkg.ResetDefaults(__VSPKGRESETFLAGS.PKGRF_TOOLBOXITEMS)
+    End Sub
+
+    Private _componentPath() As String = {"net35", "net452"}
+    Private _componentName As String = "MocaControls.dll"
+    Private _categoryTabsOld() As String = {"Controls 2.0.0.0", "Controls 3.5.0.0", "Controls 4.0.0.0", "Controls 4.5.0.0", "Controls 4.6.0.0"}
+    Private _categoryTabsOld2() As String = {"Controls 2.0.1.0", "Controls 3.5.1.0", "Controls 4.0.1.0", "Controls 4.5.1.0", "Controls 4.6.0.0"}
+    Private _categoryTabsOld3() As String = {"Controls 2.0", "Controls 3.5", "Controls 4.0", "Controls 4.5", "Controls 4.6"}
+    Private _categoryTabsOld4() As String = {"Fw 2.0", "Fw 3.5", "Fw 4.0", "Fw 4.5", "Fw 4.6"}
+    Private _categoryTabs() As String = {"Fw 3.5", "Fw 4.5.2"}
+    Private _tabName As String = "Moca.NET "
+
+    Private Sub _onRefreshToolbox(ByVal sender As Object, ByVal e As EventArgs) Handles Me.ToolboxInitialized, Me.ToolboxUpgraded
+        Dim service As IToolboxService = TryCast(GetService(GetType(IToolboxService)), IToolboxService)
+        Dim toolbox As IVsToolbox = TryCast(GetService(GetType(IVsToolbox)), IVsToolbox)
+
+        _removeTab(service, toolbox, _categoryTabsOld)
+        _removeTab(service, toolbox, _categoryTabsOld2)
+        _removeTab(service, toolbox, _categoryTabsOld3)
+        _removeTab(service, toolbox, _categoryTabsOld4)
+        _removeTab(service, toolbox, _categoryTabs)
+
+        For ii As Integer = 0 To _componentPath.Count - 1
+            _onRefreshToolbox(service, toolbox, ii)
+        Next
+
+        service.SelectedCategory = _tabName & _categoryTabs(0)
+        service.Refresh()
+    End Sub
+
+    Private Sub _onRefreshToolbox(ByVal service As IToolboxService, ByVal toolbox As IVsToolbox, ByVal index As Integer)
+        Dim categoryTab As String = _tabName & _categoryTabs(index)
+        'Dim items As ToolboxItemCollection = service.GetToolboxItems(categoryTab)
+
+        'If items IsNot Nothing Then
+        '    For Each oldItem As ToolboxItem In items
+        '        service.RemoveToolboxItem(oldItem)
+        '    Next
+        '    toolbox.RemoveTab(categoryTab)
+        'End If
+
+        toolbox.AddTab(categoryTab)
+        _output("Add Tab : " & categoryTab)
+
+
+        If Not _toolboxItemList.ContainsKey(_componentPath(index)) Then
+            Return
+        End If
+
+        For Each item As ToolboxItem In _toolboxItemList(_componentPath(index))
+            _output("Add Toolbox : " & item.DisplayName)
+            service.AddToolboxItem(item, categoryTab)
+        Next
+    End Sub
+
+    Private Sub _removeTab(ByVal service As IToolboxService, ByVal toolbox As IVsToolbox, ByVal tabs() As String)
+        For Each tab As String In tabs
+            Dim categoryTabOld As String = _tabName & tab
+            Dim items As ToolboxItemCollection = service.GetToolboxItems(categoryTabOld)
+
+            If items IsNot Nothing Then
+                For Each oldItem As ToolboxItem In service.GetToolboxItems(categoryTabOld)
+                    service.RemoveToolboxItem(oldItem)
+                Next
+                toolbox.RemoveTab(categoryTabOld)
+            End If
+        Next
     End Sub
 
     Private Sub _output(ByVal msg As String)
