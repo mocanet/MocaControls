@@ -1,0 +1,19 @@
+image: Visual Studio 2017
+
+install:
+- ps: (new-object Net.WebClient).DownloadString("https://raw.github.com/madskristensen/ExtensionScripts/master/AppVeyor/vsix.ps1") | iex
+
+build:
+  project: MocaControlsVSPackage.sln
+
+before_build:
+  - ps: Vsix-IncrementVsixVersion | Vsix-UpdateBuildVersion
+  #- ps: Vsix-TokenReplacement MocaControlsVSPackage\source.extension.cs 'Version = "([0-9\\.]+)"' 'Version = "{version}"'
+
+build_script:
+  - nuget restore -Verbosity quiet MocaControlsVSPackage.sln
+  - msbuild /p:configuration=Release /p:DeployExtension=false /p:ZipPackageCompressionLevel=normal /v:m
+
+after_test:
+  - ps: Vsix-PushArtifacts
+  #- ps: Vsix-PushArtifacts | Vsix-PublishToGallery
