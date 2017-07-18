@@ -117,13 +117,13 @@ Public NotInheritable Class MocaControlsVSPackage
         pkg.ResetDefaults(__VSPKGRESETFLAGS.PKGRF_TOOLBOXITEMS)
     End Sub
 
-    Private _componentPath() As String = {"net35", "net452"}
+    Private _componentPath() As String = {"net35", "net452", "net462"}
     Private _componentName As String = "MocaControls.dll"
     Private _categoryTabsOld() As String = {"Controls 2.0.0.0", "Controls 3.5.0.0", "Controls 4.0.0.0", "Controls 4.5.0.0", "Controls 4.6.0.0"}
     Private _categoryTabsOld2() As String = {"Controls 2.0.1.0", "Controls 3.5.1.0", "Controls 4.0.1.0", "Controls 4.5.1.0", "Controls 4.6.0.0"}
     Private _categoryTabsOld3() As String = {"Controls 2.0", "Controls 3.5", "Controls 4.0", "Controls 4.5", "Controls 4.6"}
     Private _categoryTabsOld4() As String = {"Fw 2.0", "Fw 3.5", "Fw 4.0", "Fw 4.5", "Fw 4.6"}
-    Private _categoryTabs() As String = {"Fw 3.5", "Fw 4.5.2"}
+    Private _categoryTabs() As String = {"Fw 3.5", "Fw 4.5.2", "Fw 4.6.2"}
     Private _tabName As String = "Moca.NET "
 
     Private Sub _onRefreshToolbox(ByVal sender As Object, ByVal e As EventArgs) Handles Me.ToolboxInitialized, Me.ToolboxUpgraded

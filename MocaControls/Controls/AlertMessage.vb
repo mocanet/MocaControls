@@ -57,22 +57,22 @@ Namespace Win
         <Description("デフォルトの背景色"), Browsable(True)>
 		Public Property DefaultMessageBackColor As Color = Color.FromArgb(236, 241, 245)
 
-		''' <summary>
-		''' デフォルトの文字色
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		<Description("デフォルトの文字色"), Browsable(True)>
-		Public Property DefaultMessageForeColor As Color = Color.FromArgb(26, 26, 26)
+        ''' <summary>
+        ''' デフォルトの文字色
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        <Description("デフォルトの文字色"), Browsable(True)>
+        Public Property DefaultMessageForeColor As Color = Color.FromArgb(9, 90, 224)
 
-		''' <summary>
-		''' エラー時の背景色
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		<Description("エラー時の背景色"), Browsable(True)>
+        ''' <summary>
+        ''' エラー時の背景色
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        <Description("エラー時の背景色"), Browsable(True)>
 		Public Property ErrorBackColor As Color = Color.FromArgb(242, 222, 222)
 
 		''' <summary>
@@ -252,13 +252,33 @@ Namespace Win
             _timer.Stop()
         End Sub
 
-		''' <summary>
-		''' 正常アラート
-		''' </summary>
-		''' <param name="msg"></param>
-		''' <param name="args"></param>
-		''' <remarks></remarks>
-		Public Sub Success(ByVal msg As String, ParamArray args() As String)
+        ''' <summary>
+        ''' 情報アラート
+        ''' </summary>
+        ''' <param name="msg"></param>
+        ''' <param name="args"></param>
+        ''' <remarks></remarks>
+        Public Sub Info(ByVal msg As String, ParamArray args() As String)
+            Info(AutoCloseSecond, msg, args)
+        End Sub
+
+        ''' <summary>
+		''' 情報アラート
+        ''' </summary>
+        ''' <param name="second"></param>
+        ''' <param name="msg"></param>
+        ''' <param name="args"></param>
+        Public Sub Info(ByVal second As Integer, ByVal msg As String, ParamArray args() As String)
+            _showAlert(second, Me.DefaultMessageBackColor, Me.DefaultMessageForeColor, msg, args)
+        End Sub
+
+        ''' <summary>
+        ''' 正常アラート
+        ''' </summary>
+        ''' <param name="msg"></param>
+        ''' <param name="args"></param>
+        ''' <remarks></remarks>
+        Public Sub Success(ByVal msg As String, ParamArray args() As String)
             Success(AutoCloseSecond, msg, args)
         End Sub
 

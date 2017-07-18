@@ -9,14 +9,14 @@ Namespace Win
 		<System.Diagnostics.DebuggerNonUserCode()> _
 		Protected Overrides Sub Dispose(ByVal disposing As Boolean)
 			Try
-				If disposing AndAlso components IsNot Nothing Then
-					components.Dispose()
-
-                    _timer.Stop()
+                If disposing AndAlso components IsNot Nothing Then
+                    components.Dispose()
                 End If
+
+                _timer.Stop()
             Finally
-				MyBase.Dispose(disposing)
-			End Try
+                MyBase.Dispose(disposing)
+            End Try
 		End Sub
 
 		'Windows フォーム デザイナーで必要です。

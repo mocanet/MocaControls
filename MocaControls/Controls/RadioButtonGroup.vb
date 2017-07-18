@@ -122,6 +122,7 @@ Namespace Win
         ''' ラジオボタンたち
         ''' </summary>
         ''' <returns></returns>
+        <Browsable(False)>
         Public ReadOnly Property Buttons As ICollection(Of RadioButton)
             Get
                 Return _dicButton.Keys

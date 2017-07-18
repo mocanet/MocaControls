@@ -48,6 +48,7 @@ Partial Class Form1
         Me.TextBoxEx3 = New Moca.Win.TextBoxEx(Me.components)
         Me.Label1 = New System.Windows.Forms.Label()
         Me.AlertMessage1 = New Moca.Win.AlertMessage()
+        Me.Button5 = New System.Windows.Forms.Button()
         Me.Panel1.SuspendLayout()
         Me.ContextMenuPanel1.SuspendLayout()
         CType(Me.ModelGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -324,7 +325,7 @@ Partial Class Form1
         '
         Me.AlertMessage1.BackColor = System.Drawing.Color.FromArgb(CType(CType(186, Byte), Integer), CType(CType(186, Byte), Integer), CType(CType(186, Byte), Integer))
         Me.AlertMessage1.DefaultMessageBackColor = System.Drawing.Color.FromArgb(CType(CType(236, Byte), Integer), CType(CType(241, Byte), Integer), CType(CType(245, Byte), Integer))
-        Me.AlertMessage1.DefaultMessageForeColor = System.Drawing.Color.FromArgb(CType(CType(26, Byte), Integer), CType(CType(26, Byte), Integer), CType(CType(26, Byte), Integer))
+        Me.AlertMessage1.DefaultMessageForeColor = System.Drawing.Color.FromArgb(CType(CType(9, Byte), Integer), CType(CType(90, Byte), Integer), CType(CType(224, Byte), Integer))
         Me.AlertMessage1.DirectionType = Moca.Win.AnimateWindow.DirectionType.Bottom
         Me.AlertMessage1.ErrorBackColor = System.Drawing.Color.FromArgb(CType(CType(242, Byte), Integer), CType(CType(222, Byte), Integer), CType(CType(222, Byte), Integer))
         Me.AlertMessage1.ErrorForeColor = System.Drawing.Color.FromArgb(CType(CType(185, Byte), Integer), CType(CType(74, Byte), Integer), CType(CType(72, Byte), Integer))
@@ -338,11 +339,22 @@ Partial Class Form1
         Me.AlertMessage1.WarnBackColor = System.Drawing.Color.FromArgb(CType(CType(252, Byte), Integer), CType(CType(248, Byte), Integer), CType(CType(227, Byte), Integer))
         Me.AlertMessage1.WarnForeColor = System.Drawing.Color.FromArgb(CType(CType(145, Byte), Integer), CType(CType(111, Byte), Integer), CType(CType(53, Byte), Integer))
         '
+        'Button5
+        '
+        Me.Button5.Location = New System.Drawing.Point(751, 346)
+        Me.Button5.Name = "Button5"
+        Me.Button5.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me.Button5.Size = New System.Drawing.Size(75, 23)
+        Me.Button5.TabIndex = 17
+        Me.Button5.Text = "Button5"
+        Me.Button5.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(952, 522)
+        Me.Controls.Add(Me.Button5)
         Me.Controls.Add(Me.AlertMessage1)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.TextBoxEx3)
@@ -388,4 +400,5 @@ Partial Class Form1
     Friend WithEvents TextBoxEx3 As Moca.Win.TextBoxEx
     Friend WithEvents Label1 As Label
     Friend WithEvents AlertMessage1 As Moca.Win.AlertMessage
+    Friend WithEvents Button5 As Button
 End Class

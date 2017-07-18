@@ -168,14 +168,6 @@ Public Class Form1
         'ModelGridView1.ReadOnly = True
     End Sub
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-
-    End Sub
-
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-        Debug.Print(dat.Dat)
-    End Sub
-
     Private Sub DataGridViewEx1_DataError(sender As Object, e As DataGridViewDataErrorEventArgs) Handles DataGridViewEx1.DataError
         Debug.Print(e.Exception.ToString)
     End Sub
@@ -243,10 +235,23 @@ Public Class Form1
         Label1.Text = TextBoxEx2.Text
     End Sub
 
-
-    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
-        AlertMessage1.Error("OK!!")
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        AlertMessage1.Info("Message!!")
     End Sub
 
+    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+        AlertMessage1.Error("NG!!")
+    End Sub
+
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        Debug.Print(dat.Dat)
+        AlertMessage1.Success("OK!!")
+    End Sub
+
+    Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
+        Using frm = New Index
+            frm.ShowDialog()
+        End Using
+    End Sub
 End Class
 

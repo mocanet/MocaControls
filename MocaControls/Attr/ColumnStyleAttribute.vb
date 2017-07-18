@@ -45,7 +45,10 @@ Namespace Win
             Me.ImeMode = imeMode
             Me.WordWrap = wordWrap
             Me.InputFormat = inputFormat
-            Me.NullValue = nullValue
+            Me.NullValue = IIf(nullValue Is Nothing, String.Empty, nullValue)
+            Me.RightBorderNone = rightBorderNone
+            Me.InputControl = InputControl
+            Me.InputControlCustomChars = InputControlCustomChars
             Me.SortMode = SortMode
         End Sub
 

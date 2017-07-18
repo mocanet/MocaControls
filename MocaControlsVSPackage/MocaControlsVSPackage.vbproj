@@ -256,9 +256,16 @@
       <Project>{3488648d-4387-471a-82c5-a78324306f84}</Project>
       <Name>MocaControls452</Name>
       <VSIXSubPath>net452</VSIXSubPath>
+      <Private>False</Private>
       <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
       <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
-      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\MocaControls\MocaControls462.vbproj">
+      <Project>{e59189d5-80a1-4208-a0da-a4aaec23c409}</Project>
+      <Name>MocaControls462</Name>
+      <VSIXSubPath>net462</VSIXSubPath>
+      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
+      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

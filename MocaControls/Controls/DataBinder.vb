@@ -125,30 +125,31 @@ Namespace Win
 			End Set
 		End Property
 
-		''' <summary>
-		''' 現在行データ
-		''' </summary>
-		''' <value></value>
-		''' <returns></returns>
-		''' <remarks></remarks>
-		Public ReadOnly Property CurrentRow() As DataRow
-			Get
-				If _current Is Nothing Then
-					Return Nothing
-				End If
-				If Not TypeOf _current Is DataRowView Then
-					Throw New Moca.Exceptions.MocaRuntimeException("TypeOf Is Not DataRowView")
-				End If
-				Return DirectCast(_current, DataRowView).Row
-			End Get
-		End Property
+        ''' <summary>
+        ''' 現在行データ
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        <Browsable(False)>
+        Public ReadOnly Property CurrentRow() As DataRow
+            Get
+                If _current Is Nothing Then
+                    Return Nothing
+                End If
+                If Not TypeOf _current Is DataRowView Then
+                    Throw New Moca.Exceptions.MocaRuntimeException("TypeOf Is Not DataRowView")
+                End If
+                Return DirectCast(_current, DataRowView).Row
+            End Get
+        End Property
 
-		''' <summary>
-		''' 現在行データ
-		''' </summary>
-		''' <typeparam name="T"></typeparam>
-		''' <returns></returns>
-		''' <remarks></remarks>
+        ''' <summary>
+        ''' 現在行データ
+        ''' </summary>
+        ''' <typeparam name="T"></typeparam>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
         Public Function CurrentEntity(Of T)() As T
             If _current Is Nothing Then
                 Return Nothing

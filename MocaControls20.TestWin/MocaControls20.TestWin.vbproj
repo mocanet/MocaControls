@@ -74,6 +74,10 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Db\IDaoDemo.vb" />
+    <Compile Include="Db\Impl\DaoDemo.vb" />
+    <Compile Include="Db\Interceptor\SQLStatementlogger.vb" />
+    <Compile Include="Declare.vb" />
     <Compile Include="Forms\Form1.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -81,6 +85,13 @@
       <DependentUpon>Form1.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Forms\Index.Designer.vb">
+      <DependentUpon>Index.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Index.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Models\DemoRow.vb" />
     <Compile Include="Models\Hoge2Row.vb" />
     <Compile Include="Models\HogeRow.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -98,10 +109,19 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Resources\Messages.Designer.vb">
+      <DependentUpon>Messages.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Sys\SysSettings.vb" />
+    <Compile Include="Sys\SysSettingsProperty.vb" />
+    <Compile Include="Sys\Util.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Forms\Form1.resx">
       <DependentUpon>Form1.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Index.resx">
+      <DependentUpon>Index.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
@@ -109,6 +129,7 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Messages.resx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -255,6 +255,7 @@ Namespace Win
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
+        <Browsable(False)>
         Public ReadOnly Property IsAlpha() As Boolean
             Get
                 Return _isFormat(InputFormatType.Alpha)
@@ -267,6 +268,7 @@ Namespace Win
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
+        <Browsable(False)>
         Public ReadOnly Property IsDigit() As Boolean
             Get
                 Return _isFormat(InputFormatType.Digit)
@@ -279,6 +281,7 @@ Namespace Win
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
+        <Browsable(False)>
         Public ReadOnly Property IsNumber() As Boolean
             Get
                 Return _isFormat(InputFormatType.Number)
@@ -291,6 +294,7 @@ Namespace Win
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
+        <Browsable(False)>
         Public ReadOnly Property IsUpper() As Boolean
             Get
                 Return _isFormat(InputFormatType.Upper)
@@ -303,6 +307,7 @@ Namespace Win
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
+        <Browsable(False)>
         Public ReadOnly Property IsWithSpace() As Boolean
             Get
                 Return _isFormat(InputFormatType.WithSpace)
@@ -317,6 +322,7 @@ Namespace Win
         ''' <remarks>
         ''' <see cref="InputFormatType.Digit"/>、<see cref="InputFormatType.Number"/>指定時のみ有効
         ''' </remarks>
+        <Browsable(False)>
         Public ReadOnly Property IsSign() As Boolean
             Get
                 Return _isFormat(InputFormatType.Sign)
@@ -331,6 +337,7 @@ Namespace Win
         ''' <remarks>
         ''' <see cref="InputFormatType.Digit"/>、<see cref="InputFormatType.Number"/>指定時のみ有効
         ''' </remarks>
+        <Browsable(False)>
         Public ReadOnly Property IsSignWithColor() As Boolean
             Get
                 Return _isFormat(InputFormatType.SignWithColor)
@@ -343,6 +350,7 @@ Namespace Win
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
+        <Browsable(False)>
         Public ReadOnly Property IsSymbol() As Boolean
             Get
                 Return _isFormat(InputFormatType.Symbol)
@@ -355,6 +363,7 @@ Namespace Win
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
+        <Browsable(False)>
         Public ReadOnly Property IsCustom() As Boolean
             Get
                 Return _isFormat(InputFormatType.Custom)
