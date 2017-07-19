@@ -29,7 +29,7 @@
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
     <Id>Moca.NETControls</Id>
-    <Version>1.4.0</Version>
+    <Version>1.4.1</Version>
     <Title>Moca.NET Controls</Title>
     <Authors>MiYABiS</Authors>
     <Owners>MiYABiS</Owners>
