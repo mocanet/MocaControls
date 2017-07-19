@@ -67,7 +67,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="MocaWin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=74dd2591eb474191, processorArchitecture=MSIL">
-      <HintPath>..\packages\Moca.NETWin.2.1.2\lib\net20-full\MocaWin.dll</HintPath>
+      <HintPath>..\packages\Moca.NETWin.2.2.0\lib\net20\MocaWin.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />

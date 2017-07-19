@@ -62,15 +62,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.8\lib\net20-full\log4net.dll</HintPath>
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Moca, Version=2.0.6.0, Culture=neutral, PublicKeyToken=42f7e4f7232a6bf5, processorArchitecture=MSIL">
-      <HintPath>..\packages\Moca.NETCore.2.3.5\lib\net20\Moca.dll</HintPath>
+    <Reference Include="Moca, Version=4.6.0.0, Culture=neutral, PublicKeyToken=42f7e4f7232a6bf5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moca.NETCore.2.3.5\lib\net46\Moca.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MocaWin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=74dd2591eb474191, processorArchitecture=MSIL">
-      <HintPath>..\packages\Moca.NETWin.2.1.2\lib\net20-full\MocaWin.dll</HintPath>
+    <Reference Include="MocaWin, Version=4.6.0.0, Culture=neutral, PublicKeyToken=74dd2591eb474191, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moca.NETWin.2.2.0\lib\net46\MocaWin.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
