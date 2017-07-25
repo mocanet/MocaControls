@@ -34,8 +34,12 @@ Namespace Win
                         .FlatStyle = FlatStyle.Flat,
                         .Visible = True}
             Controls.Add(_bottomBorder)
-            AddHandler _bottomBorder.SizeChanged, AddressOf _sizeChanged
 
+            If DesignMode Then
+                Return
+            End If
+
+            AddHandler _bottomBorder.SizeChanged, AddressOf _sizeChanged
         End Sub
 
 #End Region

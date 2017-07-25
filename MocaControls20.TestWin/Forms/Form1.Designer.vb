@@ -49,6 +49,8 @@ Partial Class Form1
         Me.Label1 = New System.Windows.Forms.Label()
         Me.AlertMessage1 = New Moca.Win.AlertMessage()
         Me.Button5 = New System.Windows.Forms.Button()
+        Me.DebugMarker1 = New Moca.Win.DebugMarker()
+        Me.MocaDi1 = New Moca.Win.MocaDi()
         Me.Panel1.SuspendLayout()
         Me.ContextMenuPanel1.SuspendLayout()
         CType(Me.ModelGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -329,7 +331,7 @@ Partial Class Form1
         Me.AlertMessage1.DirectionType = Moca.Win.AnimateWindow.DirectionType.Bottom
         Me.AlertMessage1.ErrorBackColor = System.Drawing.Color.FromArgb(CType(CType(242, Byte), Integer), CType(CType(222, Byte), Integer), CType(CType(222, Byte), Integer))
         Me.AlertMessage1.ErrorForeColor = System.Drawing.Color.FromArgb(CType(CType(185, Byte), Integer), CType(CType(74, Byte), Integer), CType(CType(72, Byte), Integer))
-        Me.AlertMessage1.Location = New System.Drawing.Point(312, 471)
+        Me.AlertMessage1.Location = New System.Drawing.Point(312, 451)
         Me.AlertMessage1.Margin = New System.Windows.Forms.Padding(0)
         Me.AlertMessage1.Name = "AlertMessage1"
         Me.AlertMessage1.Size = New System.Drawing.Size(240, 42)
@@ -349,11 +351,42 @@ Partial Class Form1
         Me.Button5.Text = "Button5"
         Me.Button5.UseVisualStyleBackColor = True
         '
+        'DebugMarker1
+        '
+        Me.DebugMarker1.BackColor = System.Drawing.Color.Transparent
+        Me.DebugMarker1.BackgroundImage = CType(resources.GetObject("DebugMarker1.BackgroundImage"), System.Drawing.Image)
+        Me.DebugMarker1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center
+        Me.DebugMarker1.Location = New System.Drawing.Point(0, 0)
+        Me.DebugMarker1.MaximumSize = New System.Drawing.Size(16, 16)
+        Me.DebugMarker1.MinimumSize = New System.Drawing.Size(16, 16)
+        Me.DebugMarker1.Name = "DebugMarker1"
+        Me.DebugMarker1.Size = New System.Drawing.Size(16, 16)
+        Me.DebugMarker1.TabIndex = 18
+        Me.DebugMarker1.TabStop = False
+        Me.DebugMarker1.ToolTipText = Nothing
+        '
+        'MocaDi1
+        '
+        Me.MocaDi1.AutoSize = True
+        Me.MocaDi1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.MocaDi1.BackgroundImage = CType(resources.GetObject("MocaDi1.BackgroundImage"), System.Drawing.Image)
+        Me.MocaDi1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
+        Me.MocaDi1.Location = New System.Drawing.Point(8, 19)
+        Me.MocaDi1.Margin = New System.Windows.Forms.Padding(0)
+        Me.MocaDi1.MaximumSize = New System.Drawing.Size(16, 16)
+        Me.MocaDi1.MinimumSize = New System.Drawing.Size(16, 16)
+        Me.MocaDi1.Name = "MocaDi1"
+        Me.MocaDi1.Size = New System.Drawing.Size(16, 16)
+        Me.MocaDi1.TabIndex = 19
+        Me.MocaDi1.TabStop = False
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(952, 522)
+        Me.Controls.Add(Me.DebugMarker1)
+        Me.Controls.Add(Me.MocaDi1)
         Me.Controls.Add(Me.Button5)
         Me.Controls.Add(Me.AlertMessage1)
         Me.Controls.Add(Me.Label1)
@@ -401,4 +434,6 @@ Partial Class Form1
     Friend WithEvents Label1 As Label
     Friend WithEvents AlertMessage1 As Moca.Win.AlertMessage
     Friend WithEvents Button5 As Button
+    Friend WithEvents DebugMarker1 As Moca.Win.DebugMarker
+    Friend WithEvents MocaDi1 As Moca.Win.MocaDi
 End Class

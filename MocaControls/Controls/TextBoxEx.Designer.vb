@@ -36,11 +36,13 @@ Namespace Win
                     .FlatStyle = FlatStyle.Flat,
                     .Visible = True}
             Controls.Add(_bottomBorder)
-            AddHandler _bottomBorder.SizeChanged, AddressOf _sizeChanged
 
             If DesignMode Then
                 Return
             End If
+
+            AddHandler _bottomBorder.SizeChanged, AddressOf _sizeChanged
+
             _timer = New Timers.Timer()
             AddHandler _timer.Elapsed, AddressOf _timer_Elapsed
         End Sub

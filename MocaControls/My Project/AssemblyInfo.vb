@@ -10,8 +10,8 @@ Imports System.Runtime.InteropServices
 
 <Assembly: AssemblyDescription("Moca.NET Control Collection")>
 <Assembly: AssemblyCompany("MiYABiS")>
-<Assembly: AssemblyProduct("MocaControls")>
-<Assembly: AssemblyCopyright("Copyright © 2012 MiYABiS All Rights Reserved.")>
+<Assembly: AssemblyProduct("Moca.NET Framework")>
+<Assembly: AssemblyCopyright("© MiYABiS All Rights Reserved.")>
 <Assembly: AssemblyTrademark("")>
 
 <Assembly: ComVisible(False)>

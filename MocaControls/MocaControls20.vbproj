@@ -295,12 +295,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Checked.png" />
-    <Content Include="Resources\DebugMarker.bmp" />
-    <Content Include="Resources\MocaDi.bmp" />
-    <Content Include="Resources\NullableDateTimePicker.bmp" />
-    <Content Include="Resources\RadioButtonGroup.bmp" />
+    <EmbeddedResource Include="Resources\DebugMarker.bmp" />
+    <EmbeddedResource Include="Resources\MocaDi.bmp" />
+    <EmbeddedResource Include="Resources\NullableDateTimePicker.bmp" />
+    <EmbeddedResource Include="Resources\RadioButtonGroup.bmp" />
     <Content Include="Resources\RowEdit.png" />
-    <Content Include="Resources\ToolStripMenuItemGroup.bmp" />
+    <EmbeddedResource Include="Resources\ToolStripMenuItemGroup.bmp" />
     <Content Include="Resources\UnChecked.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

@@ -9,14 +9,18 @@ Namespace Win
 		<System.Diagnostics.DebuggerNonUserCode()> _
 		Protected Overrides Sub Dispose(ByVal disposing As Boolean)
 			Try
-				If disposing AndAlso components IsNot Nothing Then
-					components.Dispose()
+                If disposing AndAlso components IsNot Nothing Then
+                    components.Dispose()
+                End If
 
-					Moca.Di.MocaContainerFactory.Destroy()
-				End If
-			Finally
-				MyBase.Dispose(disposing)
-			End Try
+                If Moca.Win.WinUtil.UserControlDesignMode Then
+                    Return
+                End If
+
+                Moca.Di.MocaContainerFactory.Destroy()
+            Finally
+                MyBase.Dispose(disposing)
+            End Try
 		End Sub
 
 		'Windows フォーム デザイナで必要です。

@@ -41,6 +41,11 @@ Namespace Win
                 .Visible = True
             }
             Controls.Add(_bottomBorder)
+
+            If DesignMode Then
+                Return
+            End If
+
             AddHandler _bottomBorder.SizeChanged, AddressOf _sizeChanged
         End Sub
 

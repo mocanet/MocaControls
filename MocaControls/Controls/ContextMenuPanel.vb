@@ -27,6 +27,7 @@ Namespace Win
         ''' デフォルトコンストラクタ
         ''' </summary>
         Public Sub New()
+
             If DesignMode Then
                 Return
             End If

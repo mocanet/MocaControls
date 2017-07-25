@@ -13,6 +13,11 @@ Namespace Win
                     components.Dispose()
                 End If
 
+
+                If Moca.Win.WinUtil.UserControlDesignMode Then
+                    Return
+                End If
+
                 _timer.Stop()
             Finally
                 MyBase.Dispose(disposing)

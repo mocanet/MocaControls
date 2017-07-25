@@ -54,7 +54,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="MocaWin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=74dd2591eb474191, processorArchitecture=MSIL">
-      <HintPath>..\packages\Moca.NETWin.2.1.2\lib\net20-full\MocaWin.dll</HintPath>
+      <HintPath>..\packages\Moca.NETWin.2.2.0\lib\net20\MocaWin.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -83,6 +84,12 @@
     </Compile>
     <Compile Include="Forms\Form1.Designer.vb">
       <DependentUpon>Form1.vb</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Form2.Designer.vb">
+      <DependentUpon>Form2.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Form2.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\Index.Designer.vb">
@@ -119,6 +126,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Forms\Form1.resx">
       <DependentUpon>Form1.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Form2.resx">
+      <DependentUpon>Form2.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Index.resx">
       <DependentUpon>Index.vb</DependentUpon>

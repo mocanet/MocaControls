@@ -78,7 +78,7 @@ Namespace Win
         ''' <remarks>
         ''' タグプロパティに値が設定されている事が前提ですので、<see cref="Add" /> メソッドは Value 指定してください。
         ''' </remarks>
-        <Bindable(True)>
+        <Browsable(False)>
         Public Property SelectedValue() As Object
             Get
                 Return _getSelectedValue()
@@ -96,6 +96,7 @@ Namespace Win
         ''' <remarks>
         ''' 未選択時は Nothing を返します。
         ''' </remarks>
+        <Browsable(False)>
         Public Property SelectedButton() As RadioButton
             Get
                 Return _getSelected()
