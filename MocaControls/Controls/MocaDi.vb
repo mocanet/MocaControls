@@ -3,15 +3,15 @@ Imports System.ComponentModel
 
 Namespace Win
 
-    ''' <summary>
-    ''' AOP を利用するためのコントローラ
-    ''' </summary>
-    ''' <remarks></remarks>
-    <Description("AOP を利用するためのコントローラ"),
-     ToolboxItem(True),
-     ToolboxBitmap(GetType(resourceDummy), "Resources.MocaDi.bmp"),
-     DesignTimeVisible(True)>
-    Public Class MocaDi
+	''' <summary>
+	''' AOP を利用するためのコントローラ
+	''' </summary>
+	''' <remarks></remarks>
+	<Description("AOP を利用するためのコントローラ"),
+	 ToolboxItem(True),
+	 ToolboxBitmap(GetType(resourceDummy), "MocaDi.bmp"),
+	 DesignTimeVisible(True)>
+	Public Class MocaDi
 
 #Region " コンストラクタ "
 

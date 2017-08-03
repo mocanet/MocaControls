@@ -5,23 +5,23 @@ Imports System.Runtime.InteropServices
 
 Namespace Win
 
-    ''' <summary>
-    ''' 標準のDateTimePickerでNullを扱えるように拡張したコントロール
-    ''' </summary>
-    ''' <remarks>
-    ''' 標準のDateTimePickerではNullを扱えないので、設定出来るようにし、
-    ''' DellキーにてNullにする事が可能となっている。<br/>
-    ''' Null値の場合に扱う値は、ユーザーがNullValueプロパティにて自由に設定出来ます。<br/>
-    ''' <br/>
-    ''' 注１）<br/>
-    ''' 　vbNullは使用できません。<br/>
-    ''' 　Null値にしたい場合は、vbNullString 又は、DBNull.Valueを使用してください。<br/>
-    ''' </remarks>
-    <Description("標準のDateTimePickerでNullを扱えるように拡張したコントロール"),
-    ToolboxItem(True),
-    ToolboxBitmap(GetType(resourceDummy), "Resources.NullableDateTimePicker.bmp"),
-    DesignTimeVisible(True)>
-    Public Class NullableDateTimePicker
+	''' <summary>
+	''' 標準のDateTimePickerでNullを扱えるように拡張したコントロール
+	''' </summary>
+	''' <remarks>
+	''' 標準のDateTimePickerではNullを扱えないので、設定出来るようにし、
+	''' DellキーにてNullにする事が可能となっている。<br/>
+	''' Null値の場合に扱う値は、ユーザーがNullValueプロパティにて自由に設定出来ます。<br/>
+	''' <br/>
+	''' 注１）<br/>
+	''' 　vbNullは使用できません。<br/>
+	''' 　Null値にしたい場合は、vbNullString 又は、DBNull.Valueを使用してください。<br/>
+	''' </remarks>
+	<Description("標準のDateTimePickerでNullを扱えるように拡張したコントロール"),
+	ToolboxItem(True),
+	ToolboxBitmap(GetType(resourceDummy), "NullableDateTimePicker.bmp"),
+	DesignTimeVisible(True)>
+	Public Class NullableDateTimePicker
 
 
 #Region " Declare "

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+	<?define Manufacturer        = "MiYABiS" ?>
+	<?define ProductName         = "Moca.NET Controls" ?>
+	<?define ProductHomePage     = "https://github.com/mocanet/MocaControls" ?>
+	<?define UpgradeCode         = "e29eca80-7f24-4902-ab52-d79273199aa5" ?>
+	<?define Version             = "2.2.0" ?>
+
+	<Product
+		Id="*"
+		Name="$(var.ProductName)"
+		Language="1033"
+		Version="$(var.Version)"
+		Manufacturer="$(var.Manufacturer)"
+		UpgradeCode="$(var.UpgradeCode)">
+
+		<Package
+			InstallerVersion="200"
+			Compressed="yes"
+			InstallScope="perMachine" />
+
+		<MajorUpgrade AllowSameVersionUpgrades="yes"
+					  DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+
+		<MediaTemplate EmbedCab="yes" />
+
+		<Directory Id="TARGETDIR" Name="SourceDir" />
+
+		<FeatureRef Id="VS2010" />
+		<FeatureRef Id="VS2012" />
+		<FeatureRef Id="VS2012Express" />
+		<FeatureRef Id="VS2013" />
+		<FeatureRef Id="VS2015" />
+		<FeatureRef Id="VS2017" />
+
+		<Icon Id="MocaIcon" SourceFile="$(var.MocaControlsVSPackage.ProjectDir)Resources\Package.ico" />
+
+		<Property Id="ARPPRODUCTICON"
+				  Value="MocaIcon" />
+		<Property Id="ARPHELPLINK"
+				  Value="$(var.ProductHomePage)" />
+		<Property Id="ARPURLINFOABOUT"
+				  Value="$(var.ProductHomePage)" />
+		<Property Id="ARPURLUPDATEINFO"
+				  Value="$(var.ProductHomePage)" />
+
+		<WixVariable Id="WixUILicenseRtf"
+					 Value="License.rtf" />
+
+		<WixVariable Id="WixUIBannerBmp"
+					 Value="Resources\Banner.jpg" />
+		<WixVariable Id="WixUIDialogBmp"
+					 Value="Resources\Dialog.jpg" />
+
+		<UI>
+			<UIRef Id="WixUI_FeatureTree" />
+		</UI>
+
+	</Product>
+
+</Wix>

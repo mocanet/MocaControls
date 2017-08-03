@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+	<Fragment>
+
+		<PropertyRef Id="VS2010_ROOT_FOLDER" />
+		<PropertyRef Id="VS2010_EXTENSIONS_DIR" />
+		<CustomActionRef Id="VS2010Setup" />
+
+		<Feature Id="VS2010"
+				 Title="Visual Studio 2010"
+				 AllowAdvertise="no"				 
+				 Level="0">
+			<Condition Level="1">VS2010_ROOT_FOLDER</Condition>
+			<ComponentGroupRef Id="VS2010Packages" />
+			<ComponentGroupRef Id="VS2010Resources" />
+			<ComponentGroupRef Id="VS2010v20" />
+			<ComponentGroupRef Id="VS2010v35" />
+			<ComponentGroupRef Id="VS2010v40" />
+		</Feature>
+
+		<DirectoryRef Id="TARGETDIR">
+			<Directory Id="VS2010_EXTENSIONS_DIR" Name="VS2010_EXTENSIONS_DIR">
+				<Directory Id="VS2010.Manufacturer" Name="MiYABiS">
+					<Directory Id="VS2010.Product" Name="Moca.NET Controls">
+						<Directory Id="VS2010.Resources" Name="Resources" />
+						<Directory Id="VS2010.v2.0" Name="v2.0" />
+						<Directory Id="VS2010.v3.5" Name="v3.5" />
+						<Directory Id="VS2010.v4.0" Name="v4.0" />
+					</Directory>
+				</Directory>
+			</Directory>
+		</DirectoryRef>
+
+		<ComponentGroup Id="VS2010Packages" Directory="VS2010.Product" Source="$(var.MocaControlsVSPackage.ProjectDir)">
+			<Component Id="VS2010.extension.vsixmanifest" Guid="{D406FF7D-8688-4D40-A2D0-6C768748C8D6}">
+				<File Id="VS2010.extension.vsixmanifest" Name="extension.vsixmanifest" Source="$(var.MocaControlsVSPackage.ProjectDir)2010.extension.vsixmanifest" />
+			</Component>
+			<Component Id="VS2010.MocaControls.pkgdef" Guid="{2CDC8C38-2A89-4796-9F38-40BD3848EC3E}">
+				<File Id="VS2010.MocaControls.pkgdef" Name="2010.MocaControls.pkgdef" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="VS2010Resources" Directory="VS2010.Resources" Source="$(var.MocaControlsVSPackage.ProjectDir)Resources\">
+			<Component Id="VS2010.preview.png" Guid="{03774D66-BCFC-4E92-A43D-96B67600FD68}">
+				<File Id="VS2010.preview.png" Name="preview.png" />
+			</Component>
+			<Component Id="VS2010.logo.png" Guid="{834FD429-7AC9-40C5-A62C-9FE4E791CD49}">
+				<File Id="VS2010.logo.png" Name="logo.png" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="VS2010v20" Directory="VS2010.v2.0" Source="$(var.MocaControls20Vsp.TargetDir)">
+			<Component Id="VS2010.Moca20.dll" Guid="{7CCC7638-70FC-4045-BD0A-4F2D54F21F71}" >
+				<File Id="VS2010.Moca20.dll" Name="Moca.dll" />
+			</Component>
+			<Component Id="VS2010.MocaControls20.dll" Guid="{0282B46C-6777-4B33-BF03-F79ED858ADDB}">
+				<File Id="VS2010.MocaControls20.dll" Name="MocaControls.dll" />
+			</Component>
+			<Component Id="VS2010.MocaWin20.dll" Guid="{D16C8590-F354-48EC-A468-D5EC7256FEBF}">
+				<File Id="VS2010.MocaWin20.dll" Name="MocaWin.dll" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="VS2010v35" Directory="VS2010.v3.5" Source="$(var.MocaControls35Vsp.TargetDir)">
+			<Component Id="VS2010.Moca35.dll" Guid="{AAFDDA8F-7AEB-4C7F-94F3-7D146CEA973C}">
+				<File Id="VS2010.Moca35.dll" Name="Moca.dll" />
+			</Component>
+			<Component Id="VS2010.MocaControls35.dll" Guid="{E44B0EE9-EC3D-4F06-897C-EE5DB49ADCA3}">
+				<File Id="VS2010.MocaControls35.dll" Name="MocaControls.dll" />
+			</Component>
+			<Component Id="VS2010.MocaWin35.dll" Guid="{959F11DD-A58A-4C31-9FAB-A234E4B5FE75}">
+				<File Id="VS2010.MocaWin35.dll" Name="MocaWin.dll" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="VS2010v40" Directory="VS2010.v4.0" Source="$(var.MocaControls40Vsp.TargetDir)">
+			<Component Id="VS2010.Moca40.dll" Guid="{78748D18-3DF8-4104-8249-7B3C19496675}">
+				<File Id="VS2010.Moca40.dll" Name="Moca.dll" />
+			</Component>
+			<Component Id="VS2010.MocaControls40.dll" Guid="{E8E3D9DB-8481-46D1-8E14-DC1B3FDFCC51}">
+				<File Id="VS2010.MocaControls40.dll" Name="MocaControls.dll" />
+			</Component>
+			<Component Id="VS2010.MocaWin40.dll" Guid="{405DCF4F-9CAE-4AE6-8197-D44E3A1CBB96}">
+				<File Id="VS2010.MocaWin40.dll" Name="MocaWin.dll" />
+			</Component>
+		</ComponentGroup>
+
+	</Fragment>
+
+</Wix>

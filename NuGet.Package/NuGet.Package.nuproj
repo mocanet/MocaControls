@@ -24,13 +24,13 @@
     <ProjectGuid>66e947e1-8fb9-4b27-8ac3-56d19e04c9e0</ProjectGuid>
   </PropertyGroup>
   <PropertyGroup>
-    <NuProjPath>..\packages\NuProj.0.11.28-beta\tools\</NuProjPath>
+    <NuProjPath>..\packages\NuProj.0.11.30\tools\</NuProjPath>
   </PropertyGroup>
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
     <Id>Moca.NETControls</Id>
-    <Version>1.4.2-beta01</Version>
-    <Title>Moca.NET Controls</Title>
+    <Version>2.0.0-beta01</Version>
+    <Title>Moca.NET Windows Controls</Title>
     <Authors>MiYABiS</Authors>
     <Owners>MiYABiS</Owners>
     <Summary>Moca.NET Windows Form Controls</Summary>
@@ -41,7 +41,7 @@
     <LicenseUrl>https://opensource.org/licenses/MS-PL</LicenseUrl>
     <Copyright>Copyright © 2016 MiYABiS All Rights Reserved.</Copyright>
     <Tags>Moca.NET</Tags>
-    <IconUrl>https://avatars3.githubusercontent.com/u/14543303?s=128</IconUrl>
+    <IconUrl>https://avatars3.githubusercontent.com/u/14543303?s=256</IconUrl>
     <NoPackageAnalysis>false</NoPackageAnalysis>
     <NoDefaultExcludes>false</NoDefaultExcludes>
     <GenerateSymbolPackage>true</GenerateSymbolPackage>

@@ -3,15 +3,15 @@ Imports System.ComponentModel
 
 Namespace Win
 
-    ''' <summary>
-    ''' デバッグ印
-    ''' </summary>
-    ''' <remarks></remarks>
-    <Description("デバッグ印"),
-    ToolboxItem(True),
-    ToolboxBitmap(GetType(resourceDummy), "Resources.DebugMarker.bmp"),
-    DesignTimeVisible(True)>
-    Public Class DebugMarker
+	''' <summary>
+	''' デバッグ印
+	''' </summary>
+	''' <remarks></remarks>
+	<Description("デバッグ印"),
+	ToolboxItem(True),
+	ToolboxBitmap(GetType(resourceDummy), "DebugMarker.bmp"),
+	DesignTimeVisible(True)>
+	Public Class DebugMarker
 
 		''' <summary>ツールチップテキスト</summary>
 		Private _toolTipText As String

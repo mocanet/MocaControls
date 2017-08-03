@@ -35,8 +35,8 @@ Imports Microsoft.VisualStudio.Shell.Interop
 'ProvideToolboxItemConfiguration(GetType(ToolboxConfig))>
 
 <PackageRegistration(UseManagedResourcesOnly:=True),
- InstalledProductRegistration("#110", "#112", "2.2.0", IconResourceID:=400),
- ProvideLoadKey("Standard", "2.2.0", "Moca.NET Windows Forms Controls 2.0", "MiYABiS", 1),
+ InstalledProductRegistration("#110", "#112", "#113", IconResourceID:=400),
+ ProvideLoadKey("Standard", "2.2.0", "Moca.NET Windows Forms Controls", "MiYABiS", 1),
  Guid(GuidList.guidMocaControlsVSPackagePkgString),
  ProvideToolboxItems(6)>
 Public NotInheritable Class MocaControlsVSPackage
@@ -66,6 +66,7 @@ Public NotInheritable Class MocaControlsVSPackage
     ''' </summary>
     Protected Overrides Sub Initialize()
         MyBase.Initialize()
+        Return
 
         Dim mcs As OleMenuCommandService = GetService(GetType(IMenuCommandService))
         If mcs IsNot Nothing Then
@@ -127,6 +128,8 @@ Public NotInheritable Class MocaControlsVSPackage
     Private _tabName As String = "Moca.NET "
 
     Private Sub _onRefreshToolbox(ByVal sender As Object, ByVal e As EventArgs) Handles Me.ToolboxInitialized, Me.ToolboxUpgraded
+        Return
+
         Dim service As IToolboxService = TryCast(GetService(GetType(IToolboxService)), IToolboxService)
         Dim toolbox As IVsToolbox = TryCast(GetService(GetType(IVsToolbox)), IVsToolbox)
 

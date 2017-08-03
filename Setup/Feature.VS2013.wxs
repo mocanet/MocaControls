@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+	<Fragment>
+
+		<PropertyRef Id="VS2013_ROOT_FOLDER" />
+		<PropertyRef Id="VS2013_EXTENSIONS_DIR" />
+		<CustomActionRef Id="VS2013Setup" />
+
+		<Feature Id="VS2013"
+				 Title="Visual Studio 2013"
+				 AllowAdvertise="no"				 
+				 Level="0">
+			<Condition Level="1">VS2013_ROOT_FOLDER</Condition>
+			<ComponentGroupRef Id="VS2013Packages" />
+			<ComponentGroupRef Id="VS2013Resources" />
+			<ComponentGroupRef Id="VS2013v20" />
+			<ComponentGroupRef Id="VS2013v35" />
+			<ComponentGroupRef Id="VS2013v40" />
+			<ComponentGroupRef Id="VS2013v45" />
+			<ComponentGroupRef Id="VS2013v452" />
+			<ComponentGroupRef Id="VS2013v46" />
+			<ComponentGroupRef Id="VS2013v462" />
+			<ComponentGroupRef Id="VS2013v47" />
+		</Feature>
+
+		<DirectoryRef Id="TARGETDIR">
+			<Directory Id="VS2013_EXTENSIONS_DIR" Name="VS2013_EXTENSIONS_DIR">
+				<Directory Id="VS2013.Manufacturer" Name="MiYABiS">
+					<Directory Id="VS2013.Product" Name="Moca.NET Controls">
+						<Directory Id="VS2013.Resources" Name="Resources" />
+						<Directory Id="VS2013.v2.0" Name="v2.0" />
+						<Directory Id="VS2013.v3.5" Name="v3.5" />
+						<Directory Id="VS2013.v4.0" Name="v4.0" />
+						<Directory Id="VS2013.v4.5" Name="v4.5" />
+						<Directory Id="VS2013.v4.5.2" Name="v4.5.2" />
+						<Directory Id="VS2013.v4.6" Name="v4.6" />
+						<Directory Id="VS2013.v4.6.2" Name="v4.6.2" />
+						<Directory Id="VS2013.v4.7" Name="v4.7" />
+					</Directory>
+				</Directory>
+			</Directory>
+		</DirectoryRef>
+
+		<ComponentGroup Id="VS2013Packages" Directory="VS2013.Product" Source="$(var.MocaControlsVSPackage.TargetDir)">
+			<Component Id="VS2013.extension.vsixmanifest" Guid="{1D61856A-4301-46F8-A382-F91871F23588}">
+				<File Id="VS2013.extension.vsixmanifest" Name="extension.vsixmanifest" />
+			</Component>
+			<Component Id="VS2013.MocaControls.pkgdef" Guid="{A248F4CA-39A6-4104-8CA2-62568583141F}">
+				<File Id="VS2013.MocaControls.pkgdef" Name="MocaControls.pkgdef" />
+			</Component>
+			<Component Id="VS2013.MocaControlsVSPackage.pkgdef" Guid="{DB72FCAF-4B35-40A6-9284-48C2F09C5496}">
+				<File Id="VS2013.MocaControlsVSPackage.pkgdef" Name="MocaControlsVSPackage.pkgdef" />
+			</Component>
+			<Component Id="VS2013.MocaControlsVSPackage.dll" Guid="{46FBFC27-1D44-437E-A0F5-14DB12EA2B3F}">
+				<File Id="VS2013.MocaControlsVSPackage.dll" Name="MocaControlsVSPackage.dll" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="VS2013Resources" Directory="VS2013.Resources" Source="$(var.MocaControlsVSPackage.ProjectDir)Resources\">
+			<Component Id="VS2013.preview.png" Guid="{F5CDB1D5-B13C-4582-80F9-DADCD7DF191F}">
+				<File Id="VS2013.preview.png" Name="preview.png" />
+			</Component>
+			<Component Id="VS2013.logo.png" Guid="{A11414F8-4CBE-4478-B520-EB109E2BC88F}">
+				<File Id="VS2013.logo.png" Name="logo.png" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="VS2013v20" Directory="VS2013.v2.0" Source="$(var.MocaControls20Vsp.TargetDir)">
+			<Component Id="VS2013.Moca20.dll" Guid="{233567FC-F912-4C3C-95A9-C9CFB80FBA2D}" >
+				<File Id="VS2013.Moca20.dll" Name="Moca.dll" />
+			</Component>
+			<Component Id="VS2013.MocaControls20.dll" Guid="{A694AC2D-FD3F-4BD9-830E-4768118E9CC6}">
+				<File Id="VS2013.MocaControls20.dll" Name="MocaControls.dll" />
+			</Component>
+			<Component Id="VS2013.MocaWin20.dll" Guid="{4D6AD304-2B61-40FC-9E97-0FB045F7DC15}">
+				<File Id="VS2013.MocaWin20.dll" Name="MocaWin.dll" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="VS2013v35" Directory="VS2013.v3.5" Source="$(var.MocaControls35Vsp.TargetDir)">
+			<Component Id="VS2013.Moca35.dll" Guid="{59B4A6E1-1AB2-4E0A-994E-801D890C5E36}">
+				<File Id="VS2013.Moca35.dll" Name="Moca.dll" />
+			</Component>
+			<Component Id="VS2013.MocaControls35.dll" Guid="{9B70CD90-3501-42EC-9E37-F2A1B2B40678}">
+				<File Id="VS2013.MocaControls35.dll" Name="MocaControls.dll" />
+			</Component>
+			<Component Id="VS2013.MocaWin35.dll" Guid="{E8907139-920A-485D-8D37-62034CF3DABB}">
+				<File Id="VS2013.MocaWin35.dll" Name="MocaWin.dll" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="VS2013v40" Directory="VS2013.v4.0" Source="$(var.MocaControls40Vsp.TargetDir)">
+			<Component Id="VS2013.Moca40.dll" Guid="{AB5EFC1C-4B05-4554-97D1-053874304EE6}">
+				<File Id="VS2013.Moca40.dll" Name="Moca.dll" />
+			</Component>
+			<Component Id="VS2013.MocaControls40.dll" Guid="{A5922830-BEC6-4F46-BB49-C0155445917C}">
+				<File Id="VS2013.MocaControls40.dll" Name="MocaControls.dll" />
+			</Component>
+			<Component Id="VS2013.MocaWin40.dll" Guid="{5CFBA079-E3A1-4F41-AD0C-4C10123C0B69}">
+				<File Id="VS2013.MocaWin40.dll" Name="MocaWin.dll" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="VS2013v45" Directory="VS2013.v4.5" Source="$(var.MocaControls45Vsp.TargetDir)">
+			<Component Id="VS2013.Moca45.dll" Guid="{465F23F2-7FB4-4C41-BA37-18EA72A4EEA1}">
+				<File Id="VS2013.Moca45.dll" Name="Moca.dll" />
+			</Component>
+			<Component Id="VS2013.MocaControls45.dll" Guid="{DF0D9E5F-FA6D-4A26-B0B5-4C28F789DCA3}">
+				<File Id="VS2013.MocaControls45.dll" Name="MocaControls.dll" />
+			</Component>
+			<Component Id="VS2013.MocaWin45.dll" Guid="{861EC0E2-B528-437F-BE9D-7642ED81F207}">
+				<File Id="VS2013.MocaWin45.dll" Name="MocaWin.dll" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="VS2013v452" Directory="VS2013.v4.5.2" Source="$(var.MocaControls452Vsp.TargetDir)">
+			<Component Id="VS2013.Moca452.dll" Guid="{83A959E1-64D6-4DAF-B6C7-AFF66AC79CA3}">
+				<File Id="VS2013.Moca452.dll" Name="Moca.dll" />
+			</Component>
+			<Component Id="VS2013.MocaControls452.dll" Guid="{2BB1F082-5E9A-4681-8BB3-142FA408F1F6}">
+				<File Id="VS2013.MocaControls452.dll" Name="MocaControls.dll" />
+			</Component>
+			<Component Id="VS2013.MocaWin452.dll" Guid="{66F1378A-62C2-4A52-B73E-C3EF449418CF}">
+				<File Id="VS2013.MocaWin452.dll" Name="MocaWin.dll" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="VS2013v46" Directory="VS2013.v4.6" Source="$(var.MocaControls46Vsp.TargetDir)">
+			<Component Id="VS2013.Moca46.dll" Guid="{5015773C-00F5-4D99-A1CA-E2FE7F3D275F}">
+				<File Id="VS2013.Moca46.dll" Name="Moca.dll" />
+			</Component>
+			<Component Id="VS2013.MocaControls46.dll" Guid="{A6CB3233-6A4B-423E-8A51-0D951AC41EE8}">
+				<File Id="VS2013.MocaControls46.dll" Name="MocaControls.dll" />
+			</Component>
+			<Component Id="VS2013.MocaWin46.dll" Guid="{AA2DB6B9-5369-4DB6-ACFC-43CBDAFCBB74}">
+				<File Id="VS2013.MocaWin46.dll" Name="MocaWin.dll" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="VS2013v462" Directory="VS2013.v4.6.2" Source="$(var.MocaControls462Vsp.TargetDir)">
+			<Component Id="VS2013.Moca462.dll" Guid="{20E5BDC5-C32A-4CD7-A1E0-80C1F0045105}">
+				<File Id="VS2013.Moca462.dll" Name="Moca.dll" />
+			</Component>
+			<Component Id="VS2013.MocaControls462.dll" Guid="{BEE968A1-6604-4300-A086-15C03C0AA7CE}">
+				<File Id="VS2013.MocaControls462.dll" Name="MocaControls.dll" />
+			</Component>
+			<Component Id="VS2013.MocaWin462.dll" Guid="{5643FCDE-2D77-45BC-8680-BAAA57090384}">
+				<File Id="VS2013.MocaWin462.dll" Name="MocaWin.dll" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="VS2013v47" Directory="VS2013.v4.7" Source="$(var.MocaControls47Vsp.TargetDir)">
+			<Component Id="VS2013.Moca47.dll" Guid="{10EC0EEC-F3D2-4095-B798-836BD50768C5}">
+				<File Id="VS2013.Moca47.dll" Name="Moca.dll" />
+			</Component>
+			<Component Id="VS2013.MocaControls47.dll" Guid="{65ABAF15-A0E0-48D4-BD10-3F51FF8EA37D}">
+				<File Id="VS2013.MocaControls47.dll" Name="MocaControls.dll" />
+			</Component>
+			<Component Id="VS2013.MocaWin47.dll" Guid="{5AFD51E2-9F6E-41ED-AEA9-225D6B9B869A}">
+				<File Id="VS2013.MocaWin47.dll" Name="MocaWin.dll" />
+			</Component>
+		</ComponentGroup>
+
+	</Fragment>
+
+</Wix>

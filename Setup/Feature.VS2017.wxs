@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+	<Fragment>
+
+		<PropertyRef Id="VS2017_ROOT_FOLDER" />
+		<PropertyRef Id="VS2017_EXTENSIONS_DIR" />
+		<CustomActionRef Id="VS2017Setup" />
+
+		<Feature Id="VS2017"
+				 Title="Visual Studio 2017"
+				 AllowAdvertise="no"				 
+				 Level="0">
+			<Condition Level="1">VS2017_ROOT_FOLDER</Condition>
+			<ComponentGroupRef Id="VS2017Packages" />
+			<ComponentGroupRef Id="VS2017Resources" />
+			<ComponentGroupRef Id="VS2017v20" />
+			<ComponentGroupRef Id="VS2017v35" />
+			<ComponentGroupRef Id="VS2017v40" />
+			<ComponentGroupRef Id="VS2017v45" />
+			<ComponentGroupRef Id="VS2017v452" />
+			<ComponentGroupRef Id="VS2017v46" />
+			<ComponentGroupRef Id="VS2017v462" />
+			<ComponentGroupRef Id="VS2017v47" />
+		</Feature>
+
+		<DirectoryRef Id="TARGETDIR">
+			<Directory Id="VS2017_EXTENSIONS_DIR" Name="VS2017_EXTENSIONS_DIR">
+				<Directory Id="VS2017.Manufacturer" Name="MiYABiS">
+					<Directory Id="VS2017.Product" Name="Moca.NET Controls">
+						<Directory Id="VS2017.Resources" Name="Resources" />
+						<Directory Id="VS2017.v2.0" Name="v2.0" />
+						<Directory Id="VS2017.v3.5" Name="v3.5" />
+						<Directory Id="VS2017.v4.0" Name="v4.0" />
+						<Directory Id="VS2017.v4.5" Name="v4.5" />
+						<Directory Id="VS2017.v4.5.2" Name="v4.5.2" />
+						<Directory Id="VS2017.v4.6" Name="v4.6" />
+						<Directory Id="VS2017.v4.6.2" Name="v4.6.2" />
+						<Directory Id="VS2017.v4.7" Name="v4.7" />
+					</Directory>
+				</Directory>
+			</Directory>
+		</DirectoryRef>
+
+		<ComponentGroup Id="VS2017Packages" Directory="VS2017.Product" Source="$(var.MocaControlsVSPackage.TargetDir)">
+			<Component Id="VS2017.extension.vsixmanifest" Guid="{FEAE7840-2994-4FEF-B180-69CF42F3CB81}">
+				<File Id="VS2017.extension.vsixmanifest" Name="extension.vsixmanifest" />
+			</Component>
+			<Component Id="VS2017.MocaControls.pkgdef" Guid="{D29B6C9E-1F42-4D27-A506-08DCAE496A73}">
+				<File Id="VS2017.MocaControls.pkgdef" Name="MocaControls.pkgdef" />
+			</Component>
+			<Component Id="VS2017.MocaControlsVSPackage.pkgdef" Guid="{A646D40A-61A2-4A31-86A2-978EBA9ECE54}">
+				<File Id="VS2017.MocaControlsVSPackage.pkgdef" Name="MocaControlsVSPackage.pkgdef" />
+			</Component>
+			<Component Id="VS2017.MocaControlsVSPackage.dll" Guid="{846BBE9B-C00B-40FF-94A7-B31451BEF642}">
+				<File Id="VS2017.MocaControlsVSPackage.dll" Name="MocaControlsVSPackage.dll" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="VS2017Resources" Directory="VS2017.Resources" Source="$(var.MocaControlsVSPackage.ProjectDir)Resources\">
+			<Component Id="VS2017.preview.png" Guid="{320ECA45-21E5-41F2-BB77-D87065A46FA8}">
+				<File Id="VS2017.preview.png" Name="preview.png" />
+			</Component>
+			<Component Id="VS2017.logo.png" Guid="{D60233D7-38EE-4149-A680-15C006242CCA}">
+				<File Id="VS2017.logo.png" Name="logo.png" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="VS2017v20" Directory="VS2017.v2.0" Source="$(var.MocaControls20Vsp.TargetDir)">
+			<Component Id="VS2017.Moca20.dll" Guid="{E9D5B475-80C7-4DCF-AB61-14EE0516ED6A}" >
+				<File Id="VS2017.Moca20.dll" Name="Moca.dll" />
+			</Component>
+			<Component Id="VS2017.MocaControls20.dll" Guid="{26976113-E458-46BD-ACC3-B078D43EB581}">
+				<File Id="VS2017.MocaControls20.dll" Name="MocaControls.dll" />
+			</Component>
+			<Component Id="VS2017.MocaWin20.dll" Guid="{9A3DD702-5880-461B-96F6-F37A7748459D}">
+				<File Id="VS2017.MocaWin20.dll" Name="MocaWin.dll" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="VS2017v35" Directory="VS2017.v3.5" Source="$(var.MocaControls35Vsp.TargetDir)">
+			<Component Id="VS2017.Moca35.dll" Guid="{0C449F0E-5BDA-485B-BF81-4A7F47F3AE82}">
+				<File Id="VS2017.Moca35.dll" Name="Moca.dll" />
+			</Component>
+			<Component Id="VS2017.MocaControls35.dll" Guid="{91F8476F-53C5-4FF4-AB1C-4773ADEDEF34}">
+				<File Id="VS2017.MocaControls35.dll" Name="MocaControls.dll" />
+			</Component>
+			<Component Id="VS2017.MocaWin35.dll" Guid="{17D37890-BACD-476D-A9EA-8B704CE22E09}">
+				<File Id="VS2017.MocaWin35.dll" Name="MocaWin.dll" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="VS2017v40" Directory="VS2017.v4.0" Source="$(var.MocaControls40Vsp.TargetDir)">
+			<Component Id="VS2017.Moca40.dll" Guid="{4509A52D-C653-4769-9A99-5E1C438E4078}">
+				<File Id="VS2017.Moca40.dll" Name="Moca.dll" />
+			</Component>
+			<Component Id="VS2017.MocaControls40.dll" Guid="{7BA370B0-F99B-49D9-82A7-571C274415D5}">
+				<File Id="VS2017.MocaControls40.dll" Name="MocaControls.dll" />
+			</Component>
+			<Component Id="VS2017.MocaWin40.dll" Guid="{AD20B70E-7E60-4299-BCE6-2CA8BCCA8070}">
+				<File Id="VS2017.MocaWin40.dll" Name="MocaWin.dll" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="VS2017v45" Directory="VS2017.v4.5" Source="$(var.MocaControls45Vsp.TargetDir)">
+			<Component Id="VS2017.Moca45.dll" Guid="{F31E01C4-4E9B-4917-9312-46985B0FBFB3}">
+				<File Id="VS2017.Moca45.dll" Name="Moca.dll" />
+			</Component>
+			<Component Id="VS2017.MocaControls45.dll" Guid="{1646E7BA-1A64-4062-B9D4-A7D21E7BD854}">
+				<File Id="VS2017.MocaControls45.dll" Name="MocaControls.dll" />
+			</Component>
+			<Component Id="VS2017.MocaWin45.dll" Guid="{5282FCE5-15AB-49C9-9B5C-B9603AD5F322}">
+				<File Id="VS2017.MocaWin45.dll" Name="MocaWin.dll" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="VS2017v452" Directory="VS2017.v4.5.2" Source="$(var.MocaControls452Vsp.TargetDir)">
+			<Component Id="VS2017.Moca452.dll" Guid="{CD269539-46CC-4B56-A8EC-FABD1B2F083E}">
+				<File Id="VS2017.Moca452.dll" Name="Moca.dll" />
+			</Component>
+			<Component Id="VS2017.MocaControls452.dll" Guid="{8FCEA0E4-F19E-4C02-B169-F4AD709390E7}">
+				<File Id="VS2017.MocaControls452.dll" Name="MocaControls.dll" />
+			</Component>
+			<Component Id="VS2017.MocaWin452.dll" Guid="{FDC520C1-BB0A-48CA-A4C6-2CA71B919CC4}">
+				<File Id="VS2017.MocaWin452.dll" Name="MocaWin.dll" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="VS2017v46" Directory="VS2017.v4.6" Source="$(var.MocaControls46Vsp.TargetDir)">
+			<Component Id="VS2017.Moca46.dll" Guid="{6E8E12E1-3648-4B1E-B9CA-28BE089011BC}">
+				<File Id="VS2017.Moca46.dll" Name="Moca.dll" />
+			</Component>
+			<Component Id="VS2017.MocaControls46.dll" Guid="{819186CC-679A-413B-B1D7-1207BE2359FD}">
+				<File Id="VS2017.MocaControls46.dll" Name="MocaControls.dll" />
+			</Component>
+			<Component Id="VS2017.MocaWin46.dll" Guid="{980D4DE9-BD73-4D49-80FB-CDED53646928}">
+				<File Id="VS2017.MocaWin46.dll" Name="MocaWin.dll" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="VS2017v462" Directory="VS2017.v4.6.2" Source="$(var.MocaControls462Vsp.TargetDir)">
+			<Component Id="VS2017.Moca462.dll" Guid="{DA9B2670-9EA9-4AC6-8E81-003628FC055E}">
+				<File Id="VS2017.Moca462.dll" Name="Moca.dll" />
+			</Component>
+			<Component Id="VS2017.MocaControls462.dll" Guid="{E21EA078-9644-432F-B478-398EA9972BEF}">
+				<File Id="VS2017.MocaControls462.dll" Name="MocaControls.dll" />
+			</Component>
+			<Component Id="VS2017.MocaWin462.dll" Guid="{0F0FAEAB-EADB-4731-A04B-1CFC8D14314D}">
+				<File Id="VS2017.MocaWin462.dll" Name="MocaWin.dll" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="VS2017v47" Directory="VS2017.v4.7" Source="$(var.MocaControls47Vsp.TargetDir)">
+			<Component Id="VS2017.Moca47.dll" Guid="{4DEB36AB-C682-4E26-A9B3-6F3016B82A65}">
+				<File Id="VS2017.Moca47.dll" Name="Moca.dll" />
+			</Component>
+			<Component Id="VS2017.MocaControls47.dll" Guid="{1797B673-770C-49E0-A388-91C717F7207D}">
+				<File Id="VS2017.MocaControls47.dll" Name="MocaControls.dll" />
+			</Component>
+			<Component Id="VS2017.MocaWin47.dll" Guid="{D772E0EF-9184-40EB-A0E8-854D69A116F7}">
+				<File Id="VS2017.MocaWin47.dll" Name="MocaWin.dll" />
+			</Component>
+		</ComponentGroup>
+
+	</Fragment>
+
+</Wix>

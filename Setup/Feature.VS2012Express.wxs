@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+	<Fragment>
+
+		<PropertyRef Id="VS2012WDEXPRESS_IDE" />
+		<!--<PropertyRef Id="VS2012WDEXPRESS_EXTENSIONS_DIR" />-->
+		<Property Id="VS2012WDEXPRESS_EXTENSIONS_DIR">
+			<DirectorySearch Id="VS2012WDExpressExtensionsDir" Path="[VS2012_ROOT_FOLDER]\WDExpressExtensions">
+			</DirectorySearch>
+		</Property>
+		<CustomActionRef Id="VS2012Setup" />
+
+		<Feature Id="VS2012Express"
+				 Title="Visual Studio Express 2012"
+				 Description="Visual Studio Express 2012 for Windows Desktop"
+				 AllowAdvertise="no"
+				 Level="0">
+			<Condition Level="1">VS2012WDEXPRESS_EXTENSIONS_DIR</Condition>
+			<ComponentGroupRef Id="VS2012ExpressPackages" />
+		</Feature>
+
+		<DirectoryRef Id="TARGETDIR">
+			<Directory Id="VS2012WDEXPRESS_EXTENSIONS_DIR" Name="VS2012WDEXPRESS_EXTENSIONS_DIR">
+				<Directory Id="VS2012Express.Manufacturer" Name="MiYABiS">
+					<Directory Id="VS2012Express.Product" Name="Moca.NET Controls">
+					</Directory>
+				</Directory>
+			</Directory>
+		</DirectoryRef>
+
+		<ComponentGroup Id="VS2012ExpressPackages" Directory="VS2012Express.Product" Source="$(var.MocaControlsVSPackage.TargetDir)">
+			<Component Id="VS2012Express.extension.vsixmanifest" Guid="{C6D5883B-8048-425D-B586-ABDDB7EEB1EF}">
+				<File Id="VS2012Express.extension.vsixmanifest" Name="extension.vsixmanifest" />
+			</Component>
+		</ComponentGroup>
+
+	</Fragment>
+
+</Wix>

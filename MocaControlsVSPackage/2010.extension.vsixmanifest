@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Vsix xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="1.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2010">
+	<Identifier Id="MocaControls..d9d32375-40a6-4f01-a364-ae6d76a12339">
+		<Name>Moca.NET Windows Forms Controls 2010</Name>
+		<Author>MiYABiS</Author>
+		<Version>1.7.0</Version>
+		<Description xml:space="preserve">Moca.NET Windows Forms Toolbox Control VS2010</Description>
+		<Locale>1041</Locale>
+		<License>License.txt</License>
+		<Icon>Resources\logo.png</Icon>
+		<PreviewImage>Resources\preview.png</PreviewImage>
+		<MoreInfoUrl>http://visualstudiogallery.msdn.microsoft.com/1e6953a7-a0cf-4be4-9fd8-423e2cb6bb05</MoreInfoUrl>
+		<SupportedProducts>
+			<VisualStudio Version="10.0">
+				<Edition>Ultimate</Edition>
+				<Edition>Premium</Edition>
+				<Edition>Pro</Edition>
+			</VisualStudio>
+		</SupportedProducts>
+		<SupportedFrameworkRuntimeEdition MinVersion="2.0" MaxVersion="4.0" />
+	</Identifier>
+	<References />
+	<Content>
+		<ToolboxControl>2010.MocaControls.pkgdef</ToolboxControl>
+	</Content>
+</Vsix>

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+	<Fragment>
+
+		<PropertyRef Id="VS2015_ROOT_FOLDER" />
+		<PropertyRef Id="VS2015_EXTENSIONS_DIR" />
+		<CustomActionRef Id="VS2015Setup" />
+
+		<Feature Id="VS2015"
+				 Title="Visual Studio 2015"
+				 AllowAdvertise="no"				 
+				 Level="0">
+			<Condition Level="1">VS2015_ROOT_FOLDER</Condition>
+			<ComponentGroupRef Id="VS2015Packages" />
+			<ComponentGroupRef Id="VS2015Resources" />
+			<ComponentGroupRef Id="VS2015v20" />
+			<ComponentGroupRef Id="VS2015v35" />
+			<ComponentGroupRef Id="VS2015v40" />
+			<ComponentGroupRef Id="VS2015v45" />
+			<ComponentGroupRef Id="VS2015v452" />
+			<ComponentGroupRef Id="VS2015v46" />
+			<ComponentGroupRef Id="VS2015v462" />
+			<ComponentGroupRef Id="VS2015v47" />
+		</Feature>
+
+		<DirectoryRef Id="TARGETDIR">
+			<Directory Id="VS2015_EXTENSIONS_DIR" Name="VS2015_EXTENSIONS_DIR">
+				<Directory Id="VS2015.Manufacturer" Name="MiYABiS">
+					<Directory Id="VS2015.Product" Name="Moca.NET Controls">
+						<Directory Id="VS2015.Resources" Name="Resources" />
+						<Directory Id="VS2015.v2.0" Name="v2.0" />
+						<Directory Id="VS2015.v3.5" Name="v3.5" />
+						<Directory Id="VS2015.v4.0" Name="v4.0" />
+						<Directory Id="VS2015.v4.5" Name="v4.5" />
+						<Directory Id="VS2015.v4.5.2" Name="v4.5.2" />
+						<Directory Id="VS2015.v4.6" Name="v4.6" />
+						<Directory Id="VS2015.v4.6.2" Name="v4.6.2" />
+						<Directory Id="VS2015.v4.7" Name="v4.7" />
+					</Directory>
+				</Directory>
+			</Directory>
+		</DirectoryRef>
+
+		<ComponentGroup Id="VS2015Packages" Directory="VS2015.Product" Source="$(var.MocaControlsVSPackage.TargetDir)">
+			<Component Id="VS2015.extension.vsixmanifest" Guid="{5731BA78-D1CE-4025-9ACA-D04F72BFB15E}">
+				<File Id="VS2015.extension.vsixmanifest" Name="extension.vsixmanifest" />
+			</Component>
+			<Component Id="VS2015.MocaControls.pkgdef" Guid="{CABED7C6-06E6-4739-9139-242D56D8CCDE}">
+				<File Id="VS2015.MocaControls.pkgdef" Name="MocaControls.pkgdef" />
+			</Component>
+			<Component Id="VS2015.MocaControlsVSPackage.pkgdef" Guid="{5C5AA47C-5093-484D-82C1-63419B04F06E}">
+				<File Id="VS2015.MocaControlsVSPackage.pkgdef" Name="MocaControlsVSPackage.pkgdef" />
+			</Component>
+			<Component Id="VS2015.MocaControlsVSPackage.dll" Guid="{784F3425-6BDD-42D8-AD42-8C8AAEFD1235}">
+				<File Id="VS2015.MocaControlsVSPackage.dll" Name="MocaControlsVSPackage.dll" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="VS2015Resources" Directory="VS2015.Resources" Source="$(var.MocaControlsVSPackage.ProjectDir)Resources\">
+			<Component Id="VS2015.preview.png" Guid="{5B65B927-FA5D-4284-90BC-B51B8CEC2E96}">
+				<File Id="VS2015.preview.png" Name="preview.png" />
+			</Component>
+			<Component Id="VS2015.logo.png" Guid="{5808D058-B3FA-4B6F-8F44-BF5FE801CBFA}">
+				<File Id="VS2015.logo.png" Name="logo.png" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="VS2015v20" Directory="VS2015.v2.0" Source="$(var.MocaControls20Vsp.TargetDir)">
+			<Component Id="VS2015.Moca20.dll" Guid="{183B6F41-E9F5-4A6F-ADF6-E4F85371B7A5}" >
+				<File Id="VS2015.Moca20.dll" Name="Moca.dll" />
+			</Component>
+			<Component Id="VS2015.MocaControls20.dll" Guid="{C586375D-D282-4EBF-9B0F-A30061C43056}">
+				<File Id="VS2015.MocaControls20.dll" Name="MocaControls.dll" />
+			</Component>
+			<Component Id="VS2015.MocaWin20.dll" Guid="{2C9D0E2F-B9F0-4780-8A4D-D5AD6DA8DA18}">
+				<File Id="VS2015.MocaWin20.dll" Name="MocaWin.dll" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="VS2015v35" Directory="VS2015.v3.5" Source="$(var.MocaControls35Vsp.TargetDir)">
+			<Component Id="VS2015.Moca35.dll" Guid="{F8F62122-6B80-4D60-9241-DC2267EF6C8E}">
+				<File Id="VS2015.Moca35.dll" Name="Moca.dll" />
+			</Component>
+			<Component Id="VS2015.MocaControls35.dll" Guid="{B8B01AA6-1F31-4B28-85E3-826739578C9E}">
+				<File Id="VS2015.MocaControls35.dll" Name="MocaControls.dll" />
+			</Component>
+			<Component Id="VS2015.MocaWin35.dll" Guid="{35A235C9-4112-4DF9-846E-41646F951CC9}">
+				<File Id="VS2015.MocaWin35.dll" Name="MocaWin.dll" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="VS2015v40" Directory="VS2015.v4.0" Source="$(var.MocaControls40Vsp.TargetDir)">
+			<Component Id="VS2015.Moca40.dll" Guid="{E43A5169-CDCA-462F-82CC-D4AAAC51DE9F}">
+				<File Id="VS2015.Moca40.dll" Name="Moca.dll" />
+			</Component>
+			<Component Id="VS2015.MocaControls40.dll" Guid="{E462BF65-CB06-4B9C-BB06-92774DD826FB}">
+				<File Id="VS2015.MocaControls40.dll" Name="MocaControls.dll" />
+			</Component>
+			<Component Id="VS2015.MocaWin40.dll" Guid="{C9EADB3B-A848-45CC-AAF7-B8CEC9ED33B7}">
+				<File Id="VS2015.MocaWin40.dll" Name="MocaWin.dll" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="VS2015v45" Directory="VS2015.v4.5" Source="$(var.MocaControls45Vsp.TargetDir)">
+			<Component Id="VS2015.Moca45.dll" Guid="{09F74F5A-9B69-4EC7-951C-984E90A6AF50}">
+				<File Id="VS2015.Moca45.dll" Name="Moca.dll" />
+			</Component>
+			<Component Id="VS2015.MocaControls45.dll" Guid="{9DF977FB-404B-4A75-BAA9-18A343ECA8D8}">
+				<File Id="VS2015.MocaControls45.dll" Name="MocaControls.dll" />
+			</Component>
+			<Component Id="VS2015.MocaWin45.dll" Guid="{46FEAC10-A6F0-4597-BD9B-AF026DA74C0A}">
+				<File Id="VS2015.MocaWin45.dll" Name="MocaWin.dll" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="VS2015v452" Directory="VS2015.v4.5.2" Source="$(var.MocaControls452Vsp.TargetDir)">
+			<Component Id="VS2015.Moca452.dll" Guid="{0F50EBA9-8803-4D8C-8504-017969D4B471}">
+				<File Id="VS2015.Moca452.dll" Name="Moca.dll" />
+			</Component>
+			<Component Id="VS2015.MocaControls452.dll" Guid="{9F91D9BB-3E66-4DF3-9120-3DB15E403878}">
+				<File Id="VS2015.MocaControls452.dll" Name="MocaControls.dll" />
+			</Component>
+			<Component Id="VS2015.MocaWin452.dll" Guid="{EC6B8C14-980A-4A48-9E0D-5A943331AE7B}">
+				<File Id="VS2015.MocaWin452.dll" Name="MocaWin.dll" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="VS2015v46" Directory="VS2015.v4.6" Source="$(var.MocaControls46Vsp.TargetDir)">
+			<Component Id="VS2015.Moca46.dll" Guid="{9F3B81F9-B403-4A28-9799-F8B2167D3DB1}">
+				<File Id="VS2015.Moca46.dll" Name="Moca.dll" />
+			</Component>
+			<Component Id="VS2015.MocaControls46.dll" Guid="{B9872878-44D2-40A1-ACBF-3047E781E64E}">
+				<File Id="VS2015.MocaControls46.dll" Name="MocaControls.dll" />
+			</Component>
+			<Component Id="VS2015.MocaWin46.dll" Guid="{B86C9C3E-4B9C-44A4-88D1-C8C3B077F179}">
+				<File Id="VS2015.MocaWin46.dll" Name="MocaWin.dll" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="VS2015v462" Directory="VS2015.v4.6.2" Source="$(var.MocaControls462Vsp.TargetDir)">
+			<Component Id="VS2015.Moca462.dll" Guid="{D4B9700E-FAA9-4711-BC5E-9F58F79206E9}">
+				<File Id="VS2015.Moca462.dll" Name="Moca.dll" />
+			</Component>
+			<Component Id="VS2015.MocaControls462.dll" Guid="{7867F5B4-5CF2-416A-87E7-0F934AC84037}">
+				<File Id="VS2015.MocaControls462.dll" Name="MocaControls.dll" />
+			</Component>
+			<Component Id="VS2015.MocaWin462.dll" Guid="{7DE6C78B-1154-40B4-B399-BCEA467A5D77}">
+				<File Id="VS2015.MocaWin462.dll" Name="MocaWin.dll" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="VS2015v47" Directory="VS2015.v4.7" Source="$(var.MocaControls47Vsp.TargetDir)">
+			<Component Id="VS2015.Moca47.dll" Guid="{3793BC62-ED26-4458-BDD1-A158C8A6D76F}">
+				<File Id="VS2015.Moca47.dll" Name="Moca.dll" />
+			</Component>
+			<Component Id="VS2015.MocaControls47.dll" Guid="{98B36C0C-0D3F-418C-A5BC-B63AB2A3C43A}">
+				<File Id="VS2015.MocaControls47.dll" Name="MocaControls.dll" />
+			</Component>
+			<Component Id="VS2015.MocaWin47.dll" Guid="{CD658CA6-EDDC-465D-B7B6-1AB3B7E35857}">
+				<File Id="VS2015.MocaWin47.dll" Name="MocaWin.dll" />
+			</Component>
+		</ComponentGroup>
+
+	</Fragment>
+
+</Wix>

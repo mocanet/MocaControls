@@ -34,51 +34,33 @@ Imports System.Runtime.InteropServices
 ' プログラム要素が CLS (Common Language Specification) に準拠しているかどうかを示します
 <Assembly: System.CLSCompliant(True)>
 
+
+<Assembly: AssemblyVersion("5.0.0")>
+<Assembly: AssemblyFileVersion("2.0.0")>
+<Assembly: AssemblyInformationalVersion("2.0.0")>
+
+
 #If net20 Then
-<Assembly: AssemblyVersion("2.0.5")>
-<Assembly: AssemblyFileVersion("2.0.5")>
 <Assembly: AssemblyTitle("Moca.NET Controls .NET 2.0")>
-<Assembly: AssemblyInformationalVersion("2.0.5 .NET 2.0")>
 #End If
 #If net35 Then
-<Assembly: AssemblyVersion("3.5.5")>
-<Assembly: AssemblyFileVersion("3.5.5")>
 <Assembly: AssemblyTitle("Moca.NET Controls .NET 3.5")>
-<Assembly: AssemblyInformationalVersion("3.5.5 .NET 3.5")>
 #End If
 #If net40 Then
-<Assembly: AssemblyVersion("4.0.5")>
-<Assembly: AssemblyFileVersion("4.0.5")>
 <Assembly: AssemblyTitle("Moca.NET Controls .NET 4.0")>
-<Assembly: AssemblyInformationalVersion("4.0.5 .NET 4.0")>
 #End If
 #If net45 Then
-<Assembly: AssemblyVersion("4.5.0")>
-<Assembly: AssemblyFileVersion("4.5.0")>
 <Assembly: AssemblyTitle("Moca.NET Controls .NET 4.5")>
-<Assembly: AssemblyInformationalVersion("4.5.0 .NET 4.5")>
 #End If
 #If net452 Then
-<Assembly: AssemblyVersion("4.5.2")>
-<Assembly: AssemblyFileVersion("4.5.2")>
 <Assembly: AssemblyTitle("Moca.NET Controls .NET 4.5.2")>
-<Assembly: AssemblyInformationalVersion("4.5.2 .NET 4.5.2")>
 #End If
 #If net46 Then
-<Assembly: AssemblyVersion("4.6.0")>
-<Assembly: AssemblyFileVersion("4.6.0")>
 <Assembly: AssemblyTitle("Moca.NET Controls .NET 4.6")>
-<Assembly: AssemblyInformationalVersion("4.6.0 .NET 4.6")>
 #End If
 #If net462 Then
-<Assembly: AssemblyVersion("4.6.2")>
-<Assembly: AssemblyFileVersion("4.6.2")>
 <Assembly: AssemblyTitle("Moca.NET Controls .NET 4.6.2")>
-<Assembly: AssemblyInformationalVersion("4.6.2 .NET 4.6.2")>
 #End If
 #If net47 Then
-<Assembly: AssemblyVersion("4.7.0")>
-<Assembly: AssemblyFileVersion("4.7.0")>
 <Assembly: AssemblyTitle("Moca.NET Controls .NET 4.7")>
-<Assembly: AssemblyInformationalVersion("4.7.0 .NET 4.7")>
 #End If

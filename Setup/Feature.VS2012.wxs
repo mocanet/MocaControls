@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+	<Fragment>
+
+		<PropertyRef Id="VS2012_ROOT_FOLDER" />
+		<PropertyRef Id="VS2012_EXTENSIONS_DIR" />
+		<CustomActionRef Id="VS2012Setup" />
+
+		<Feature Id="VS2012"
+				 Title="Visual Studio 2012"
+				 AllowAdvertise="no"				 
+				 Level="0">
+			<Condition Level="1">VS2012_ROOT_FOLDER</Condition>
+			<ComponentGroupRef Id="VS2012Packages" />
+			<ComponentGroupRef Id="VS2012Resources" />
+			<ComponentGroupRef Id="VS2012v20" />
+			<ComponentGroupRef Id="VS2012v35" />
+			<ComponentGroupRef Id="VS2012v40" />
+			<ComponentGroupRef Id="VS2012v45" />
+			<ComponentGroupRef Id="VS2012v452" />
+			<ComponentGroupRef Id="VS2012v46" />
+			<ComponentGroupRef Id="VS2012v462" />
+			<ComponentGroupRef Id="VS2012v47" />
+		</Feature>
+
+		<DirectoryRef Id="TARGETDIR">
+			<Directory Id="VS2012_EXTENSIONS_DIR" Name="VS2012_EXTENSIONS_DIR">
+				<Directory Id="VS2012.Manufacturer" Name="MiYABiS">
+					<Directory Id="VS2012.Product" Name="Moca.NET Controls">
+						<Directory Id="VS2012.Resources" Name="Resources" />
+						<Directory Id="VS2012.v2.0" Name="v2.0" />
+						<Directory Id="VS2012.v3.5" Name="v3.5" />
+						<Directory Id="VS2012.v4.0" Name="v4.0" />
+						<Directory Id="VS2012.v4.5" Name="v4.5" />
+						<Directory Id="VS2012.v4.5.2" Name="v4.5.2" />
+						<Directory Id="VS2012.v4.6" Name="v4.6" />
+						<Directory Id="VS2012.v4.6.2" Name="v4.6.2" />
+						<Directory Id="VS2012.v4.7" Name="v4.7" />
+					</Directory>
+				</Directory>
+			</Directory>
+		</DirectoryRef>
+
+		<ComponentGroup Id="VS2012Packages" Directory="VS2012.Product" Source="$(var.MocaControlsVSPackage.TargetDir)">
+			<Component Id="VS2012.extension.vsixmanifest" Guid="{E7AFEB13-19C1-4D15-B311-48EB4447E6FB}">
+				<File Id="VS2012.extension.vsixmanifest" Name="extension.vsixmanifest" />
+			</Component>
+			<Component Id="VS2012.MocaControls.pkgdef" Guid="{E4D602F3-63D5-46FA-B424-DFB524D447A9}">
+				<File Id="VS2012.MocaControls.pkgdef" Name="MocaControls.pkgdef" />
+			</Component>
+			<Component Id="VS2012.MocaControlsVSPackage.pkgdef" Guid="{ACF2068F-EB4D-46C4-B3EC-8E288F03D1F2}">
+				<File Id="VS2012.MocaControlsVSPackage.pkgdef" Name="MocaControlsVSPackage.pkgdef" />
+			</Component>
+			<Component Id="VS2012.MocaControlsVSPackage.dll" Guid="{08C4D04B-498D-4F24-831E-31D88ADB1867}">
+				<File Id="VS2012.MocaControlsVSPackage.dll" Name="MocaControlsVSPackage.dll" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="VS2012Resources" Directory="VS2012.Resources" Source="$(var.MocaControlsVSPackage.ProjectDir)Resources\">
+			<Component Id="VS2012.preview.png" Guid="{9FDCB83B-4CAA-4CB5-9ED8-F1EF50F30339}">
+				<File Id="VS2012.preview.png" Name="preview.png" />
+			</Component>
+			<Component Id="VS2012.logo.png" Guid="{42A489AE-4126-4049-B45F-36BED1DDE8F4}">
+				<File Id="VS2012.logo.png" Name="logo.png" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="VS2012v20" Directory="VS2012.v2.0" Source="$(var.MocaControls20Vsp.TargetDir)">
+			<Component Id="VS2012.Moca20.dll" Guid="{611C6106-2069-4BBA-B7E3-8107B88CC0D3}" >
+				<File Id="VS2012.Moca20.dll" Name="Moca.dll" />
+			</Component>
+			<Component Id="VS2012.MocaControls20.dll" Guid="{39AF1C93-29FC-4E13-9213-39D352261020}">
+				<File Id="VS2012.MocaControls20.dll" Name="MocaControls.dll" />
+			</Component>
+			<Component Id="VS2012.MocaWin20.dll" Guid="{C429D228-1612-4B55-B76D-AEAC04DCFB38}">
+				<File Id="VS2012.MocaWin20.dll" Name="MocaWin.dll" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="VS2012v35" Directory="VS2012.v3.5" Source="$(var.MocaControls35Vsp.TargetDir)">
+			<Component Id="VS2012.Moca35.dll" Guid="{E2D86EC9-D25A-4790-AD60-9107E8FF0369}">
+				<File Id="VS2012.Moca35.dll" Name="Moca.dll" />
+			</Component>
+			<Component Id="VS2012.MocaControls35.dll" Guid="{DE8D1646-9FAE-46DB-B19C-B88EA51ADFEE}">
+				<File Id="VS2012.MocaControls35.dll" Name="MocaControls.dll" />
+			</Component>
+			<Component Id="VS2012.MocaWin35.dll" Guid="{5D25B776-0670-41BE-9591-E5878304BC66}">
+				<File Id="VS2012.MocaWin35.dll" Name="MocaWin.dll" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="VS2012v40" Directory="VS2012.v4.0" Source="$(var.MocaControls40Vsp.TargetDir)">
+			<Component Id="VS2012.Moca40.dll" Guid="{8C9D4267-B254-490A-B390-4B04E7F5C4F0}">
+				<File Id="VS2012.Moca40.dll" Name="Moca.dll" />
+			</Component>
+			<Component Id="VS2012.MocaControls40.dll" Guid="{80876A8A-AC79-41E2-9B63-385320476724}">
+				<File Id="VS2012.MocaControls40.dll" Name="MocaControls.dll" />
+			</Component>
+			<Component Id="VS2012.MocaWin40.dll" Guid="{EBC3C1F5-79B8-43EF-9B81-1B8A5F300F1D}">
+				<File Id="VS2012.MocaWin40.dll" Name="MocaWin.dll" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="VS2012v45" Directory="VS2012.v4.5" Source="$(var.MocaControls45Vsp.TargetDir)">
+			<Component Id="VS2012.Moca45.dll" Guid="{6B06046E-2F7D-4565-839A-AB9CAE326D9D}">
+				<File Id="VS2012.Moca45.dll" Name="Moca.dll" />
+			</Component>
+			<Component Id="VS2012.MocaControls45.dll" Guid="{3C111952-C87C-446D-9E57-BDA15E777CC9}">
+				<File Id="VS2012.MocaControls45.dll" Name="MocaControls.dll" />
+			</Component>
+			<Component Id="VS2012.MocaWin45.dll" Guid="{04B19EA9-A904-4FF9-ACD4-8BEBC1BAF47A}">
+				<File Id="VS2012.MocaWin45.dll" Name="MocaWin.dll" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="VS2012v452" Directory="VS2012.v4.5.2" Source="$(var.MocaControls452Vsp.TargetDir)">
+			<Component Id="VS2012.Moca452.dll" Guid="{1ABD6251-68D5-4682-BD9A-B1D823C08FAB}">
+				<File Id="VS2012.Moca452.dll" Name="Moca.dll" />
+			</Component>
+			<Component Id="VS2012.MocaControls452.dll" Guid="{2C4A2BDE-051D-473B-864E-33813FD83015}">
+				<File Id="VS2012.MocaControls452.dll" Name="MocaControls.dll" />
+			</Component>
+			<Component Id="VS2012.MocaWin452.dll" Guid="{A3756F0B-DD29-47F4-B2D4-1F25FCD44AD7}">
+				<File Id="VS2012.MocaWin452.dll" Name="MocaWin.dll" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="VS2012v46" Directory="VS2012.v4.6" Source="$(var.MocaControls46Vsp.TargetDir)">
+			<Component Id="VS2012.Moca46.dll" Guid="{60201688-A84C-4D88-A862-4D63A3AD4DA5}">
+				<File Id="VS2012.Moca46.dll" Name="Moca.dll" />
+			</Component>
+			<Component Id="VS2012.MocaControls46.dll" Guid="{44A531D4-A4E3-43BD-8B51-3AC2304B8AFE}">
+				<File Id="VS2012.MocaControls46.dll" Name="MocaControls.dll" />
+			</Component>
+			<Component Id="VS2012.MocaWin46.dll" Guid="{41D8F599-CB1F-4343-9D9E-F9326CF0AC36}">
+				<File Id="VS2012.MocaWin46.dll" Name="MocaWin.dll" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="VS2012v462" Directory="VS2012.v4.6.2" Source="$(var.MocaControls462Vsp.TargetDir)">
+			<Component Id="VS2012.Moca462.dll" Guid="{4343F2DA-924C-4EDD-B01C-1D2131C7600C}">
+				<File Id="VS2012.Moca462.dll" Name="Moca.dll" />
+			</Component>
+			<Component Id="VS2012.MocaControls462.dll" Guid="{951B9CA7-977E-4549-BE0E-076C87C10E4D}">
+				<File Id="VS2012.MocaControls462.dll" Name="MocaControls.dll" />
+			</Component>
+			<Component Id="VS2012.MocaWin462.dll" Guid="{CB875A50-7668-412F-B878-DD006A873B23}">
+				<File Id="VS2012.MocaWin462.dll" Name="MocaWin.dll" />
+			</Component>
+		</ComponentGroup>
+
+		<ComponentGroup Id="VS2012v47" Directory="VS2012.v4.7" Source="$(var.MocaControls47Vsp.TargetDir)">
+			<Component Id="VS2012.Moca47.dll" Guid="{ECD59F66-3436-4A7E-A619-244AB15BD04F}">
+				<File Id="VS2012.Moca47.dll" Name="Moca.dll" />
+			</Component>
+			<Component Id="VS2012.MocaControls47.dll" Guid="{88967988-567F-43A0-A915-E062806ABDEF}">
+				<File Id="VS2012.MocaControls47.dll" Name="MocaControls.dll" />
+			</Component>
+			<Component Id="VS2012.MocaWin47.dll" Guid="{C7939186-15C2-48C8-8829-069D7153C1A1}">
+				<File Id="VS2012.MocaWin47.dll" Name="MocaWin.dll" />
+			</Component>
+		</ComponentGroup>
+
+	</Fragment>
+
+</Wix>

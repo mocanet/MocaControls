@@ -3,16 +3,16 @@ Imports System.ComponentModel
 
 Namespace Win
 
-    ''' <summary>
-    ''' 複数のメニューアイテムをグループとして扱うクラス
-    ''' </summary>
-    ''' <remarks>
-    ''' 複数のメニューアイテムを一つのグループとして扱えます。<br/>
-    ''' </remarks>
-    <Description("複数のメニューアイテムをグループとして扱う"),
-    ToolboxItem(True),
-    ToolboxBitmap(GetType(resourceDummy), "Resources.ToolStripMenuItemGroup.bmp")>
-    Public Class ToolStripMenuItemGroup
+	''' <summary>
+	''' 複数のメニューアイテムをグループとして扱うクラス
+	''' </summary>
+	''' <remarks>
+	''' 複数のメニューアイテムを一つのグループとして扱えます。<br/>
+	''' </remarks>
+	<Description("複数のメニューアイテムをグループとして扱う"),
+	ToolboxItem(True),
+	ToolboxBitmap(GetType(resourceDummy), "ToolStripMenuItemGroup.bmp")>
+	Public Class ToolStripMenuItemGroup
 
 		''' <summary>メニューアイテム化するItemを格納する</summary>
 		Private _aryRadButton As IList(Of ToolStripMenuItem)

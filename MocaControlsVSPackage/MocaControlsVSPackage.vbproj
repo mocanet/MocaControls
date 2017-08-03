@@ -29,6 +29,11 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <GeneratePkgDefFile>true</GeneratePkgDefFile>
+    <IncludeAssemblyInVSIXContainer>true</IncludeAssemblyInVSIXContainer>
+    <IncludeDebugSymbolsInLocalVSIXDeployment>false</IncludeDebugSymbolsInLocalVSIXDeployment>
+    <CopyOutputSymbolsToOutputDirectory>false</CopyOutputSymbolsToOutputDirectory>
+    <CopyBuildOutputToOutputDirectory>true</CopyBuildOutputToOutputDirectory>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -65,8 +70,9 @@
     <DefineDebug>false</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <ErrorReport>prompt</ErrorReport>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
     <NoWarn>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036,42353,42354,42355</NoWarn>
+    <DeployExtension>False</DeployExtension>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="envdte1">
@@ -188,15 +194,15 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="OutputWindowPane.vb" />
     <Compile Include="Guids.vb" />
+    <Compile Include="MocaControlsVSPackage.vb" />
+    <Compile Include="OutputWindowPane.vb" />
     <Compile Include="PkgCmdID.vb" />
     <Compile Include="Resources.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="MocaControlsVSPackage.vb" />
     <Compile Include="Properties\AssemblyInfo.vb" />
   </ItemGroup>
   <ItemGroup>
@@ -211,17 +217,20 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\preview.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <Content Include="MocaControls.pkgdef">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <None Include="MocaControlsVSPackage.pkgdef" />
+    <Content Include="Resources\preview.png" />
+    <None Include="2010.extension.vsixmanifest" />
+    <None Include="2010.MocaControls.pkgdef" />
     <None Include="app.config" />
     <Content Include="ReleaseNote.rtf">
       <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="source.extension.vsixmanifest">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="source.extension.vsixmanifest" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />
@@ -229,44 +238,13 @@
   <ItemGroup>
     <Content Include="License.txt">
       <IncludeInVSIX>true</IncludeInVSIX>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\logo.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="Resources\MocaControls.png">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="Resources\MocaNET.png" />
-    <Resource Include="Resources\MocaNET32.png" />
-    <Content Include="Resources\Package.ico">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\MocaControls\MocaControls35.vbproj">
-      <Project>{1eacf60c-d879-49f9-9ec0-edb64403bfbc}</Project>
-      <Name>MocaControls35</Name>
-      <VSIXSubPath>net35</VSIXSubPath>
-      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
-      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\MocaControls\MocaControls452.vbproj">
-      <Project>{3488648d-4387-471a-82c5-a78324306f84}</Project>
-      <Name>MocaControls452</Name>
-      <VSIXSubPath>net452</VSIXSubPath>
-      <Private>False</Private>
-      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
-      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
-    </ProjectReference>
-    <ProjectReference Include="..\MocaControls\MocaControls462.vbproj">
-      <Project>{e59189d5-80a1-4208-a0da-a4aaec23c409}</Project>
-      <Name>MocaControls462</Name>
-      <VSIXSubPath>net462</VSIXSubPath>
-      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
-      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
-    </ProjectReference>
+    <Content Include="Resources\logo.png" />
+    <None Include="Resources\MocaControls.png" />
+    <None Include="Resources\MocaNET.png" />
+    <None Include="Resources\MocaNET32.png" />
+    <None Include="Resources\Package.ico" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
@@ -279,6 +257,72 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MocaControls\MocaControls20Vsp.vbproj">
+      <Project>{89a56d3d-0375-4793-b25e-f0a5c5de63df}</Project>
+      <Name>MocaControls20Vsp</Name>
+      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
+      <VSIXSubPath>v2.0</VSIXSubPath>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\MocaControls\MocaControls35Vsp.vbproj">
+      <Project>{1eacf60c-d879-49f9-9ec0-edb64403bfbc}</Project>
+      <Name>MocaControls35Vsp</Name>
+      <VSIXSubPath>v3.5</VSIXSubPath>
+      <Private>True</Private>
+      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
+    </ProjectReference>
+    <ProjectReference Include="..\MocaControls\MocaControls40Vsp.vbproj">
+      <Project>{d82c8c52-9f50-44f0-ab17-0ae882d0b2b3}</Project>
+      <Name>MocaControls40Vsp</Name>
+      <VSIXSubPath>v4.0</VSIXSubPath>
+      <Private>True</Private>
+      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
+      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+    </ProjectReference>
+    <ProjectReference Include="..\MocaControls\MocaControls452Vsp.vbproj">
+      <Project>{3488648d-4387-471a-82c5-a78324306f84}</Project>
+      <Name>MocaControls452Vsp</Name>
+      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
+      <VSIXSubPath>v4.5.2</VSIXSubPath>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\MocaControls\MocaControls45Vsp.vbproj">
+      <Project>{bd5d01b2-cfaf-4a89-a821-870ef84770e7}</Project>
+      <Name>MocaControls45Vsp</Name>
+      <VSIXSubPath>v4.5</VSIXSubPath>
+      <Private>False</Private>
+      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
+      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+    </ProjectReference>
+    <ProjectReference Include="..\MocaControls\MocaControls462Vsp.vbproj">
+      <Project>{e59189d5-80a1-4208-a0da-a4aaec23c409}</Project>
+      <Name>MocaControls462Vsp</Name>
+      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
+      <VSIXSubPath>v4.6.2</VSIXSubPath>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\MocaControls\MocaControls46Vsp.vbproj">
+      <Project>{783ffa15-5102-438f-adba-27fd3be78ec9}</Project>
+      <Name>MocaControls46Vsp</Name>
+      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
+      <VSIXSubPath>v4.6</VSIXSubPath>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\MocaControls\MocaControls47Vsp.vbproj">
+      <Project>{d4a4ea03-32f8-49b1-a813-eda1b36d6a5f}</Project>
+      <Name>MocaControls47Vsp</Name>
+      <IncludeOutputGroupsInVSIX>BuiltProjectOutputGroup%3bBuiltProjectOutputGroupDependencies%3bGetCopyToOutputDirectoryItems%3bSatelliteDllsProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
+      <IncludeOutputGroupsInVSIXLocalOnly>DebugSymbolsProjectOutputGroup%3b</IncludeOutputGroupsInVSIXLocalOnly>
+      <VSIXSubPath>v4.7</VSIXSubPath>
+      <Private>False</Private>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <UseCodebase>true</UseCodebase>

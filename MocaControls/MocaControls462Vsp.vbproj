@@ -1,0 +1,311 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E59189D5-80A1-4208-A0DA-A4AAEC23C409}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <StartupObject>
+    </StartupObject>
+    <RootNamespace>Moca</RootNamespace>
+    <AssemblyName>MocaControls</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>Windows</MyType>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
+    <BaseIntermediateOutputPath>obj\net462\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\net462\Debug\</OutputPath>
+    <DocumentationFile>MocaControls.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DefineConstants>net462</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\net462\Release\</OutputPath>
+    <DocumentationFile>MocaControls.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DefineConstants>net462</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Moca, Version=5.0.0.0, Culture=neutral, PublicKeyToken=42f7e4f7232a6bf5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moca.NETCore.3.0.0-beta01\lib\net462\Moca.dll</HintPath>
+    </Reference>
+    <Reference Include="MocaWin, Version=5.0.0.0, Culture=neutral, PublicKeyToken=74dd2591eb474191, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moca.NETWin.3.0.0-beta01\lib\net462\MocaWin.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controls\AlertMessage.Designer.vb">
+      <DependentUpon>AlertMessage.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\AlertMessage.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Args\GridColmnSettingEventArgs.vb" />
+    <Compile Include="Args\GridSettingEventArgs.vb" />
+    <Compile Include="Attr\AllowMergingAttribute.vb" />
+    <Compile Include="Attr\CaptionAttribute.vb" />
+    <Compile Include="Attr\ColumnStyleAttribute.vb" />
+    <Compile Include="Attr\EditConditionAttribute.vb" />
+    <Compile Include="Attr\FrozenAttribute.vb" />
+    <Compile Include="Attr\HiddenColumnAttribute.vb" />
+    <Compile Include="Attr\KeyValueAttribute.vb" />
+    <Compile Include="Attr\PropertyOrderAttribute.vb" />
+    <Compile Include="Attr\RequiredColumnAttribute.vb" />
+    <Compile Include="Attr\ValidateTypesAttribute.vb" />
+    <Compile Include="Controls\BindingHelper.vb" />
+    <Compile Include="Controls\BindValueValidator.vb" />
+    <Compile Include="Controls\Calendar.Designer.vb">
+      <DependentUpon>Calendar.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Calendar.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CheckBoxGroup.Designer.vb">
+      <DependentUpon>CheckBoxGroup.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CheckBoxGroup.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\ComboBoxEx.Designer.vb">
+      <DependentUpon>ComboBoxEx.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ComboBoxEx.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\ContextMenuPanel.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\DataBinder.Designer.vb">
+      <DependentUpon>DataBinder.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DataBinder.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\DataGridView\DataGridViewCalendarCell.vb" />
+    <Compile Include="Controls\DataGridView\DataGridViewCalendarColumn.vb" />
+    <Compile Include="Controls\DataGridView\DataGridViewCalendarEditingControl.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\DataGridView\DataGridViewCheckBoxImageCell.vb" />
+    <Compile Include="Controls\DataGridView\DataGridViewCheckBoxImageColumn.vb" />
+    <Compile Include="Controls\DataGridView\DataGridViewMaskedTextBoxCell.vb" />
+    <Compile Include="Controls\DataGridView\DataGridViewMaskedTextBoxColumn.vb" />
+    <Compile Include="Controls\DataGridView\DataGridViewMaskedTextBoxEditingControl.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\DataGridView\DataGridViewTextBoxExCell.vb" />
+    <Compile Include="Controls\DataGridView\DataGridViewTextBoxExColumn.vb" />
+    <Compile Include="Controls\DataGridView\DataGridViewTextBoxExEditingControl.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\DataGridView\DataGridViewDisableButtonCell.vb" />
+    <Compile Include="Controls\DataGridView\DataGridViewDisableButtonColumn.vb" />
+    <Compile Include="Controls\DataGridView\DataGridViewEx.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\DayStyle.vb" />
+    <Compile Include="Controls\DebugMarker.Designer.vb">
+      <DependentUpon>DebugMarker.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\DebugMarker.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Declare.vb" />
+    <Compile Include="Controls\FlowLayoutPanelEx.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GridDesignSettings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>GridDesignSettings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MocaDi.Designer.vb">
+      <DependentUpon>MocaDi.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MocaDi.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\DataGridView\ModelGridView.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Model\RowModelBase.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Controls\NullableDateTimePicker.Designer.vb">
+      <DependentUpon>NullableDateTimePicker.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\NullableDateTimePicker.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\RadioButtonEx.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\RadioButtonGroup.Designer.vb">
+      <DependentUpon>RadioButtonGroup.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\RadioButtonGroup.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="resourceDummy.vb" />
+    <Compile Include="Controls\RichTextBoxEx.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TextBoxEx.Designer.vb">
+      <DependentUpon>TextBoxEx.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TextBoxEx.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\ToolStripMenuItemGroup.Designer.vb">
+      <DependentUpon>ToolStripMenuItemGroup.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ToolStripMenuItemGroup.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\WYSIWYGEditor.Designer.vb">
+      <DependentUpon>WYSIWYGEditor.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\WYSIWYGEditor.vb">
+      <SubType>UserControl</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Controls\AlertMessage.resx">
+      <DependentUpon>AlertMessage.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Calendar.resx">
+      <DependentUpon>Calendar.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\DebugMarker.resx">
+      <DependentUpon>DebugMarker.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\MocaDi.resx">
+      <DependentUpon>MocaDi.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>PublicVbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\NullableDateTimePicker.resx">
+      <DependentUpon>NullableDateTimePicker.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\WYSIWYGEditor.resx">
+      <DependentUpon>WYSIWYGEditor.vb</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="GridDesignSettings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>GridDesignSettings.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Key.snk" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="packages.MocaControls462Vsp.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Checked.png" />
+    <EmbeddedResource Include="Resources\DebugMarker.bmp" />
+    <EmbeddedResource Include="Resources\MocaDi.bmp" />
+    <EmbeddedResource Include="Resources\NullableDateTimePicker.bmp" />
+    <EmbeddedResource Include="Resources\RadioButtonGroup.bmp" />
+    <Content Include="Resources\RowEdit.png" />
+    <EmbeddedResource Include="Resources\ToolStripMenuItemGroup.bmp" />
+    <Content Include="Resources\UnChecked.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>このプロジェクトは、このコンピューター上にない NuGet パッケージを参照しています。それらのパッケージをダウンロードするには、[NuGet パッケージの復元] を使用します。詳細については、http://go.microsoft.com/fwlink/?LinkID=322105 を参照してください。見つからないファイルは {0} です。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\NuProj.Common.0.11.30\build\dotnet\NuProj.Common.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NuProj.Common.0.11.30\build\dotnet\NuProj.Common.targets'))" />
+  </Target>
+  <Import Project="..\packages\NuProj.Common.0.11.30\build\dotnet\NuProj.Common.targets" Condition="Exists('..\packages\NuProj.Common.0.11.30\build\dotnet\NuProj.Common.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
