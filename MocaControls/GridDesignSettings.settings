@@ -22,7 +22,7 @@
       <Value Profile="(Default)">Meiryo UI, 9pt</Value>
     </Setting>
     <Setting Name="ReadOnlyBackColor" Type="System.Drawing.Color" Scope="Application">
-      <Value Profile="(Default)">239, 239, 239</Value>
+      <Value Profile="(Default)">248, 248, 248</Value>
     </Setting>
     <Setting Name="ReadOnlyForeColor" Type="System.Drawing.Color" Scope="Application">
       <Value Profile="(Default)">33, 33, 33</Value>

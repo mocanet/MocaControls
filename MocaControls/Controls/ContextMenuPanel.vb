@@ -89,12 +89,17 @@ Namespace Win
         ''' <param name="sender"></param>
         ''' <param name="e"></param>
         Private Sub _tim_Tick(sender As Object, e As EventArgs)
-            If _getClientContainState(Opener) OrElse
-                _getClientContainState(Me) Then
-                Return
-            End If
+			If Opener.IsDisposed Then
+				_tim.Enabled = False
+				Return
+			End If
 
-            Dim closeDirectionType As AnimateWindow.DirectionType
+			If _getClientContainState(Opener) OrElse
+				_getClientContainState(Me) Then
+				Return
+			End If
+
+			Dim closeDirectionType As AnimateWindow.DirectionType
             If DirectionType = AnimateWindow.DirectionType.Top Then
                 closeDirectionType = AnimateWindow.DirectionType.Bottom
             End If

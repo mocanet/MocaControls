@@ -14,8 +14,8 @@ Option Explicit On
 
 
 <Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
- Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")>  _
-Partial Public NotInheritable Class GridDesignSettings
+ Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.6.0.0")>  _
+Partial Friend NotInheritable Class GridDesignSettings
     Inherits Global.System.Configuration.ApplicationSettingsBase
     
     Private Shared defaultInstance As GridDesignSettings = CType(Global.System.Configuration.ApplicationSettingsBase.Synchronized(New GridDesignSettings()),GridDesignSettings)
@@ -84,7 +84,7 @@ Partial Public NotInheritable Class GridDesignSettings
     
     <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.Configuration.DefaultSettingValueAttribute("239, 239, 239")>  _
+     Global.System.Configuration.DefaultSettingValueAttribute("248, 248, 248")>  _
     Public ReadOnly Property ReadOnlyBackColor() As Global.System.Drawing.Color
         Get
             Return CType(Me("ReadOnlyBackColor"),Global.System.Drawing.Color)
