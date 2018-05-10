@@ -33,16 +33,24 @@ Namespace Win
         Protected Overrides Sub OnClick(e As DataGridViewCellEventArgs)
             MyBase.OnClick(e)
 
-            Dim val As Boolean = CBool(Value)
-            val = Not val
+			If [ReadOnly] Then
+				Return
+			End If
+
+			Dim val As Boolean = CBool(Value)
+			val = Not val
             SetValue(e.RowIndex, val)
         End Sub
 
         Protected Overrides Sub OnMouseMove(e As DataGridViewCellMouseEventArgs)
             MyBase.OnMouseMove(e)
 
-            Me.DataGridView.Cursor = Cursors.Hand
-        End Sub
+			If [ReadOnly] Then
+				Return
+			End If
+
+			Me.DataGridView.Cursor = Cursors.Hand
+		End Sub
 
         Protected Overrides Sub OnMouseLeave(rowIndex As Integer)
             MyBase.OnMouseLeave(rowIndex)

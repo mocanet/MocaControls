@@ -1885,9 +1885,11 @@ Namespace Win
                     Else
                         col = New DataGridViewTextBoxExColumn()
                         Dim txt As DataGridViewTextBoxExColumn = DirectCast(col, DataGridViewTextBoxExColumn)
-                        txt.InputFormat = attr.InputControl
+						txt.InputFormat = attr.InputControl
+						txt.InputControlCustomChars = attr.InputControlCustomChars
+						txt.Precision = attr.Precision
 
-                    End If
+					End If
             End Select
 
             Return col

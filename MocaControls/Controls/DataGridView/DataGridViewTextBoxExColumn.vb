@@ -44,27 +44,39 @@ Namespace Win
             End Set
         End Property
 
+		''' <summary>小数点以下の桁数</summary>
+		Private _precision As Integer = 0
+		Public Property Precision() As System.Int32
+			Get
+				Return Me._precision
+			End Get
+			Set(ByVal value As System.Int32)
+				Me._precision = value
+			End Set
+		End Property
+
 #End Region
 
 #Region " Overrides "
 
-        ''' <summary>
-        ''' 新しいプロパティを追加しているため、
-        ''' Cloneメソッドをオーバーライドする必要がある
-        ''' </summary>
-        ''' <returns></returns>
-        Public Overrides Function Clone() As Object
-            Dim col As DataGridViewTextBoxExColumn = DirectCast(MyBase.Clone(), DataGridViewTextBoxExColumn)
-            col.InputFormat = Me.InputFormat
-            col.InputControlCustomChars = Me.InputControlCustomChars
-            Return col
-        End Function
+		''' <summary>
+		''' 新しいプロパティを追加しているため、
+		''' Cloneメソッドをオーバーライドする必要がある
+		''' </summary>
+		''' <returns></returns>
+		Public Overrides Function Clone() As Object
+			Dim col As DataGridViewTextBoxExColumn = DirectCast(MyBase.Clone(), DataGridViewTextBoxExColumn)
+			col.InputFormat = Me.InputFormat
+			col.InputControlCustomChars = Me.InputControlCustomChars
+			col.Precision = Me.Precision
+			Return col
+		End Function
 
-        ''' <summary>
-        ''' CellTemplate の取得と設定
-        ''' </summary>
-        ''' <returns></returns>
-        Public Overrides Property CellTemplate() As DataGridViewCell
+		''' <summary>
+		''' CellTemplate の取得と設定
+		''' </summary>
+		''' <returns></returns>
+		Public Overrides Property CellTemplate() As DataGridViewCell
             Get
                 Return MyBase.CellTemplate
             End Get

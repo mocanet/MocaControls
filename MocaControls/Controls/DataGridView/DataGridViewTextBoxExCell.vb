@@ -55,8 +55,9 @@ Namespace Win
                 Dim column As DataGridViewTextBoxExColumn = TryCast(Me.OwningColumn, DataGridViewTextBoxExColumn)
                 If column IsNot Nothing Then
                     txt.InputFormat = column.InputFormat
-                    txt.CustomChars = column.InputControlCustomChars
-                End If
+					txt.CustomChars = column.InputControlCustomChars
+					txt.Precision = column.Precision
+				End If
                 txt.Size = DataGridView.CurrentCell.Size
                 txt.BackColor = DataGridView.CurrentCell.Style.BackColor
             End If
