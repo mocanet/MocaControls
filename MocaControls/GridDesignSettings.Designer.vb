@@ -14,8 +14,8 @@ Option Explicit On
 
 
 <Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute(),  _
- Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.7.0.0")>  _
-Partial Friend NotInheritable Class GridDesignSettings
+ Global.System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")>  _
+Partial Public NotInheritable Class GridDesignSettings
     Inherits Global.System.Configuration.ApplicationSettingsBase
     
     Private Shared defaultInstance As GridDesignSettings = CType(Global.System.Configuration.ApplicationSettingsBase.Synchronized(New GridDesignSettings()),GridDesignSettings)
@@ -23,17 +23,6 @@ Partial Friend NotInheritable Class GridDesignSettings
     Public Shared ReadOnly Property [Default]() As GridDesignSettings
         Get
             Return defaultInstance
-        End Get
-    End Property
-    
-    <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
-     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-     Global.System.Configuration.DefaultSettingValueAttribute("Normal,Alternate,Fixed,Highlight,Focus,Editor,Frozen,NewRow,SelectedColumnHeader,"& _ 
-        "SelectedRowHeader,FilterEditor,Error,Disable,ReadOnly,Required,NoEdit,NegativeVa"& _ 
-        "lue,Closed,Modify,SortColumnHeaderHover"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10))>  _
-    Public ReadOnly Property StyleNames() As String
-        Get
-            Return CType(Me("StyleNames"),String)
         End Get
     End Property
     
@@ -232,6 +221,17 @@ Partial Friend NotInheritable Class GridDesignSettings
     Public ReadOnly Property SortColumnHeaderHoverBackColor() As Global.System.Drawing.Color
         Get
             Return CType(Me("SortColumnHeaderHoverBackColor"),Global.System.Drawing.Color)
+        End Get
+    End Property
+    
+    <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
+     Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.Configuration.DefaultSettingValueAttribute("Normal,Alternate,Fixed,Highlight,Focus,Editor,Frozen,NewRow,SelectedColumnHeader,"& _ 
+        "SelectedRowHeader,FilterEditor,Error,Disable,ReadOnly,Required,NoEdit,NegativeVa"& _ 
+        "lue,Closed,Modify,SortColumnHeaderHover"&Global.Microsoft.VisualBasic.ChrW(13)&Global.Microsoft.VisualBasic.ChrW(10))>  _
+    Public ReadOnly Property StyleNames() As String
+        Get
+            Return CType(Me("StyleNames"),String)
         End Get
     End Property
 End Class

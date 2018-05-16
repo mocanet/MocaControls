@@ -2,10 +2,6 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="" GeneratedClassName="GridDesignSettings">
   <Profiles />
   <Settings>
-    <Setting Name="StyleNames" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">Normal,Alternate,Fixed,Highlight,Focus,Editor,Frozen,NewRow,SelectedColumnHeader,SelectedRowHeader,FilterEditor,Error,Disable,ReadOnly,Required,NoEdit,NegativeValue,Closed,Modify,SortColumnHeaderHover
-</Value>
-    </Setting>
     <Setting Name="ErrorBackColor" Type="System.Drawing.Color" Scope="Application">
       <Value Profile="(Default)">242, 222, 222</Value>
     </Setting>
@@ -71,6 +67,10 @@
     </Setting>
     <Setting Name="SortColumnHeaderHoverBackColor" Type="System.Drawing.Color" Scope="Application">
       <Value Profile="(Default)">187, 235, 254</Value>
+    </Setting>
+    <Setting Name="StyleNames" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Normal,Alternate,Fixed,Highlight,Focus,Editor,Frozen,NewRow,SelectedColumnHeader,SelectedRowHeader,FilterEditor,Error,Disable,ReadOnly,Required,NoEdit,NegativeValue,Closed,Modify,SortColumnHeaderHover
+</Value>
     </Setting>
   </Settings>
 </SettingsFile>
