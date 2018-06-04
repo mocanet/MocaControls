@@ -33,6 +33,7 @@ Namespace Win
             ctl.MinDate = col.MinDate
             ctl.MaxDate = col.MaxDate
 
+
             If IsDBNull(Value) Then
                 ctl.Value = Me.DefaultNewRowValue
             ElseIf (Me.Value Is Nothing) Then
@@ -61,7 +62,7 @@ Namespace Win
         '''<param name="context">書式指定済みの値が必要とされているコンテキストを示す <see cref="T:System.Windows.Forms.DataGridViewDataErrorContexts" /> 値のビットごとの組み合わせ。</param>
         '''<exception cref="T:System.Exception">書式指定が失敗し、<see cref="T:System.Windows.Forms.DataGridView" /> コントロールの <see cref="E:System.Windows.Forms.DataGridView.DataError" /> イベントのハンドラが定義されていないか、ハンドラで <see cref="P:System.Windows.Forms.DataGridViewDataErrorEventArgs.ThrowException" /> プロパティが true に設定されました。例外オブジェクトは通常、<see cref="T:System.FormatException" /> 型にキャストできます。</exception>
         Protected Overrides Function GetFormattedValue(value As Object, rowIndex As Integer, ByRef cellStyle As DataGridViewCellStyle, valueTypeConverter As TypeConverter, formattedValueTypeConverter As TypeConverter, context As DataGridViewDataErrorContexts) As Object
-            If value Is Nothing OrElse String.IsNullOrEmpty(cellStyle.Format) Then
+            If IsDBNull(value) OrElse value Is Nothing OrElse String.IsNullOrEmpty(cellStyle.Format) Then
                 Return MyBase.GetFormattedValue(value, rowIndex, cellStyle, valueTypeConverter, formattedValueTypeConverter, context)
             End If
 

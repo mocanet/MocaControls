@@ -19,6 +19,9 @@ Namespace Win
 
 #Region " Declare "
 
+        'コンポーネント デザイナーで必要です。
+        Private components As System.ComponentModel.IContainer
+
 #Region " 列名編集用コード "
 
         ''' <summary>列の改行コード</summary>
@@ -78,6 +81,9 @@ Namespace Win
 
         Private _editConditions As IDictionary(Of DataGridViewColumn, EditConditionAttribute)
 
+        Private CAPTIONHEIGHT As Integer = 20
+        Private BORDERWIDTH As Integer = 0
+
 #End Region
 
 #Region " コンストラクタ "
@@ -85,8 +91,12 @@ Namespace Win
         ''' <summary>
         ''' デフォルトコンストラクタ
         ''' </summary>
+        <System.Diagnostics.DebuggerNonUserCode()>
         Public Sub New()
             MyBase.New()
+
+            'この呼び出しは、コンポーネント デザイナーで必要です。
+            InitializeComponent()
 
             If DesignMode Then
                 Return
@@ -94,6 +104,14 @@ Namespace Win
 
             ' セットアップ
             _setupGrid()
+        End Sub
+
+        'メモ: 以下のプロシージャはコンポーネント デザイナーで必要です。
+        'コンポーネント デザイナーを使って変更できます。
+        'コード エディターを使って変更しないでください。
+        <System.Diagnostics.DebuggerStepThrough()>
+        Private Sub InitializeComponent()
+            components = New System.ComponentModel.Container()
         End Sub
 
 #End Region
@@ -152,7 +170,7 @@ Namespace Win
         ''' <returns></returns>
         ''' <remarks></remarks>
         <Browsable(False)>
-        Public ReadOnly Property HasChanges() As Boolean
+        Public ReadOnly Property HasChanges As Boolean
             Get
                 Return (Not GetChanges().Count.Equals(0))
             End Get
@@ -239,6 +257,36 @@ Namespace Win
 #End Region
 
         ''' <summary>
+        ''' 垂直スクロールバーを常に表示するかどうか
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property VerticalScrollBarAlwaysShow As Boolean
+            Get
+                Return _verticalScrollBarAlwaysShow
+            End Get
+            Set(value As Boolean)
+                _verticalScrollBarAlwaysShow = value
+                Me.VerticalScrollBar.Visible = _verticalScrollBarAlwaysShow
+            End Set
+        End Property
+        Private _verticalScrollBarAlwaysShow As Boolean
+
+        ''' <summary>
+        ''' 水平スクロールバーを常に表示するかどうか
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property HorizontalScrollBarAlwaysShow As Boolean
+            Get
+                Return _horizontalScrollBarAlwaysShow
+            End Get
+            Set(value As Boolean)
+                _horizontalScrollBarAlwaysShow = value
+                Me.HorizontalScrollBar.Visible = _horizontalScrollBarAlwaysShow
+            End Set
+        End Property
+        Private _horizontalScrollBarAlwaysShow As Boolean
+
+        ''' <summary>
         ''' 行が編集されたときに、行ヘッダー列へ表示するアイコン
         ''' </summary>
         ''' <returns></returns>
@@ -265,6 +313,18 @@ Namespace Win
 #End Region
 
 #Region " Overrides "
+
+        'Component は、コンポーネント一覧に後処理を実行するために dispose をオーバーライドします。
+        <System.Diagnostics.DebuggerNonUserCode()>
+        Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+            Try
+                If disposing AndAlso components IsNot Nothing Then
+                    components.Dispose()
+                End If
+            Finally
+                MyBase.Dispose(disposing)
+            End Try
+        End Sub
 
         '''<summary>
         '''Tab キー、Esc キー、Enter キー、方向キーなど、ダイアログ ボックスの制御に使用されるキーを処理します。
@@ -1527,6 +1587,8 @@ Namespace Win
             Me.Columns.Clear()
             Me.AutoGenerateColumns = False   ' DataSource設定時の自動列作成をOFF
 
+            AddHandler VerticalScrollBar.VisibleChanged, AddressOf _showScrollBars
+
             _deletedRows = New List(Of Object)
 
             ' グリッドの設定変更イベント
@@ -1831,6 +1893,9 @@ Namespace Win
             If prop.PropertyType.Equals(GetType(Date)) Then
                 type = CellType.Calendar
             End If
+            If prop.PropertyType.Equals(GetType(Date?)) Then
+                type = CellType.Calendar
+            End If
             If prop.PropertyType.Equals(GetType(Boolean)) AndAlso Not type.Equals(CellType.CheckBoxImage) Then
                 type = CellType.CheckBox
             End If
@@ -1874,7 +1939,9 @@ Namespace Win
                     Else
                         cal.PickerCustomFormat = attr.InputFormat
                     End If
-                    col.DefaultCellStyle.NullValue = Nothing
+                    attr.NullValue = Nothing
+                    col.DefaultCellStyle.DataSourceNullValue = Nothing
+                    'col.DefaultCellStyle.NullValue = Nothing
                 Case CellType.MaskedTextBox
                     col = New DataGridViewMaskedTextBoxColumn()
                     Dim mask As DataGridViewMaskedTextBoxColumn = DirectCast(col, DataGridViewMaskedTextBoxColumn)
@@ -1963,6 +2030,14 @@ Namespace Win
                 Return
             End If
 
+            SetColStyleReadOnly(col)
+        End Sub
+
+        ''' <summary>
+        ''' 読取専用列設定
+        ''' </summary>
+        ''' <param name="col"></param>
+        Public Sub SetColStyleReadOnly(ByVal col As DataGridViewColumn)
             col.ReadOnly = True
 
             Dim style As DataGridViewCellStyle
@@ -2042,6 +2117,16 @@ Namespace Win
 
             Return cbo
         End Function
+
+        Private Sub _showScrollBars(sender As Object, e As EventArgs)
+            If Not VerticalScrollBar.Visible Then
+                Dim width As Integer = VerticalScrollBar.Width
+                VerticalScrollBar.Location = New Point(Me.ClientRectangle.Width - width - BORDERWIDTH, 0)
+                VerticalScrollBar.Size = New Size(width, Me.ClientRectangle.Height - CAPTIONHEIGHT - BORDERWIDTH + 4)
+                HorizontalScrollBar.Size = New Size(HorizontalScrollBar.Size.Width - VerticalScrollBar.Size.Width, HorizontalScrollBar.Size.Height)
+                VerticalScrollBar.Show()
+            End If
+        End Sub
 
 #Region " Validate "
 

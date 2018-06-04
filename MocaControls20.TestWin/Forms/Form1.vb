@@ -172,6 +172,13 @@ Public Class Form1
         Debug.Print(e.Exception.ToString)
     End Sub
 
+    Private Sub DataGridViewEx1_GridColmnSetting(sender As Object, e As DataGridColmnSettingEventArgs) Handles DataGridViewEx1.GridColmnSetting
+        Debug.Print("DataGridViewEx1_GridColmnSetting")
+        If e.DBColumn.ColumnName.Equals("Day") Then
+            e.Column.DefaultCellStyle.DataSourceNullValue = DBNull.Value
+        End If
+    End Sub
+
     Private Sub ModelGridView1_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles ModelGridView1.CellContentClick
         Debug.Print("ModelGridView1_CellContentClick")
     End Sub
@@ -253,5 +260,6 @@ Public Class Form1
             frm.ShowDialog()
         End Using
     End Sub
+
 End Class
 

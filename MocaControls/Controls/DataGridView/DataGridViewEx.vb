@@ -12,24 +12,13 @@ Namespace Win
         'コンポーネント デザイナーで必要です。
         Private components As System.ComponentModel.IContainer
 
-        ''' <summary>データバインダー</summary>
-        Private _dataBinder As New DataBinder
-
-        Private CAPTIONHEIGHT As Integer = 20
-        Private BORDERWIDTH As Integer = 0
-
 #Region " 列名編集用コード "
 
         ''' <summary>列の改行コード</summary>
         Public Const C_COLTITLE_CR As String = "\n"
 
 #End Region
-#Region " スタイル定義 "
 
-        ''' <summary>グリッドのスタイル定義</summary>
-        Private _designSettings As System.Configuration.ApplicationSettingsBase
-
-#End Region
 #Region " Events "
 
         ''' <summary>
@@ -53,6 +42,26 @@ Namespace Win
         Public Event GridColmnSetting(ByVal sender As Object, ByVal e As DataGridColmnSettingEventArgs)
 
 #End Region
+
+#Region " スタイル定義 "
+
+        ''' <summary>グリッドのスタイル定義</summary>
+        Private _designSettings As System.Configuration.ApplicationSettingsBase
+
+#End Region
+
+        ''' <summary>データバインダー</summary>
+        Private _dataBinder As New DataBinder
+
+        ''' <summary>削除対象データ</summary>
+        Private _deletedRows As IList
+
+        ''' <summary>スクロール固定列</summary>
+        Private _frozen As Integer
+
+        Private CAPTIONHEIGHT As Integer = 20
+        Private BORDERWIDTH As Integer = 0
+
 #End Region
 
 #Region " コンストラクタ "
@@ -88,6 +97,174 @@ Namespace Win
 
 #End Region
 
+#Region " Property "
+
+        ''' <summary>
+        ''' データバインダー
+        ''' </summary>
+        ''' <returns></returns>
+        <Browsable(False)>
+        Public ReadOnly Property DataBinder As DataBinder
+            Get
+                Return _dataBinder
+            End Get
+        End Property
+
+        ''' <summary>
+        ''' グリッドデザイン設定
+        ''' </summary>
+        ''' <returns></returns>
+        <Browsable(False)>
+        Public Property DesignSettings As System.Configuration.ApplicationSettingsBase
+            Get
+                Return _designSettings
+            End Get
+            Set(value As System.Configuration.ApplicationSettingsBase)
+                If value Is Nothing Then
+                    _designSettings = GridDesignSettings.Default
+                Else
+                    _designSettings = value
+                End If
+                _setStyleNames()
+            End Set
+        End Property
+
+        ''' <summary>
+        ''' データ変更があるかどうか
+        ''' </summary>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        <Browsable(False)>
+        Public ReadOnly Property HasChanges As Boolean
+            Get
+                Return (Not GetChanges().Count.Equals(0))
+            End Get
+        End Property
+
+        ''' <summary>
+        ''' スクロール固定列位置
+        ''' </summary>
+        ''' <returns></returns>
+        Public ReadOnly Property Frozen As Integer
+            Get
+                Return _frozen
+            End Get
+        End Property
+
+        ''' <summary>
+        ''' エンティティコレクション
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        <Browsable(False)>
+        Public Shadows Property DataSource() As Object
+            Get
+                Return _dataBinder.DataSource
+            End Get
+            Set(value As Object)
+                _deletedRows.Clear()
+
+                If Styles.Count.Equals(0) Then
+                    _setStyleNames()
+                End If
+
+                _dataBinder.DataSource = value
+
+                ' データからグリッドの設定
+                _setData(value)
+                ' セル位置設定
+                _dataBinder.Position = 0
+            End Set
+        End Property
+
+        ''' <summary>
+        ''' 各種セルスタイル
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property Styles As IDictionary(Of String, DataGridViewCellStyle)
+            Get
+                If _styles Is Nothing Then
+                    _styles = New Dictionary(Of String, DataGridViewCellStyle)
+                End If
+                Return _styles
+            End Get
+            Set(value As IDictionary(Of String, DataGridViewCellStyle))
+                _styles = value
+            End Set
+        End Property
+        Private _styles As IDictionary(Of String, DataGridViewCellStyle)
+
+#Region " GetRow "
+
+        Public Function GetRowView(ByVal index As Integer) As DataRowView
+            Return Rows(index).DataBoundItem
+        End Function
+
+        Public Function GetRow(ByVal index As Integer) As DataRow
+            Return GetRowView(index).Row
+        End Function
+
+#End Region
+
+        ''' <summary>
+        ''' 垂直スクロールバーを常に表示するかどうか
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property VerticalScrollBarAlwaysShow As Boolean
+            Get
+                Return _verticalScrollBarAlwaysShow
+            End Get
+            Set(value As Boolean)
+                _verticalScrollBarAlwaysShow = value
+                Me.VerticalScrollBar.Visible = _verticalScrollBarAlwaysShow
+            End Set
+        End Property
+        Private _verticalScrollBarAlwaysShow As Boolean
+
+        ''' <summary>
+        ''' 水平スクロールバーを常に表示するかどうか
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property HorizontalScrollBarAlwaysShow As Boolean
+            Get
+                Return _horizontalScrollBarAlwaysShow
+            End Get
+            Set(value As Boolean)
+                _horizontalScrollBarAlwaysShow = value
+                Me.HorizontalScrollBar.Visible = _horizontalScrollBarAlwaysShow
+            End Set
+        End Property
+        Private _horizontalScrollBarAlwaysShow As Boolean
+
+        ''' <summary>
+        ''' 行が編集されたときに、行ヘッダー列へ表示するアイコン
+        ''' </summary>
+        ''' <returns></returns>
+        Public Property RowEditImage As Image = My.Resources.RowEdit
+
+        <Category("行選択のカスタマイズ")>
+        <Description("選択行に対して枠線を表示するように設定します")>
+        Public Property TransparentRowSelection As Boolean
+            Get
+                Return _transparentRowSelection
+            End Get
+            Set(value As Boolean)
+                _transparentRowSelection = value
+            End Set
+        End Property
+        Private _transparentRowSelection As Boolean
+
+        Public ReadOnly Property LastColumnDisplay As DataGridViewColumn
+            Get
+                Return Columns.GetLastColumn(DataGridViewElementStates.Displayed, DataGridViewElementStates.None)
+            End Get
+        End Property
+
+        Public Property DBInfoColumns As Moca.Db.DbInfoColumnCollection
+
+#End Region
+
 #Region " Overrides "
 
         'Component は、コンポーネント一覧に後処理を実行するために dispose をオーバーライドします。
@@ -102,6 +279,104 @@ Namespace Win
             End Try
         End Sub
 
+        '''<summary>
+        '''Tab キー、Esc キー、Enter キー、方向キーなど、ダイアログ ボックスの制御に使用されるキーを処理します。
+        '''</summary>
+        '''<returns>
+        '''キーが処理された場合は true。それ以外の場合は false。
+        '''</returns>
+        '''<param name="keyData">
+        '''処理するキーを表す <see cref="T:System.Windows.Forms.Keys" /> 値のビットごとの組み合わせ。
+        '''</param>
+        '''<exception cref="T:System.InvalidCastException">
+        '''コントロールを編集モードに移行させるキーが押されましたが、現在のセルの <see cref="P:System.Windows.Forms.DataGridViewCell.EditType" /> プロパティには、<see cref="T:System.Windows.Forms.IDataGridViewEditingControl" /> を実装する、<see cref="T:System.Windows.Forms.Control" /> の派生クラスが指定されていません。
+        '''</exception>
+        '''<exception cref="T:System.Exception">
+        '''この操作を実行すると、セルの値がコミットされるか、編集モードに移行しますが、データ ソース内にエラーが存在するため、この操作を正常に実行できません。<see cref="E:System.Windows.Forms.DataGridView.DataError" /> イベントにハンドラが存在しないか、ハンドラによって <see cref="P:System.Windows.Forms.DataGridViewDataErrorEventArgs.ThrowException" /> プロパティが true に設定されています。
+        '''</exception>
+        <System.Security.Permissions.UIPermission(
+        System.Security.Permissions.SecurityAction.Demand,
+        Window:=System.Security.Permissions.UIPermissionWindow.AllWindows)>
+        Protected Overrides Function ProcessDialogKey(ByVal keyData As Keys) As Boolean
+            'Enterキーが押された時は、Tabキーが押されたようにする
+            If (keyData And Keys.KeyCode) = Keys.Enter Then
+                Return Me.ProcessTabKey(keyData)
+            End If
+            Return MyBase.ProcessDialogKey(keyData)
+        End Function
+
+        '''<summary>
+        '''<see cref="T:System.Windows.Forms.DataGridView" /> での移動に使用されるキーを処理します。
+        '''</summary>
+        '''<returns>
+        '''キーが処理された場合は true。それ以外の場合は false。
+        '''</returns>
+        '''<param name="e">
+        '''押されたキーに関する情報を格納します。
+        '''</param>
+        '''<exception cref="T:System.InvalidCastException">
+        '''コントロールを編集モードに移行させるキーが押されましたが、現在のセルの <see cref="P:System.Windows.Forms.DataGridViewCell.EditType" /> プロパティには、<see cref="T:System.Windows.Forms.IDataGridViewEditingControl" /> を実装する、<see cref="T:System.Windows.Forms.Control" /> の派生クラスが指定されていません。
+        '''</exception>
+        '''<exception cref="T:System.Exception">
+        '''この操作を実行すると、セルの値がコミットされるか、編集モードに移行しますが、データ ソース内にエラーが存在するため、この操作を正常に実行できません。<see cref="E:System.Windows.Forms.DataGridView.DataError" /> イベントにハンドラが存在しないか、ハンドラによって <see cref="P:System.Windows.Forms.DataGridViewDataErrorEventArgs.ThrowException" /> プロパティが true に設定されています。
+        '''
+        '''または
+        '''
+        '''Del キーが押されると、1 つまたは複数の行が削除されますが、データ ソース内にエラーが存在するため、削除操作を正常に実行できません。<see cref="E:System.Windows.Forms.DataGridView.DataError" /> イベントにハンドラが存在しないか、ハンドラによって <see cref="P:System.Windows.Forms.DataGridViewDataErrorEventArgs.ThrowException" /> プロパティが true に設定されています。
+        '''</exception>
+        <System.Security.Permissions.SecurityPermission(
+        System.Security.Permissions.SecurityAction.Demand,
+        Flags:=System.Security.Permissions.SecurityPermissionFlag.UnmanagedCode)>
+        Protected Overrides Function ProcessDataGridViewKey(ByVal e As KeyEventArgs) As Boolean
+            'Enterキーが押された時は、Tabキーが押されたようにする
+            If e.KeyCode = Keys.Enter Then
+                Return Me.ProcessTabKey(e.KeyCode)
+            End If
+            Return MyBase.ProcessDataGridViewKey(e)
+        End Function
+
+        Protected Overrides Function ProcessKeyPreview(ByRef m As Message) As Boolean
+            Const WM_KEYDOWN As Integer = &H100
+            Const WM_CHAR As Integer = &H102
+
+            ' セル内でEnterキーを改行にする
+            If Me.EditingControl IsNot Nothing _
+                AndAlso Me.EditingControl.Visible _
+                AndAlso TypeOf Me.EditingControl Is TextBox Then
+
+                Dim txb As TextBox = CType(Me.EditingControl, TextBox)
+                If (Not txb.ReadOnly) Then
+                    Select Case m.Msg
+                        Case WM_KEYDOWN
+                            If (CType(m.WParam, Keys) = Keys.Return _
+                                AndAlso Control.ModifierKeys = Keys.None) _
+                                AndAlso txb.WordWrap Then
+                                txb.SelectedText = System.Environment.NewLine
+                                Return True
+                            End If
+                        Case WM_CHAR
+                            If (CType(m.WParam, Keys) = Keys.Return _
+                                AndAlso Control.ModifierKeys = Keys.Shift) Then
+                                Return True
+                            End If
+                    End Select
+                End If
+            End If
+            Return MyBase.ProcessKeyPreview(m)
+        End Function
+
+        '''<summary>
+        '''<see cref="E:System.Windows.Forms.DataGridView.CellEndEdit" /> イベントを発生させます。
+        '''</summary>
+        '''<param name="e">
+        '''イベント データを格納している <see cref="T:System.Windows.Forms.DataGridViewCellEventArgs" />。
+        '''</param>
+        '''<exception cref="T:System.ArgumentOutOfRangeException">
+        '''<paramref name="e" /> の <see cref="P:System.Windows.Forms.DataGridViewCellEventArgs.ColumnIndex" /> プロパティの値が、コントロール内の列数 - 1 を超えています。
+        '''
+        '''または
+        '''<paramref name="e" /> の <see cref="P:System.Windows.Forms.DataGridViewCellEventArgs.RowIndex" /> プロパティの値が、コントロール内の行数 - 1 を超えています。
+        '''</exception>
         Protected Overrides Sub OnCellEndEdit(e As DataGridViewCellEventArgs)
             MyBase.OnCellEndEdit(e)
 
@@ -120,13 +395,22 @@ Namespace Win
                     Return
                 End If
             Else
-                If value <> newValue Then
+                If IsDBNull(newValue) Then
                     If Styles.ContainsKey(Moca.StyleNames.Modify.ToString) Then
                         CurrentCell.Style.Font = New Font(Styles(Moca.StyleNames.Modify.ToString).Font.FontFamily,
-                                                      CurrentCell.OwningColumn.InheritedStyle.Font.Size,
-                                                      Styles(Moca.StyleNames.Modify.ToString).Font.Style)
+                                                          CurrentCell.OwningColumn.InheritedStyle.Font.Size,
+                                                          Styles(Moca.StyleNames.Modify.ToString).Font.Style)
                     End If
                     Return
+                Else
+                    If value <> newValue Then
+                        If Styles.ContainsKey(Moca.StyleNames.Modify.ToString) Then
+                            CurrentCell.Style.Font = New Font(Styles(Moca.StyleNames.Modify.ToString).Font.FontFamily,
+                                                          CurrentCell.OwningColumn.InheritedStyle.Font.Size,
+                                                          Styles(Moca.StyleNames.Modify.ToString).Font.Style)
+                        End If
+                        Return
+                    End If
                 End If
             End If
 
@@ -140,14 +424,134 @@ Namespace Win
                 End If
             End If
 
-            cur.CancelEdit()
+            'cur.CancelEdit()
         End Sub
 
+        Protected Overrides Sub OnCellEnter(e As DataGridViewCellEventArgs)
+            MyBase.OnCellEnter(e)
+
+            ImeMode = ImeMode.NoControl
+
+            Dim column As DataGridViewColumn = Columns(e.ColumnIndex)
+            Dim dbCol As DataColumn
+            dbCol = CType(column.Tag, DataColumn)
+            If dbCol Is Nothing Then
+                Return
+            End If
+
+            If DBInfoColumns Is Nothing Then
+                Return
+            End If
+            If Not DBInfoColumns.ContainsKey(dbCol.ColumnName) Then
+                Return
+            End If
+
+            Dim info As Moca.Db.DbInfoColumn
+            info = DBInfoColumns.Item(dbCol.ColumnName)
+            If Not info.Typ.Equals("nvarchar") AndAlso Not info.Typ.Equals("nchar") Then
+                Return
+            End If
+
+            ImeMode = ImeMode.Hiragana
+        End Sub
+
+        Protected Overrides Sub OnCellFormatting(e As DataGridViewCellFormattingEventArgs)
+            If _transparentRowSelection Then
+                e.CellStyle.SelectionBackColor = e.CellStyle.BackColor
+                e.CellStyle.SelectionForeColor = e.CellStyle.ForeColor
+            End If
+
+            MyBase.OnCellFormatting(e)
+
+            If e.Value IsNot Nothing Then
+                Return
+            End If
+            If e.CellStyle.NullValue Is Nothing Then
+                Return
+            End If
+            If Not e.CellStyle.NullValue.Equals("N/A") Then
+                Return
+            End If
+
+            e.CellStyle.ForeColor = Color.DimGray
+        End Sub
+
+        ''' <summary>
+        ''' マウス ポインタがセルに入る
+        ''' </summary>
+        ''' <param name="e"></param>
+        Protected Overrides Sub OnCellMouseEnter(e As DataGridViewCellEventArgs)
+            MyBase.OnCellMouseEnter(e)
+
+            If TypeOf Cols(e.ColumnIndex) Is DataGridViewButtonColumn Then
+                Dim btn As DataGridViewButtonColumn = Cols(e.ColumnIndex)
+                If btn.FlatStyle = FlatStyle.Flat Then
+                    Cursor = Cursors.Hand
+                    ShowCellToolTips = False
+                End If
+            Else
+                Cursor = Cursors.Default
+                ShowCellToolTips = True
+            End If
+        End Sub
+
+        ''' <summary>
+        ''' マウス ポインタが移動
+        ''' </summary>
+        ''' <param name="e"></param>
+        Protected Overrides Sub OnCellMouseMove(e As DataGridViewCellMouseEventArgs)
+            MyBase.OnCellMouseMove(e)
+
+            If e.RowIndex < 0 AndAlso e.ColumnIndex >= 0 Then
+                If Columns.Item(e.ColumnIndex).SortMode <> DataGridViewColumnSortMode.NotSortable Then
+                    Columns.Item(e.ColumnIndex).HeaderCell.Style.BackColor = Styles(Moca.StyleNames.SortColumnHeaderHover.ToString).BackColor
+                    Cursor = Cursors.Hand
+                End If
+            End If
+        End Sub
+
+        ''' <summary>
+        ''' マウス ポインタがセルを離れる
+        ''' </summary>
+        ''' <param name="e"></param>
+        Protected Overrides Sub OnCellMouseLeave(e As DataGridViewCellEventArgs)
+            MyBase.OnCellMouseLeave(e)
+
+            If TypeOf Cols(e.ColumnIndex) Is DataGridViewButtonColumn Then
+                Cursor = Cursors.Default
+                ShowCellToolTips = True
+            End If
+
+            If e.RowIndex < 0 AndAlso e.ColumnIndex >= 0 Then
+                If Columns.Item(e.ColumnIndex).SortMode <> DataGridViewColumnSortMode.NotSortable Then
+                    Columns.Item(e.ColumnIndex).HeaderCell.Style.BackColor = ColumnHeadersDefaultCellStyle.BackColor
+                    Cursor = Cursors.Default
+                End If
+            End If
+        End Sub
+
+        '''<summary>
+        '''<see cref="E:System.Windows.Forms.DataGridView.CellPainting" /> イベントを発生させます。
+        '''</summary>
+        '''<param name="e">
+        '''イベント データを格納している <see cref="T:System.Windows.Forms.DataGridViewCellPaintingEventArgs" />。
+        '''</param>
+        '''<exception cref="T:System.ArgumentOutOfRangeException">
+        '''<paramref name="e" /> の <see cref="P:System.Windows.Forms.DataGridViewCellPaintingEventArgs.ColumnIndex" /> プロパティの値が、コントロール内の列数 - 1 を超えています。
+        '''
+        '''または
+        '''<paramref name="e" /> の <see cref="P:System.Windows.Forms.DataGridViewCellPaintingEventArgs.RowIndex" /> プロパティの値が、コントロール内の行数 - 1 を超えています。
+        '''</exception>
         Protected Overrides Sub OnCellPainting(e As DataGridViewCellPaintingEventArgs)
             MyBase.OnCellPainting(e)
 
             If NewRowIndex = e.RowIndex Then
                 Return
+            End If
+
+            If TransparentRowSelection Then
+                e.CellStyle.SelectionBackColor = e.CellStyle.BackColor
+                e.CellStyle.SelectionForeColor = e.CellStyle.ForeColor
             End If
 
             Select Case e.ColumnIndex
@@ -191,6 +595,13 @@ Namespace Win
                     Select Case e.RowIndex
                         Case < 0
                             ' 行ヘッダーで列データ
+                            e.PaintBackground(e.CellBounds, False)
+
+                            Dim r2 As Rectangle = e.CellBounds
+                            r2.Y += e.CellBounds.Height / 2
+                            r2.Height = e.CellBounds.Height / 2
+                            e.PaintContent(r2)
+                            e.Handled = True
                         Case Else
                             'If Not rowStatus = Attr.Status Then
                             '    Dim style As DataGridViewCellStyle
@@ -201,122 +612,404 @@ Namespace Win
                             '    Me(e.ColumnIndex, e.RowIndex).Style.SelectionBackColor = style.SelectionBackColor
                             '    Me(e.ColumnIndex, e.RowIndex).Style.SelectionForeColor = style.SelectionForeColor
                             'End If
+                            If (SelectionMode = DataGridViewSelectionMode.CellSelect OrElse
+                                SelectionMode = DataGridViewSelectionMode.RowHeaderSelect OrElse
+                                SelectionMode = DataGridViewSelectionMode.ColumnHeaderSelect) AndAlso
+                                TransparentRowSelection Then
+                                If Not Rows(e.RowIndex).Selected AndAlso
+                                        Not Cols(e.ColumnIndex).Selected AndAlso
+                                        e.ColumnIndex = CurrentCell.ColumnIndex AndAlso e.RowIndex = CurrentCell.RowIndex Then
+                                    e.Paint(e.CellBounds, DataGridViewPaintParts.All And Not DataGridViewPaintParts.Border)
+                                    Dim borderWidth As Integer = 2
+                                    Dim r As Rectangle = Me.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, False)
+                                    Dim r2 As Rectangle = Me.GetColumnDisplayRectangle(e.ColumnIndex, False)
+                                    Dim r2width As Integer = r2.X + r2.Width
+                                    Dim rect = New Rectangle(r.X, r.Y, IIf(r.Width > r2width, r2width, r.Width), r.Height)
+                                    ControlPaint.DrawBorder(e.Graphics, rect,
+                                                                SystemColors.Highlight, borderWidth, ButtonBorderStyle.Solid,
+                                                                SystemColors.Highlight, borderWidth, ButtonBorderStyle.Solid,
+                                                                SystemColors.Highlight, borderWidth + 1, ButtonBorderStyle.Solid,
+                                                                SystemColors.Highlight, borderWidth + 1, ButtonBorderStyle.Solid)
+
+                                    e.Handled = True
+                                End If
+                            End If
                     End Select
+            End Select
+
+            If (SelectionMode = DataGridViewSelectionMode.ColumnHeaderSelect) AndAlso
+                TransparentRowSelection Then
+                If Cols(e.ColumnIndex).Selected Then
+                    e.Paint(e.CellBounds, DataGridViewPaintParts.All And Not DataGridViewPaintParts.Border)
+                    Dim borderWidth As Integer = 2
+                    Dim r As Rectangle = Me.GetColumnDisplayRectangle(e.ColumnIndex, False)
+                    Dim r2 As Rectangle = Me.DisplayRectangle()
+                    Dim r3 As Rectangle = Me.GetRowDisplayRectangle(Rows.Count - 1, False)
+                    Dim r2Height As Integer = IIf(r3.Bottom = 0, r.Height, r3.Bottom - r.Top)
+                    Dim rect = New Rectangle(r.X, r.Y, r.Width, IIf(r2.Height > r2Height, r2Height, r2.Height))
+                    ControlPaint.DrawBorder(e.Graphics, rect,
+                                                SystemColors.Highlight, borderWidth, ButtonBorderStyle.Solid,
+                                                SystemColors.Highlight, borderWidth, ButtonBorderStyle.Solid,
+                                                SystemColors.Highlight, borderWidth + 1, ButtonBorderStyle.Solid,
+                                                SystemColors.Highlight, borderWidth + 1, ButtonBorderStyle.Solid)
+
+                    e.Handled = True
+                End If
+            End If
+        End Sub
+
+        ''' <summary>
+        ''' スクロールが実行されたとき
+        ''' </summary>
+        ''' <param name="e"></param>
+        ''' <remarks></remarks>
+        Protected Overrides Sub OnScroll(ByVal e As System.Windows.Forms.ScrollEventArgs)
+            MyBase.OnScroll(e)
+
+            Invalidate()
+        End Sub
+
+        ''' <summary>
+        ''' サイズが変更されたとき
+        ''' </summary>
+        ''' <param name="e"></param>
+        ''' <remarks></remarks>
+        Protected Overrides Sub OnSizeChanged(ByVal e As System.EventArgs)
+            MyBase.OnSizeChanged(e)
+
+            Invalidate()
+        End Sub
+
+        ''' <summary>
+        ''' 列の幅が変更されたとき
+        ''' </summary>
+        ''' <param name="e"></param>
+        ''' <remarks></remarks>
+        Protected Overrides Sub OnColumnWidthChanged(ByVal e As System.Windows.Forms.DataGridViewColumnEventArgs)
+            MyBase.OnColumnWidthChanged(e)
+
+            Invalidate()
+        End Sub
+
+        ''' <summary>
+        ''' 行の境界線がダブルクリックされた時
+        ''' </summary>
+        ''' <param name="e"></param>
+        ''' <remarks></remarks>
+        Protected Overrides Sub OnRowDividerDoubleClick(ByVal e As System.Windows.Forms.DataGridViewRowDividerDoubleClickEventArgs)
+            MyBase.OnRowDividerDoubleClick(e)
+
+            Invalidate()
+        End Sub
+
+        Protected Overrides Sub SetSelectedCellCore(columnIndex As Integer, rowIndex As Integer, selected As Boolean)
+            MyBase.SetSelectedCellCore(columnIndex, rowIndex, selected)
+            If selected Then
+                _changeLinkSelectedStyle(Columns(columnIndex), rowIndex)
+            Else
+                _changeLinkUnSelectedStyle(Columns(columnIndex), rowIndex)
+            End If
+        End Sub
+
+        Protected Overrides Sub SetSelectedRowCore(rowIndex As Integer, selected As Boolean)
+            MyBase.SetSelectedRowCore(rowIndex, selected)
+
+            Select Case SelectionMode
+                Case DataGridViewSelectionMode.FullRowSelect
+                    Return
+                Case DataGridViewSelectionMode.RowHeaderSelect
+            End Select
+
+            For Each col As DataGridViewColumn In Columns
+                If selected Then
+                    _changeLinkSelectedStyle(col, rowIndex)
+                Else
+                    _changeLinkUnSelectedStyle(col, rowIndex)
+                End If
+            Next
+        End Sub
+
+        Protected Overrides Sub OnRowEnter(e As DataGridViewCellEventArgs)
+            MyBase.OnRowEnter(e)
+
+            Select Case SelectionMode
+                Case DataGridViewSelectionMode.FullRowSelect
+                    If SelectedRows.Count.Equals(0) Then
+                        Return
+                    End If
+                    For Each col As DataGridViewColumn In Columns
+                        _changeLinkSelectedStyle(col, e.RowIndex)
+                    Next
             End Select
         End Sub
 
-        Protected Overrides Sub OnCellEnter(e As DataGridViewCellEventArgs)
-            MyBase.OnCellEnter(e)
+        Protected Overrides Sub OnRowLeave(e As DataGridViewCellEventArgs)
+            MyBase.OnRowLeave(e)
 
-            ImeMode = ImeMode.NoControl
+            Select Case SelectionMode
+                Case DataGridViewSelectionMode.FullRowSelect
+                    If SelectedRows.Count.Equals(0) Then
+                        Return
+                    End If
+                    For Each col As DataGridViewColumn In Columns
+                        _changeLinkUnSelectedStyle(col, e.RowIndex)
+                    Next
+            End Select
+        End Sub
 
-            Dim column As DataGridViewColumn = Columns(e.ColumnIndex)
-            Dim dbCol As DataColumn
-            dbCol = CType(column.Tag, DataColumn)
-            If dbCol Is Nothing Then
+        Protected Overrides Sub OnCellToolTipTextNeeded(e As DataGridViewCellToolTipTextNeededEventArgs)
+            MyBase.OnCellToolTipTextNeeded(e)
+
+            If e.ColumnIndex < 0 Then
+                Return
+            End If
+            If e.RowIndex < 0 Then
                 Return
             End If
 
-            If DBInfoColumns Is Nothing Then
+            Dim errorText As String
+            errorText = Me(e.ColumnIndex, e.RowIndex).ErrorText
+            e.ToolTipText = String.Empty
+            If String.IsNullOrEmpty(errorText) Then
                 Return
             End If
-            If Not DBInfoColumns.ContainsKey(dbCol.ColumnName) Then
+            e.ToolTipText = errorText
+        End Sub
+
+        Protected Overrides Sub OnRowPostPaint(e As DataGridViewRowPostPaintEventArgs)
+            MyBase.OnRowPostPaint(e)
+
+            If e.RowIndex < 0 Then
                 Return
             End If
 
-            Dim info As Moca.Db.DbInfoColumn
-            info = DBInfoColumns.Item(dbCol.ColumnName)
-            If Not info.Typ.Equals("nvarchar") AndAlso Not info.Typ.Equals("nchar") Then
+            If Not _transparentRowSelection Then
+                Return
+            End If
+            If Not Me.Rows(e.RowIndex).Selected Then
                 Return
             End If
 
-            ImeMode = ImeMode.Hiragana
+            e.PaintCells(e.RowBounds, DataGridViewPaintParts.All And Not DataGridViewPaintParts.Border)
+
+            Dim borderWidth As Integer = 2
+            Dim r As Rectangle = Me.GetRowDisplayRectangle(e.RowIndex, False)
+            Dim r2 As Rectangle = Me.GetColumnDisplayRectangle(LastColumnDisplay.Index, False)
+            Dim r2width As Integer = r2.X + r2.Width
+            Dim rect = New Rectangle(r.X, r.Y, IIf(r.Width > r2width, r2width, r.Width), r.Height - 1)
+            ControlPaint.DrawBorder(e.Graphics, rect,
+                                        SystemColors.Highlight, borderWidth, ButtonBorderStyle.Solid,
+                                        SystemColors.Highlight, borderWidth, ButtonBorderStyle.Solid,
+                                        SystemColors.Highlight, borderWidth, ButtonBorderStyle.Solid,
+                                        SystemColors.Highlight, borderWidth, ButtonBorderStyle.Solid)
+        End Sub
+
+        Protected Overrides Sub OnCellContentClick(e As DataGridViewCellEventArgs)
+            Dim cell As DataGridViewCell
+
+            If e.RowIndex >= 0 AndAlso e.ColumnIndex >= 0 Then
+                cell = Me(e.ColumnIndex, e.RowIndex)
+                If TypeOf cell Is DataGridViewDisableButtonCell Then
+                    Dim disableButtonCell As DataGridViewDisableButtonCell = cell
+                    If Not disableButtonCell.Enabled Then
+                        Return
+                    End If
+                End If
+            End If
+
+            MyBase.OnCellContentClick(e)
+        End Sub
+
+        Protected Overrides Sub OnCellClick(e As DataGridViewCellEventArgs)
+            If e.RowIndex >= 0 AndAlso e.ColumnIndex >= 0 Then
+                If Not TypeOf Me(e.ColumnIndex, e.RowIndex) Is DataGridViewCheckBoxImageCell Then
+                    MyBase.OnCellClick(e)
+                    Return
+                End If
+
+                Dim cur As DataRow = Current()
+                cur.SetModified()
+            End If
+
+            MyBase.OnCellClick(e)
+        End Sub
+
+        Protected Overrides Sub OnMouseMove(e As MouseEventArgs)
+            MyBase.OnMouseMove(e)
+
+            If e.Button <> MouseButtons.Left Then
+                Return
+            End If
+
+            Dim hit As HitTestInfo
+            hit = HitTest(e.X, e.Y)
+            If hit.Type <> DataGridViewHitTestType.ColumnHeader AndAlso
+                hit.Type <> DataGridViewHitTestType.RowHeader Then
+                Return
+            End If
+
+            MyBase.DoubleBuffered = False
+        End Sub
+
+        ''' <summary>
+        ''' マウスのボタンが離された時
+        ''' </summary>
+        ''' <param name="e"></param>
+        ''' <remarks></remarks>
+        Protected Overrides Sub OnMouseUp(e As System.Windows.Forms.MouseEventArgs)
+            MyBase.OnMouseUp(e)
+
+            MyBase.DoubleBuffered = True
+        End Sub
+
+        Protected Overrides Sub OnColumnHeaderMouseClick(e As DataGridViewCellMouseEventArgs)
+            MyBase.OnColumnHeaderMouseClick(e)
         End Sub
 
 #End Region
 
-#Region " Property "
+#Region " Method "
+
+#Region " SuspendLayout/ResumeLayout "
+
+        Public Sub BeginUpdate()
+            SuspendLayout()
+        End Sub
+
+        Public Sub EndUpdate()
+            ResumeLayout()
+        End Sub
+
+#End Region
+#Region " SetComboBoxItems "
 
         ''' <summary>
-        ''' データバインダー
+        ''' コンボボックスへ表示するデータをバインドする
         ''' </summary>
-        ''' <returns></returns>
-        <Browsable(False)>
-        Public ReadOnly Property DataBinder As DataBinder
-            Get
-                Return _dataBinder
-            End Get
-        End Property
-
-        ''' <summary>
-        ''' エンティティコレクション
-        ''' </summary>
-        ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        <Browsable(False)>
-        Public Shadows Property DataSource() As Object
-            Get
-                Return _dataBinder.DataSource
-            End Get
-            Set(value As Object)
-                _dataBinder.DataSource = value
-
-                ' データからグリッドの設定
-                _setData(value)
-                ' セル位置設定
-                _dataBinder.Position = 0
-            End Set
-        End Property
-
-        ''' <summary>
-        ''' グリッドデザイン設定
-        ''' </summary>
-        ''' <returns></returns>
-        <Browsable(False)>
-        Public Property DesignSettings As System.Configuration.ApplicationSettingsBase
-            Get
-                Return _designSettings
-            End Get
-            Set(value As System.Configuration.ApplicationSettingsBase)
-                If value Is Nothing Then
-                    _designSettings = Moca.GridDesignSettings.Default
-                Else
-                    _designSettings = value
-                End If
-                _setStyleNames()
-            End Set
-        End Property
-
-        ''' <summary>
-        ''' 各種セルスタイル
-        ''' </summary>
-        ''' <returns></returns>
-        Public Property Styles As IDictionary(Of String, DataGridViewCellStyle)
-            Get
-                If _styles Is Nothing Then
-                    _styles = New Dictionary(Of String, DataGridViewCellStyle)
-                End If
-                Return _styles
-            End Get
-            Set(value As IDictionary(Of String, DataGridViewCellStyle))
-                _styles = value
-            End Set
-        End Property
-        Private _styles As IDictionary(Of String, DataGridViewCellStyle)
-
-        ''' <summary>
-        ''' データ変更があるかどうか
-        ''' </summary>
+        ''' <param name="propertyName">バインドしたい列名称</param>
+        ''' <param name="dataSource">コンボボックスへバインドするデータソース</param>
+        ''' <param name="displayMember">コンボ ボックスに表示する文字列の取得先となるプロパティまたは列を指定する文字列を取得または設定します。 </param>
+        ''' <param name="valueMember">ドロップダウン リストの選択項目に対応する値の取得先となる、プロパティまたは列を指定する文字列を取得または設定します。 </param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        <Browsable(False)>
-        Public ReadOnly Property HasChanges As Boolean
-            Get
-                Return (Not GetChanges().Count.Equals(0))
-            End Get
-        End Property
+        Public Function SetComboBoxItems(ByVal propertyName As String, ByVal dataSource As DataTable, ByVal displayMember As String, ByVal valueMember As String) As DataGridViewComboBoxColumn
+            Dim col As DataGridViewColumn
+            col = Me.Columns.Item(propertyName)
+            Return _setComboBoxItems(col, dataSource, displayMember, valueMember)
+        End Function
 
+        ''' <summary>
+        ''' コンボボックスへ表示するデータをバインドする
+        ''' </summary>
+        ''' <param name="index">列位置</param>
+        ''' <param name="dataSource">コンボボックスへバインドするデータソース</param>
+        ''' <param name="displayMember">コンボ ボックスに表示する文字列の取得先となるプロパティまたは列を指定する文字列を取得または設定します。 </param>
+        ''' <param name="valueMember">ドロップダウン リストの選択項目に対応する値の取得先となる、プロパティまたは列を指定する文字列を取得または設定します。 </param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Function SetComboBoxItems(ByVal index As Integer, ByVal dataSource As DataTable, ByVal displayMember As String, ByVal valueMember As String) As DataGridViewComboBoxColumn
+            Dim col As DataGridViewColumn
+            col = Me.Columns.Item(index)
+            Return _setComboBoxItems(col, dataSource, displayMember, valueMember)
+        End Function
+
+        ''' <summary>
+        ''' コンボボックスへ表示するデータをバインドする
+        ''' </summary>
+        ''' <param name="index">列位置</param>
+        ''' <param name="dataSource">コンボボックスへバインドするデータソース</param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Function SetComboBoxItems(ByVal index As Integer, ByVal dataSource As Moca.ConstantDataSet.ConstantDataTable) As DataGridViewComboBoxColumn
+            Dim col As DataGridViewColumn
+            col = Me.Columns.Item(index)
+            Return SetComboBoxItems(col, dataSource)
+        End Function
+
+        ''' <summary>
+        ''' コンボボックスへ表示するデータをバインドする
+        ''' </summary>
+        ''' <param name="col">列</param>
+        ''' <param name="dataSource">コンボボックスへバインドするデータソース</param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Function SetComboBoxItems(ByVal col As DataGridViewColumn, ByVal dataSource As Moca.ConstantDataSet.ConstantDataTable) As DataGridViewComboBoxColumn
+            Return _setComboBoxItems(col, dataSource, dataSource.TextColumn.ColumnName, dataSource.ValueTextColumn.ColumnName)
+        End Function
+
+        ''' <summary>
+        ''' コンボボックスへ表示するデータをバインドする
+        ''' </summary>
+        ''' <param name="col">列</param>
+        ''' <param name="dataSource">コンボボックスへバインドするデータソース</param>
+        ''' <param name="displayMember">コンボ ボックスに表示する文字列の取得先となるプロパティまたは列を指定する文字列を取得または設定します。 </param>
+        ''' <param name="valueMember">ドロップダウン リストの選択項目に対応する値の取得先となる、プロパティまたは列を指定する文字列を取得または設定します。 </param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Function SetComboBoxItems(ByVal col As DataGridViewColumn, ByVal dataSource As Object, ByVal displayMember As String, ByVal valueMember As String) As DataGridViewComboBoxColumn
+            Return _setComboBoxItems(col, dataSource, displayMember, valueMember)
+        End Function
+
+#End Region
+#Region " Cols "
+
+        ''' <summary>
+        ''' Columns.Item(index) のラッパー
+        ''' </summary>
+        ''' <param name="index"></param>
+        ''' <returns></returns>
+        Public Overloads Function Cols(ByVal index As Integer) As DataGridViewColumn
+            If index < 0 Then
+                Return Nothing
+            End If
+            Return Me.Columns.Item(index)
+        End Function
+
+        ''' <summary>
+        ''' Columns.Item(index) のラッパー
+        ''' </summary>
+        ''' <param name="columnName"></param>
+        ''' <returns></returns>
+        Public Overloads Function Cols(ByVal columnName As String) As DataGridViewColumn
+            Return Me.Columns.Item(columnName)
+        End Function
+
+#End Region
+#Region " GetChanges "
+
+        ''' <summary>
+        ''' 変更行のみ返す
+        ''' </summary>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Public Overloads Function GetChanges() As IList(Of DataRow)
+            Dim lst As New List(Of Object)(1000)
+
+            If _dataBinder.BindSrc.DataSource IsNot Nothing Then
+                'lst = (From item As DataRow In CType(_dataBinder.BindSrc.DataSource, DataTable).Rows
+                '       Where item.RowState <> DataRowState.Unchanged
+                '       Select item).ToList
+                For Each row As DataRow In CType(_dataBinder.BindSrc.DataSource, DataTable).Rows
+                    If row.RowState <> DataRowState.Unchanged Then
+                        lst.Add(row)
+                    End If
+                Next
+            End If
+
+            lst.AddRange(_deletedRows)
+
+            Return lst
+        End Function
+
+        ''' <summary>
+        ''' 削除データを返す
+        ''' </summary>
+        ''' <returns></returns>
+        Public Function GetDelete() As IList(Of Object)
+            Return _deletedRows
+        End Function
+
+#End Region
 #Region " Current "
 
         ''' <summary>
@@ -338,94 +1031,213 @@ Namespace Win
         End Function
 
 #End Region
-#Region " GetRow "
+#Region " AddNew "
 
-        Public Function GetRowView(ByVal index As Integer) As DataRowView
-            Return Rows(index).DataBoundItem
+        ''' <summary>
+        ''' 最終行へ新規追加
+        ''' </summary>
+        ''' <returns></returns>
+        Public Function AddNew() As DataRow
+            Dim add As DataRowView
+            add = _dataBinder.BindSrc.AddNew()
+
+            Me.Focus()
+            Return add.Row
         End Function
 
-        Public Function GetRow(ByVal index As Integer) As DataRow
-            Return GetRowView(index).Row
+        ''' <summary>
+        ''' 選択行の下へ新規追加
+        ''' </summary>
+        ''' <returns></returns>
+        Public Function AddNewCurrent() As DataRow
+            Dim dt As DataTable
+            Dim add As DataRow
+
+            dt = Me.DataSource
+            add = dt.NewRow()
+            dt.Rows.InsertAt(add, Me.SelectedCells(0).RowIndex + 1)
+
+            Me.Focus()
+            Return add
         End Function
 
 #End Region
-#Region " GetChanges "
+#Region " Remove "
 
         ''' <summary>
-        ''' 変更行のみ返す
+        ''' グリッドから現在の行を削除する
         ''' </summary>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Public Overloads Function GetChanges() As IList(Of DataRow)
-            Dim lst As IList(Of DataRow) = New List(Of DataRow)
-
-            If _dataBinder.BindSrc.DataSource IsNot Nothing Then
-                'lst = (From item As DataRow In CType(_dataBinder.BindSrc.DataSource, DataTable).Rows
-                '       Where item.RowState <> DataRowState.Unchanged
-                '       Select item).ToList
-                For Each row As DataRow In CType(_dataBinder.BindSrc.DataSource, DataTable).Rows
-                    If row.RowState <> DataRowState.Unchanged Then
-                        lst.Add(row)
-                    End If
-                Next
+        Public Function RemoveCurrent() As DataRow
+            Dim row As DataRow
+            row = Current()
+            If row Is Nothing Then
+                Return Nothing
             End If
 
-            Return lst
+            Dim toprow As Integer
+            toprow = Me.FirstDisplayedScrollingRowIndex
+
+            _dataBinder.BindSrc.RemoveCurrent()
+
+            row.Delete()
+            If row.RowState = DataRowState.Deleted Then
+                _deletedRows.Add(row)
+            End If
+
+            If Not Me.Rows.Count.Equals(0) Then
+                If Rows.Count <= toprow Then
+                    toprow -= 1
+                End If
+                Me.FirstDisplayedScrollingRowIndex = toprow
+            End If
+
+            If Me.SelectedCells.Count.Equals(0) Then
+                If CurrentCell IsNot Nothing Then
+                    CurrentCell.Selected = True
+                End If
+            End If
+
+            Me.Focus()
+            Return row
         End Function
 
 #End Region
+#Region " Range "
 
         ''' <summary>
-        ''' 垂直スクロールバーを常に表示するかどうか
+        ''' セルの書式設定と操作に使用できる <see cref="DataGridViewCell"/> オブジェクトを取得
         ''' </summary>
+        ''' <param name="row"></param>
+        ''' <param name="col"></param>
         ''' <returns></returns>
-        Public Property VerticalScrollBarAlwaysShow As Boolean
-            Get
-                Return _verticalScrollBarAlwaysShow
-            End Get
-            Set(value As Boolean)
-                _verticalScrollBarAlwaysShow = value
-                Me.VerticalScrollBar.Visible = _verticalScrollBarAlwaysShow
-            End Set
-        End Property
-        Private _verticalScrollBarAlwaysShow As Boolean
-
-        ''' <summary>
-        ''' 水平スクロールバーを常に表示するかどうか
-        ''' </summary>
-        ''' <returns></returns>
-        Public Property HorizontalScrollBarAlwaysShow As Boolean
-            Get
-                Return _horizontalScrollBarAlwaysShow
-            End Get
-            Set(value As Boolean)
-                _horizontalScrollBarAlwaysShow = value
-                Me.HorizontalScrollBar.Visible = _horizontalScrollBarAlwaysShow
-            End Set
-        End Property
-        Private _horizontalScrollBarAlwaysShow As Boolean
-
-        ''' <summary>
-        ''' 行が編集されたときに、行ヘッダー列へ表示するアイコン
-        ''' </summary>
-        ''' <returns></returns>
-        Public Property RowEditImage As Image = My.Resources.RowEdit
-
-        Public Property DBInfoColumns As Moca.Db.DbInfoColumnCollection
+        Public Function GetCellRange(row As Integer, col As Integer) As DataGridViewCell
+            Return Item(col, row)
+        End Function
 
 #End Region
-#Region " Method "
+#Region " ソート "
 
-        Protected Overridable Sub OnGridSetting(ByVal args As DataGridSettingEventArgs)
-            RaiseEvent GridSetting(Me, args)
+        ''' <summary>
+        ''' 指定された列を基準にして並び替えを行う
+        ''' </summary>
+        ''' <param name="clickColumnIndex">クリックされた列位置</param>
+        ''' <param name="sortColumnIndex">基準にする列位置</param>
+        ''' <param name="orderToggle">並び替えの方向をトグルで変更する</param>
+        Public Sub SortRows(ByVal clickColumnIndex As Integer, ByVal sortColumnIndex As Integer, ByVal orderToggle As Boolean)
+            SortRows(Columns(clickColumnIndex), Columns(sortColumnIndex), orderToggle)
         End Sub
 
         ''' <summary>
-        ''' グリッドの列情報設定イベント
+        ''' 指定された列を基準にして並び替えを行う
         ''' </summary>
-        ''' <param name="args"></param>
-        Protected Overridable Sub OnGridColmnSetting(ByVal args As DataGridColmnSettingEventArgs)
-            RaiseEvent GridColmnSetting(Me, args)
+        ''' <param name="clickColumnName">クリックされた列名</param>
+        ''' <param name="sortColumnName">基準にする列名</param>
+        ''' <param name="orderToggle">並び替えの方向をトグルで変更する</param>
+        Public Sub SortRows(ByVal clickColumnName As String, ByVal sortColumnName As String, ByVal orderToggle As Boolean)
+            SortRows(Columns(clickColumnName), Columns(sortColumnName), orderToggle)
+        End Sub
+
+        ''' <summary>
+        ''' 指定された列を基準にして並び替えを行う
+        ''' </summary>
+        ''' <param name="clickColumn">クリックされた列</param>
+        ''' <param name="sortColumn">基準にする列</param>
+        ''' <param name="orderToggle">並び替えの方向をトグルで変更する</param>
+        Public Sub SortRows(ByVal clickColumn As DataGridViewColumn, ByVal sortColumn As DataGridViewColumn, ByVal orderToggle As Boolean)
+            If sortColumn Is Nothing Then
+                Return
+            End If
+            If Me.RowCount.Equals(0) Then
+                Return
+            End If
+
+            '今までの並び替えグリフを消す
+            If clickColumn.SortMode = DataGridViewColumnSortMode.Programmatic AndAlso
+                Not (Me.SortedColumn Is Nothing) AndAlso
+                Not Me.SortedColumn.Equals(sortColumn) Then
+                Me.SortedColumn.HeaderCell.SortGlyphDirection = SortOrder.None
+            End If
+
+            '並び替えの方向（昇順か降順か）を決める
+            Dim sortDirection As ListSortDirection
+            If orderToggle Then
+                sortDirection = IIf(Me.SortOrder = SortOrder.Descending,
+                    ListSortDirection.Ascending,
+                    ListSortDirection.Descending)
+            Else
+                sortDirection = IIf(Me.SortOrder = SortOrder.Descending,
+                    ListSortDirection.Descending,
+                    ListSortDirection.Ascending)
+            End If
+            Dim sOrder As SortOrder = IIf(sortDirection = ListSortDirection.Ascending,
+                    SortOrder.Ascending,
+                    SortOrder.Descending)
+
+            '並び替えを行う
+            Me.Sort(sortColumn, sortDirection)
+
+            If clickColumn.SortMode = DataGridViewColumnSortMode.Programmatic Then
+                '並び替えグリフを変更
+                clickColumn.HeaderCell.SortGlyphDirection = sOrder
+            End If
+        End Sub
+
+#End Region
+
+        ''' <summary>
+        ''' データ部かどうか
+        ''' </summary>
+        ''' <param name="rowIndex"></param>
+        ''' <param name="columnIndex"></param>
+        ''' <returns></returns>
+        Public Function IsDataPart(ByVal columnIndex As Integer, ByVal rowIndex As Integer) As Boolean
+            If rowIndex < 0 Then
+                Return False
+            End If
+            If columnIndex < 0 Then
+                Return False
+            End If
+            Return True
+        End Function
+
+        Private Sub _changeLinkSelectedStyle(ByVal col As DataGridViewColumn, ByVal rowIndex As Integer)
+            If Not TypeOf col Is DataGridViewLinkColumn Then
+                Return
+            End If
+
+            Dim cell As DataGridViewLinkCell = CType(Me(col.Index, rowIndex), DataGridViewLinkCell)
+            If TransparentRowSelection Then
+                cell.LinkColor = col.DefaultCellStyle.ForeColor
+                cell.VisitedLinkColor = cell.LinkColor
+            Else
+                cell.LinkColor = DefaultCellStyle.SelectionForeColor
+                cell.VisitedLinkColor = DefaultCellStyle.SelectionForeColor
+            End If
+        End Sub
+
+        Private Sub _changeLinkUnSelectedStyle(ByVal col As DataGridViewColumn, ByVal rowIndex As Integer)
+            If Not TypeOf col Is DataGridViewLinkColumn Then
+                Return
+            End If
+
+            Dim lnk As DataGridViewLinkColumn = col
+            Dim cell As DataGridViewLinkCell = CType(Me(col.Index, rowIndex), DataGridViewLinkCell)
+            cell.LinkColor = lnk.DefaultCellStyle.ForeColor
+            cell.VisitedLinkColor = lnk.DefaultCellStyle.ForeColor
+        End Sub
+
+        ''' <summary>
+        ''' セルを結合する対象の列の描画領域の無効化
+        ''' </summary>
+        ''' <remarks></remarks>
+        Private Sub InvalidateUnitColumns()
+            Try
+                Dim hRect As Rectangle = MyBase.DisplayRectangle
+                MyBase.Invalidate(hRect)
+                Invalidate()
+            Catch ex As Exception
+                MessageBox.Show(ex.ToString)
+            End Try
         End Sub
 
         ''' <summary>
@@ -440,236 +1252,20 @@ Namespace Win
 
             Me.DoubleBuffered = True
             Me.Columns.Clear()
+            Me.AutoGenerateColumns = False   ' DataSource設定時の自動列作成をOFF
 
             AddHandler VerticalScrollBar.VisibleChanged, AddressOf _showScrollBars
+
+            _deletedRows = New List(Of Object)
 
             ' グリッドの設定変更イベント
             Dim args As New DataGridSettingEventArgs(Me)
             OnGridSetting(args)
         End Sub
 
-        ''' <summary>
-        ''' グリッドにデータソースを設定する
-        ''' </summary>
-        ''' <param name="value"></param>
-        ''' <remarks></remarks>
-        Private Sub _setData(ByVal value As DataTable)
-            MyBase.DataSource = Nothing
-            Columns.Clear()
-
-            If value Is Nothing Then
-                Return
-            End If
-
-            If DesignSettings Is Nothing Then
-                DesignSettings = Moca.GridDesignSettings.Default
-            End If
-
-            ' 列設定（非表示、編集不可）
-            _setCols(value)
-
-            MyBase.DataSource = _dataBinder.BindSrc
+        Protected Overridable Sub OnGridSetting(ByVal args As DataGridSettingEventArgs)
+            RaiseEvent GridSetting(Me, args)
         End Sub
-
-        ''' <summary>
-        ''' 列定義設定
-        ''' </summary>
-        Private Sub _setCols(ByVal value As DataTable)
-            If AutoGenerateColumns Then
-                Return
-            End If
-            If value.Columns.Count.Equals(0) Then
-                Return
-            End If
-
-            For Each dbCol As DataColumn In value.Columns
-                Dim col As DataGridViewColumn
-
-                ' スタイル
-                col = _setColStyle(dbCol)
-
-                ' 読取専用
-                _setColStyleReadOnly(dbCol, col)
-
-                Dim args As New DataGridColmnSettingEventArgs(col, col.Index, dbCol)
-                OnGridColmnSetting(args)
-            Next
-        End Sub
-
-        ''' <summary>
-        ''' 列のスタイル設定
-        ''' </summary>
-        ''' <param name="dbCol"></param>
-        Private Function _setColStyle(ByVal dbCol As DataColumn) As DataGridViewColumn
-            Dim col As DataGridViewColumn
-
-            Dim caption As String
-
-            caption = dbCol.ColumnName
-
-            Dim colIndex As Integer
-
-            col = _makeColumn(dbCol)
-            col.HeaderText = _cnvColCaption(caption)
-            col.DataPropertyName = dbCol.ColumnName
-            col.Name = dbCol.ColumnName
-            'col.DefaultCellStyle.Alignment = attr.Align
-            col.SortMode = DataGridViewColumnSortMode.NotSortable
-            'col.DefaultCellStyle.NullValue = attr.NullValue
-
-            colIndex = Me.Columns.Add(col)
-
-            ' とりあえず列のサイズは自動にする
-            col.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
-            col.Tag = dbCol
-
-            Return col
-        End Function
-
-        ''' <summary>
-        ''' 指定されたセル種別でDataGridViewColumnを作成する。
-        ''' </summary>
-        ''' <param name="dbCol"></param>
-        ''' <returns></returns>
-        Private Function _makeColumn(ByVal dbCol As DataColumn) As DataGridViewColumn
-            Dim type As CellType = CellType.TextBox
-            Dim col As DataGridViewColumn
-
-            If dbCol.DataType.Equals(GetType(Image)) Then
-                type = CellType.Image
-            End If
-            If dbCol.DataType.IsSubclassOf(GetType(Image)) Then
-                type = CellType.Image
-            End If
-            If dbCol.DataType.Equals(GetType(Date)) Then
-                type = CellType.Calendar
-            End If
-            If dbCol.DataType.Equals(GetType(Boolean)) Then
-                type = CellType.CheckBox
-            End If
-
-            Select Case type
-                Case CellType.Button
-                    col = New DataGridViewButtonColumn()
-                Case CellType.DisableButton
-                    col = New DataGridViewDisableButtonColumn()
-                Case CellType.CheckBox
-                    col = New DataGridViewCheckBoxColumn()
-            'Case CellType.CheckBoxImage
-            '    col = New DataGridViewCheckBoxImageColumn()
-            '    Dim img As DataGridViewCheckBoxImageColumn = col
-            '    img.CheckedImage = My.Resources.Checked
-            '    img.UnCheckedImage = My.Resources.UnChecked
-                Case CellType.ComboBox
-                    col = New DataGridViewComboBoxColumn()
-                    Dim cbo As DataGridViewComboBoxColumn = DirectCast(col, DataGridViewComboBoxColumn)
-                    ' 現在のセルしかコンボボックスが表示されないようにする
-                    cbo.DisplayStyleForCurrentCellOnly = True
-                    ' 編集モードの時だけコンボボックスを表示する
-                    cbo.DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing
-                Case CellType.Image
-                    col = New DataGridViewImageColumn()
-                    Dim img As DataGridViewImageColumn = col
-                    img.ImageLayout = DataGridViewImageCellLayout.Zoom
-                Case CellType.Link
-                    col = New DataGridViewLinkColumn()
-                Case CellType.Calendar
-                    col = New DataGridViewCalendarColumn()
-                    Dim cal As DataGridViewCalendarColumn = DirectCast(col, DataGridViewCalendarColumn)
-                    If DBInfoColumns IsNot Nothing Then
-                        If DBInfoColumns.ContainsKey(dbCol.ColumnName) Then
-                            Dim info As Moca.Db.DbInfoColumn
-                            info = DBInfoColumns.Item(dbCol.ColumnName)
-                            If info.Typ.Equals("date") Then
-                                cal.PickerCustomFormat = "yyyy/MM/dd"
-                            End If
-                        End If
-                    End If
-                    'If String.IsNullOrEmpty(Attr.InputFormat) Then
-                    '    If Not String.IsNullOrEmpty(Attr.Format) Then
-                    '        cal.PickerCustomFormat = Attr.Format
-                    '    End If
-                    'Else
-                    '    cal.PickerCustomFormat = Attr.InputFormat
-                    'End If
-                    col.DefaultCellStyle.DataSourceNullValue = DBNull.Value
-                    col.DefaultCellStyle.NullValue = Nothing
-                Case CellType.MaskedTextBox
-                    col = New DataGridViewMaskedTextBoxColumn()
-                    Dim mask As DataGridViewMaskedTextBoxColumn = DirectCast(col, DataGridViewMaskedTextBoxColumn)
-                    'mask.Mask = Attr.InputFormat
-                Case Else
-                    col = New DataGridViewTextBoxColumn()
-                    'If Attr.InputControl = TextBoxEx.InputFormatType.None Then
-                    '    col = New DataGridViewTextBoxColumn()
-                    'Else
-                    '    col = New DataGridViewTextBoxExColumn()
-                    '    Dim txt As DataGridViewTextBoxExColumn = DirectCast(col, DataGridViewTextBoxExColumn)
-                    '    txt.InputFormat = Attr.InputControl
-                    'End If
-            End Select
-
-            Return col
-        End Function
-
-        ''' <summary>
-        ''' 各種コードを削除して正式な列名を返す。
-        ''' </summary>
-        ''' <param name="val"></param>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
-        Private Function _cnvColCaption(ByVal val As String) As String
-            Dim caption As String = val
-
-            caption = caption.Replace(C_COLTITLE_CR, Environment.NewLine)
-
-            Return caption
-        End Function
-
-        ''' <summary>
-        ''' 読取専用列設定
-        ''' </summary>
-        ''' <param name="dbCol"></param>
-        ''' <param name="col"></param>
-        Private Sub _setColStyleReadOnly(ByVal dbCol As DataColumn, ByVal col As DataGridViewColumn)
-            If Not dbCol.ReadOnly AndAlso Not col.ReadOnly Then
-                Return
-            End If
-
-            SetColStyleReadOnly(col)
-        End Sub
-
-        ''' <summary>
-        ''' 読取専用列設定
-        ''' </summary>
-        ''' <param name="col"></param>
-        Public Sub SetColStyleReadOnly(ByVal col As DataGridViewColumn)
-            col.ReadOnly = True
-
-            Dim style As DataGridViewCellStyle
-            style = Styles(StyleNames.ReadOnly.ToString)
-            col.DefaultCellStyle.BackColor = style.BackColor
-            col.DefaultCellStyle.Font = style.Font
-            col.DefaultCellStyle.ForeColor = style.ForeColor
-            col.DefaultCellStyle.SelectionBackColor = style.SelectionBackColor
-            col.DefaultCellStyle.SelectionForeColor = style.SelectionForeColor
-            col.DefaultCellStyle.Tag = style.Tag
-        End Sub
-
-        ''' <summary>
-        ''' グリッドデザイン設定の設定
-        ''' </summary>
-        ''' <param name="key"></param>
-        ''' <returns></returns>
-        Private Function _getGridDesignSetting(ByVal key As String) As Object
-            If _designSettings Is Nothing Then
-                Return Nothing
-            End If
-            If _designSettings.Properties(key) Is Nothing Then
-                Return Nothing
-            End If
-            Return _designSettings(key)
-        End Function
 
         ''' <summary>
         ''' デザイン情報を構築する
@@ -737,6 +1333,276 @@ Namespace Win
         Private Sub _setDefaultStyle()
             DefaultCellStyle = Styles(Moca.StyleNames.Normal.ToString)
         End Sub
+
+        ''' <summary>
+        ''' グリッドデザイン設定の設定
+        ''' </summary>
+        ''' <param name="key"></param>
+        ''' <returns></returns>
+        Private Function _getGridDesignSetting(ByVal key As String) As Object
+            If _designSettings Is Nothing Then
+                Return Nothing
+            End If
+            If _designSettings.Properties(key) Is Nothing Then
+                Return Nothing
+            End If
+            Return _designSettings(key)
+        End Function
+
+        ''' <summary>
+        ''' 各種コードを削除して正式な列名を返す。
+        ''' </summary>
+        ''' <param name="val"></param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Private Function _cnvColCaption(ByVal val As String) As String
+            Dim caption As String = val
+
+            caption = caption.Replace(C_COLTITLE_CR, Environment.NewLine)
+
+            Return caption
+        End Function
+
+        ''' <summary>
+        ''' グリッドにデータソースを設定する
+        ''' </summary>
+        ''' <param name="value"></param>
+        ''' <remarks></remarks>
+        Private Sub _setData(ByVal value As DataTable)
+            MyBase.DataSource = Nothing
+            Columns.Clear()
+
+            If value Is Nothing Then
+                _deletedRows.Clear()
+                Return
+            End If
+
+            If DesignSettings Is Nothing Then
+                DesignSettings = Moca.GridDesignSettings.Default
+            End If
+
+            ' 列設定（非表示、編集不可）
+            _setCols(value)
+
+            MyBase.DataSource = _dataBinder.BindSrc
+        End Sub
+
+        ''' <summary>
+        ''' 列定義設定
+        ''' </summary>
+        Private Sub _setCols(ByVal value As DataTable)
+            If AutoGenerateColumns Then
+                Return
+            End If
+            If value.Columns.Count.Equals(0) Then
+                Return
+            End If
+
+            For Each dbCol As DataColumn In value.Columns
+                Dim col As DataGridViewColumn
+
+                ' スタイル
+                col = _setColStyle(dbCol)
+
+                ' 読取専用
+                _setColStyleReadOnly(dbCol, col)
+
+                '' 非表示
+                '_setColStyleHidden(prop, col)
+
+                '' スクロール固定列
+                '_setColStyleFrozen(prop, col)
+
+                '' 必須
+                '_setColStyleRequired(prop, col)
+
+                '' 編集条件
+                '_setColStyleEditCondition(prop, col)
+
+                Dim args As New DataGridColmnSettingEventArgs(col, col.Index, dbCol)
+                OnGridColmnSetting(args)
+            Next
+        End Sub
+
+        ''' <summary>
+        ''' グリッドの列情報設定イベント
+        ''' </summary>
+        ''' <param name="args"></param>
+        Protected Overridable Sub OnGridColmnSetting(ByVal args As DataGridColmnSettingEventArgs)
+            RaiseEvent GridColmnSetting(Me, args)
+        End Sub
+
+        ''' <summary>
+        ''' 列のスタイル設定
+        ''' </summary>
+        ''' <param name="dbCol"></param>
+        Private Function _setColStyle(ByVal dbCol As DataColumn) As DataGridViewColumn
+            Dim col As DataGridViewColumn
+
+            Dim caption As String
+
+            caption = dbCol.ColumnName
+
+            Dim colIndex As Integer
+
+            col = _makeColumn(dbCol)
+            col.HeaderText = _cnvColCaption(caption)
+            col.DataPropertyName = dbCol.ColumnName
+            col.Name = dbCol.ColumnName
+            col.DefaultCellStyle.Alignment = DataGridViewContentAlignment.TopLeft
+            col.SortMode = DataGridViewColumnSortMode.NotSortable
+            col.DefaultCellStyle.NullValue = Nothing
+
+            colIndex = Me.Columns.Add(col)
+
+            ' とりあえず列のサイズは自動にする
+            col.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
+            col.Tag = dbCol
+
+            Return col
+        End Function
+
+        ''' <summary>
+        ''' 指定されたセル種別でDataGridViewColumnを作成する。
+        ''' </summary>
+        ''' <param name="dbCol"></param>
+        ''' <returns></returns>
+        Private Function _makeColumn(ByVal dbCol As DataColumn) As DataGridViewColumn
+            Dim type As CellType = CellType.TextBox
+            Dim col As DataGridViewColumn
+
+            If dbCol.DataType.Equals(GetType(Image)) Then
+                type = CellType.Image
+            End If
+            If dbCol.DataType.IsSubclassOf(GetType(Image)) Then
+                type = CellType.Image
+            End If
+            If dbCol.DataType.Equals(GetType(Date)) Then
+                type = CellType.Calendar
+            End If
+            If dbCol.DataType.Equals(GetType(Date?)) Then
+                type = CellType.Calendar
+            End If
+            If dbCol.DataType.Equals(GetType(Boolean)) AndAlso Not type.Equals(CellType.CheckBoxImage) Then
+                type = CellType.CheckBox
+            End If
+
+            Select Case type
+                Case CellType.Button
+                    col = New DataGridViewButtonColumn()
+                Case CellType.DisableButton
+                    col = New DataGridViewDisableButtonColumn()
+                Case CellType.CheckBox
+                    col = New DataGridViewCheckBoxColumn()
+                Case CellType.CheckBoxImage
+                    col = New DataGridViewCheckBoxImageColumn()
+                    Dim img As DataGridViewCheckBoxImageColumn = col
+                    img.CheckedImage = My.Resources.Checked
+                    img.UnCheckedImage = My.Resources.UnChecked
+                Case CellType.ComboBox
+                    col = New DataGridViewComboBoxColumn()
+                    Dim cbo As DataGridViewComboBoxColumn = DirectCast(col, DataGridViewComboBoxColumn)
+                    ' 現在のセルしかコンボボックスが表示されないようにする
+                    cbo.DisplayStyleForCurrentCellOnly = True
+                    ' 編集モードの時だけコンボボックスを表示する
+                    cbo.DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing
+                Case CellType.Image
+                    col = New DataGridViewImageColumn()
+                    Dim img As DataGridViewImageColumn = col
+                    img.ImageLayout = DataGridViewImageCellLayout.Zoom
+                Case CellType.Link
+                    col = New DataGridViewLinkColumn()
+                Case CellType.Calendar
+                    col = New DataGridViewCalendarColumn()
+                    Dim cal As DataGridViewCalendarColumn = DirectCast(col, DataGridViewCalendarColumn)
+                    If DBInfoColumns IsNot Nothing Then
+                        If DBInfoColumns.ContainsKey(dbCol.ColumnName) Then
+                            Dim info As Moca.Db.DbInfoColumn
+                            info = DBInfoColumns.Item(dbCol.ColumnName)
+                            If info.Typ.Equals("date") Then
+                                cal.PickerCustomFormat = "yyyy/MM/dd"
+                            End If
+                        End If
+                    End If
+                    'If String.IsNullOrEmpty(Attr.InputFormat) Then
+                    '    If Not String.IsNullOrEmpty(Attr.Format) Then
+                    '        cal.PickerCustomFormat = Attr.Format
+                    '    End If
+                    'Else
+                    '    cal.PickerCustomFormat = Attr.InputFormat
+                    'End If
+                    col.DefaultCellStyle.DataSourceNullValue = DBNull.Value
+                    col.DefaultCellStyle.NullValue = Nothing
+                Case CellType.MaskedTextBox
+                    col = New DataGridViewMaskedTextBoxColumn()
+                    Dim mask As DataGridViewMaskedTextBoxColumn = DirectCast(col, DataGridViewMaskedTextBoxColumn)
+                    'mask.Mask = Attr.InputFormat
+                Case Else
+                    col = New DataGridViewTextBoxColumn()
+                    'If Attr.InputControl = TextBoxEx.InputFormatType.None Then
+                    '    col = New DataGridViewTextBoxColumn()
+                    'Else
+                    '    col = New DataGridViewTextBoxExColumn()
+                    '    Dim txt As DataGridViewTextBoxExColumn = DirectCast(col, DataGridViewTextBoxExColumn)
+                    '    txt.InputFormat = Attr.InputControl
+                    'End If
+            End Select
+
+            Return col
+        End Function
+
+        ''' <summary>
+        ''' 読取専用列設定
+        ''' </summary>
+        ''' <param name="dbCol"></param>
+        ''' <param name="col"></param>
+        Private Sub _setColStyleReadOnly(ByVal dbCol As DataColumn, ByVal col As DataGridViewColumn)
+            If Not dbCol.ReadOnly AndAlso Not col.ReadOnly Then
+                Return
+            End If
+
+            SetColStyleReadOnly(col)
+        End Sub
+
+        ''' <summary>
+        ''' 読取専用列設定
+        ''' </summary>
+        ''' <param name="col"></param>
+        Public Sub SetColStyleReadOnly(ByVal col As DataGridViewColumn)
+            col.ReadOnly = True
+
+            Dim style As DataGridViewCellStyle
+            style = Styles(StyleNames.ReadOnly.ToString)
+            col.DefaultCellStyle.BackColor = style.BackColor
+            col.DefaultCellStyle.Font = style.Font
+            col.DefaultCellStyle.ForeColor = style.ForeColor
+            col.DefaultCellStyle.SelectionBackColor = style.SelectionBackColor
+            col.DefaultCellStyle.SelectionForeColor = style.SelectionForeColor
+            col.DefaultCellStyle.Tag = style.Tag
+        End Sub
+
+        ''' <summary>
+        ''' コンボボックスへ表示するデータをバインドする
+        ''' </summary>
+        ''' <param name="col">列</param>
+        ''' <param name="dataSource">コンボボックスへバインドするデータソース</param>
+        ''' <param name="displayMember">コンボ ボックスに表示する文字列の取得先となるプロパティまたは列を指定する文字列を取得または設定します。 </param>
+        ''' <param name="valueMember">ドロップダウン リストの選択項目に対応する値の取得先となる、プロパティまたは列を指定する文字列を取得または設定します。 </param>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Private Function _setComboBoxItems(ByVal col As DataGridViewColumn, ByVal dataSource As DataTable, ByVal displayMember As String, ByVal valueMember As String) As DataGridViewComboBoxColumn
+            If Not TypeOf col Is DataGridViewComboBoxColumn Then
+                Throw New ArgumentException("指定された列はコンボボックススタイルになっていません。")
+            End If
+
+            Dim cbo As DataGridViewComboBoxColumn = DirectCast(col, DataGridViewComboBoxColumn)
+
+            cbo.DataSource = dataSource
+            cbo.DisplayMember = displayMember
+            cbo.ValueMember = valueMember
+
+            Return cbo
+        End Function
 
         Private Sub _showScrollBars(sender As Object, e As EventArgs)
             If Not VerticalScrollBar.Visible Then
