@@ -27,7 +27,7 @@ Public Class GridTestForm
 
 
         Dim dt2 As New DataTable
-        Dim dc As DataColumn
+        'Dim dc As DataColumn
         dt2.Columns.Add("ID", GetType(Integer))
         dt2.Columns.Add("Name", GetType(String))
         dt2.Columns.Add("Day", GetType(DateTime))

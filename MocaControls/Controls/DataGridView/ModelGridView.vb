@@ -1170,10 +1170,15 @@ Namespace Win
         ''' <returns></returns>
         Public Function AddNew(Of T)() As T
             Dim add As Object
+
+            AddHandler Me._dataBinder.BindSrc.AddingNew,
+                Sub(sender, e)
+                    e.NewObject = ClassUtil.NewInstance(Me.RowEntityType)
+                    If TypeOf e.NewObject Is RowModelBase Then
+                        DirectCast(e.NewObject, RowModelBase).Add()
+                    End If
+                End Sub
             add = Me._dataBinder.BindSrc.AddNew()
-            If TypeOf add Is RowModelBase Then
-                DirectCast(add, RowModelBase).Add()
-            End If
 
             Me.Focus()
             Return add
@@ -1188,7 +1193,6 @@ Namespace Win
             Dim add As Object
 
             add = ClassUtil.NewInstance(Me.RowEntityType)
-            Me._dataBinder.BindSrc.Insert(Me.SelectedCells(0).RowIndex + 1, add)
 
             If TypeOf add Is RowModelBase Then
                 Dim value As RowModelBase = DirectCast(add, RowModelBase)
@@ -1197,6 +1201,8 @@ Namespace Win
                     value.Copy(Current)
                 End If
             End If
+
+            Me._dataBinder.BindSrc.Insert(Me.SelectedCells(0).RowIndex + 1, add)
 
             Me.Focus()
             Return add
@@ -1715,8 +1721,19 @@ Namespace Win
             End If
 
             If RowEntityType Is Nothing Then
-                RowEntityType = obj.List.GetType.GetGenericArguments(0)
-                'RowEntityType = obj.List.GetType.GetGenericArguments.First
+                If obj.List.GetType.GetGenericArguments.Length.Equals(0) Then
+                    If obj.List.Count.Equals(0) Then
+                        RowEntityType = Nothing
+                    Else
+                        RowEntityType = obj.List(0).GetType
+                    End If
+                Else
+                    If ClassUtil.GetCustomAttribute(Of Attr.DynamicPropertyAttribute)(obj.List.GetType.GetGenericArguments(0)) Is Nothing Then
+                        RowEntityType = obj.List.GetType.GetGenericArguments(0)
+                    Else
+                        RowEntityType = obj.List(0).GetType
+                    End If
+                End If
             End If
 
             If DesignSettings Is Nothing Then
@@ -1759,6 +1776,9 @@ Namespace Win
                     index = attr.Index
                 End If
 
+                If sortProps.ContainsKey(index) Then
+                    Throw New Moca.Exceptions.MocaRuntimeException(String.Format("{0}.{1} の属性 PropertyOrder({2}) の指定が間違えています。", RowEntityType.Name, prop.Name, index))
+                End If
                 sortProps.Add(index, prop)
             Next
 
@@ -1896,9 +1916,14 @@ Namespace Win
             If prop.PropertyType.Equals(GetType(Date?)) Then
                 type = CellType.Calendar
             End If
-            If prop.PropertyType.Equals(GetType(Boolean)) AndAlso Not type.Equals(CellType.CheckBoxImage) Then
+            If prop.PropertyType.Equals(GetType(Boolean?)) Then
                 type = CellType.CheckBox
             End If
+            If prop.PropertyType.Equals(GetType(Boolean)) AndAlso
+                Not type.Equals(CellType.CheckBoxImage) Then
+                type = CellType.CheckBox
+            End If
+
 
             Select Case type
                 Case CellType.Button
@@ -1952,11 +1977,11 @@ Namespace Win
                     Else
                         col = New DataGridViewTextBoxExColumn()
                         Dim txt As DataGridViewTextBoxExColumn = DirectCast(col, DataGridViewTextBoxExColumn)
-						txt.InputFormat = attr.InputControl
-						txt.InputControlCustomChars = attr.InputControlCustomChars
-						txt.Precision = attr.Precision
+                        txt.InputFormat = attr.InputControl
+                        txt.InputControlCustomChars = attr.InputControlCustomChars
+                        txt.Precision = attr.Precision
 
-					End If
+                    End If
             End Select
 
             Return col
@@ -2250,7 +2275,7 @@ Namespace Win
                 End If
 
                 If Not _infos.ContainsKey(tableDefinitionFieldName) Then
-                    Dim fields() As FieldInfo = val.GetType.GetFields(BindingFlags.Instance Or BindingFlags.Public Or BindingFlags.NonPublic)
+                    Dim fields() As FieldInfo = val.GetType.GetFields(BindingFlags.Instance Or BindingFlags.Public Or BindingFlags.NonPublic Or BindingFlags.Static)
                     For Each field As FieldInfo In fields
                         Dim attr As Moca.Db.Attr.TableAttribute = ClassUtil.GetCustomAttribute(Of Moca.Db.Attr.TableAttribute)(field.FieldType)
                         If attr Is Nothing Then

@@ -50,7 +50,7 @@
       <HintPath>..\packages\log4net.2.0.8\lib\net20-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Moca, Version=5.0.0.0, Culture=neutral, PublicKeyToken=42f7e4f7232a6bf5, processorArchitecture=MSIL">
-      <HintPath>..\packages\Moca.NETCore.3.0.0-beta07\lib\net20\Moca.dll</HintPath>
+      <HintPath>..\packages\Moca.NETCore.3.0.0-beta09\lib\net20\Moca.dll</HintPath>
     </Reference>
     <Reference Include="MocaWin, Version=5.0.0.0, Culture=neutral, PublicKeyToken=74dd2591eb474191, processorArchitecture=MSIL">
       <HintPath>..\packages\Moca.NETWin.3.0.0-beta01\lib\net20\MocaWin.dll</HintPath>
