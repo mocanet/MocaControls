@@ -92,6 +92,7 @@
     <Import Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Args\GridMakeColumnBeforeEventArgs.vb" />
     <Compile Include="Controls\AlertMessage.Designer.vb">
       <DependentUpon>AlertMessage.vb</DependentUpon>
     </Compile>
