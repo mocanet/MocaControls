@@ -1,6 +1,9 @@
 ﻿
 
 Imports System.ComponentModel
+Imports System.Reflection
+Imports Moca
+Imports Moca.Util
 
 Namespace Win
 
@@ -21,6 +24,8 @@ Namespace Win
 
 #Region " Events "
 
+        Public Event GridMakeColumnBefore(ByVal sender As Object, ByVal e As GridMakeColumnBeforeEventArgs)
+
         ''' <summary>
         ''' グリッドの設定変更イベント
         ''' </summary>
@@ -40,6 +45,13 @@ Namespace Win
         ''' <param name="e"></param>
         ''' <remarks></remarks>
         Public Event GridColmnSetting(ByVal sender As Object, ByVal e As DataGridColmnSettingEventArgs)
+
+        ''' <summary>
+        ''' グリッド列設定後のイベント
+        ''' </summary>
+        ''' <param name="sender"></param>
+        ''' <param name="e"></param>
+        Public Event GridColmnSettingAfter(ByVal sender As Object, ByVal e As DataGridColmnSettingEventArgs)
 
 #End Region
 
@@ -145,10 +157,13 @@ Namespace Win
         ''' スクロール固定列位置
         ''' </summary>
         ''' <returns></returns>
-        Public ReadOnly Property Frozen As Integer
+        Public Property Frozen As Integer
             Get
                 Return _frozen
             End Get
+            Set(value As Integer)
+                _frozen = value
+            End Set
         End Property
 
         ''' <summary>
@@ -866,6 +881,22 @@ Namespace Win
             MyBase.OnColumnHeaderMouseClick(e)
         End Sub
 
+        '''<summary>
+        '''<see cref="E:System.Windows.Forms.Control.Paint" /> イベントを発生させます。
+        '''</summary>
+        '''<param name="e">
+        '''イベント データを格納している <see cref="T:System.Windows.Forms.PaintEventArgs" />。
+        '''</param>
+        '''<exception cref="T:System.Exception">
+        '''次の例外を除き、このメソッドの実行中に発生した例外はすべて無視されます。
+        '''<see cref="T:System.NullReferenceException" /><see cref="T:System.StackOverflowException" /><see cref="T:System.OutOfMemoryException" /><see cref="T:System.Threading.ThreadAbortException" /><see cref="T:System.ExecutionEngineException" /><see cref="T:System.IndexOutOfRangeException" /><see cref="T:System.AccessViolationException" /></exception>
+        Protected Overrides Sub OnPaint(e As PaintEventArgs)
+            MyBase.OnPaint(e)
+
+            ' 列マージ
+            _mergeCellsInColumn(e.Graphics)
+        End Sub
+
 #End Region
 
 #Region " Method "
@@ -1115,6 +1146,193 @@ Namespace Win
         End Function
 
 #End Region
+#Region " 列マージ "
+
+        ''' <summary>
+        ''' 列マージ処理
+        ''' </summary>
+        ''' <param name="g"></param>
+        Private Sub _mergeCellsInColumn(ByVal g As Graphics)
+            If RowCount.Equals(0) Then
+                Return
+            End If
+
+            Dim colMergeOn As Boolean = False
+            For colIndex = 0 To ColumnCount - 1
+                If Not _dicAllowMerging.ContainsKey(colIndex) Then
+                    colMergeOn = False
+                    Continue For
+                End If
+
+                Dim mergeRow As Integer = 0
+                For rowIndex = 1 To RowCount - 1
+                    If Me(colIndex, rowIndex - 1).Value = Me(colIndex, rowIndex).Value Then
+                        If (colIndex - 1) < 0 Then
+                            Continue For
+                        Else
+                            If Not colMergeOn Then
+                                Continue For
+                            End If
+                            If Not String.IsNullOrEmpty(Me(colIndex - 1, rowIndex).Tag) Then
+                                Continue For
+                            End If
+                        End If
+                    End If
+                    If rowIndex = mergeRow Then
+                        Continue For
+                    End If
+
+                    _mergeCellsInColumn(colIndex, mergeRow, rowIndex - 1, g)
+                    mergeRow = rowIndex
+                Next
+                If (RowCount - 1) <> mergeRow Then
+                    If Me(colIndex, RowCount - 1).Value Is Nothing Then
+                        Continue For
+                    End If
+                    _mergeCellsInColumn(colIndex, mergeRow, RowCount - 1, g)
+                End If
+                colMergeOn = True
+            Next
+        End Sub
+
+        ''' <summary>
+        ''' セルマージ
+        ''' </summary>
+        ''' <param name="col"></param>
+        ''' <param name="row1"></param>
+        ''' <param name="row2"></param>
+        ''' <param name="g"></param>
+        Private Sub _mergeCellsInColumn(col As Integer, row1 As Integer, row2 As Integer, g As Graphics)
+            If String.IsNullOrEmpty(Me(col, row1).Value) Then
+                Return
+            End If
+
+            Dim column As DataGridViewColumn = Me.Columns.Item(col)
+            Using grdPen As New Pen(GridColor)
+                Dim startRectangle As Rectangle = GetCellDisplayRectangle(col, row1, True)
+                Dim backColor As Color = IIf(column.DefaultCellStyle.BackColor = Color.Empty, DefaultCellStyle.BackColor, column.DefaultCellStyle.BackColor)
+                Dim foreColor As Color = IIf(column.DefaultCellStyle.ForeColor = Color.Empty, DefaultCellStyle.ForeColor, column.DefaultCellStyle.ForeColor)
+                Dim currentRectangle As Object = Nothing
+                Dim recX As Integer = startRectangle.X
+                Dim recY As Integer = startRectangle.Y
+                Dim recWidth As Integer = startRectangle.Width
+                Dim recHeight As Integer = 0
+                Dim cutOverflow As Boolean = startRectangle.Height.Equals(0)
+                Dim recValue As String = Me(col, row1).Value.ToString()
+
+                For ii = row1 To row2
+                    Dim rect As Rectangle = GetCellDisplayRectangle(col, ii, cutOverflow)
+                    recHeight += rect.Height
+                    If CurrentCell.ColumnIndex.Equals(col) Then
+                        If CurrentCell.RowIndex.Equals(ii) Then
+                            currentRectangle = rect
+                        End If
+                    End If
+                    If recX.Equals(0) Then
+                        recX = rect.X
+                    End If
+                    If recY.Equals(0) Then
+                        recY = rect.Y
+                    End If
+                    If recWidth.Equals(0) Then
+                        recWidth = rect.Width
+                    End If
+                    cutOverflow = rect.Height.Equals(0)
+                    If Not ii.Equals(row1) Then
+                        Me(col, ii).Tag = "MERGE"
+                    End If
+                Next
+
+                ' マージ状態のセルを描画
+                Dim newCell As Rectangle = New Rectangle(recX - 1, recY - 1, recWidth, recHeight)
+                Dim currentPadding As Padding = CurrentCell.InheritedStyle.Padding
+                Dim txtRect As Rectangle = New Rectangle(newCell.Left + currentPadding.Left,
+                                                         newCell.Top + currentPadding.Top,
+                                                         newCell.Width - currentPadding.Left - currentPadding.Right,
+                                                         newCell.Height - currentPadding.Top - currentPadding.Bottom)
+                Dim formatFlg As TextFormatFlags = _getTextFormatFlags(Columns(col).DefaultCellStyle.Alignment, Columns(col).DefaultCellStyle.WrapMode)
+                Using backBrash As New SolidBrush(backColor)
+                    g.FillRectangle(backBrash, newCell)
+                    g.DrawRectangle(grdPen, newCell)
+                    TextRenderer.DrawText(g, recValue, DefaultCellStyle.Font, txtRect, foreColor, formatFlg)
+                End Using
+
+                If currentRectangle Is Nothing Then
+                    ' カレントセルでないときはここまで
+                    Return
+                End If
+                If SelectionMode = DataGridViewSelectionMode.FullRowSelect Then
+                    Return
+                End If
+
+                ' 選択セルを描画
+                newCell = New Rectangle(currentRectangle.X - 1,
+                                        currentRectangle.Y,
+                                        currentRectangle.Width,
+                                        currentRectangle.Height - 1)
+                txtRect = New Rectangle(newCell.Left + currentPadding.Left,
+                                        newCell.Top + currentPadding.Top,
+                                        newCell.Width - currentPadding.Left - currentPadding.Right,
+                                        newCell.Height - currentPadding.Top - currentPadding.Bottom)
+                backColor = DefaultCellStyle.SelectionBackColor
+                foreColor = DefaultCellStyle.SelectionForeColor
+                Using backBrash As New SolidBrush(backColor)
+                    g.FillRectangle(backBrash, newCell)
+                    g.DrawRectangle(grdPen, newCell)
+                    TextRenderer.DrawText(g, recValue, DefaultCellStyle.Font, txtRect, foreColor, formatFlg)
+                End Using
+            End Using
+        End Sub
+
+        ''' <summary>
+        ''' 指定のスタイルから描写するテキストのスタイルを取得する
+        ''' </summary>
+        ''' <param name="alignment">テキストのスタイル</param>
+        ''' <param name="wrapMode">折り返</param>
+        ''' <remarks>描写するテキストのスタイル</remarks>
+        Private Function _getTextFormatFlags(ByVal alignment As DataGridViewContentAlignment, ByVal wrapMode As DataGridViewTriState) As TextFormatFlags
+            Try
+                '文字の描画
+                Dim formatFlg As TextFormatFlags = TextFormatFlags.Right Or TextFormatFlags.VerticalCenter Or TextFormatFlags.EndEllipsis
+
+                '表示位置
+                Select Case alignment
+                    Case DataGridViewContentAlignment.BottomCenter
+                        formatFlg = TextFormatFlags.Bottom Or TextFormatFlags.HorizontalCenter Or TextFormatFlags.EndEllipsis
+                    Case DataGridViewContentAlignment.BottomLeft
+                        formatFlg = TextFormatFlags.Bottom Or TextFormatFlags.Left Or TextFormatFlags.EndEllipsis
+                    Case DataGridViewContentAlignment.BottomRight
+                        formatFlg = TextFormatFlags.Bottom Or TextFormatFlags.Right Or TextFormatFlags.EndEllipsis
+                    Case DataGridViewContentAlignment.MiddleCenter
+                        formatFlg = TextFormatFlags.VerticalCenter Or TextFormatFlags.HorizontalCenter Or TextFormatFlags.EndEllipsis
+                    Case DataGridViewContentAlignment.MiddleLeft
+                        formatFlg = TextFormatFlags.VerticalCenter Or TextFormatFlags.Left Or TextFormatFlags.EndEllipsis
+                    Case DataGridViewContentAlignment.MiddleRight
+                        formatFlg = TextFormatFlags.VerticalCenter Or TextFormatFlags.Right Or TextFormatFlags.EndEllipsis
+                    Case DataGridViewContentAlignment.TopCenter
+                        formatFlg = TextFormatFlags.Top Or TextFormatFlags.HorizontalCenter Or TextFormatFlags.EndEllipsis
+                    Case DataGridViewContentAlignment.TopLeft
+                        formatFlg = TextFormatFlags.Top Or TextFormatFlags.Left Or TextFormatFlags.EndEllipsis
+                    Case DataGridViewContentAlignment.TopRight
+                        formatFlg = TextFormatFlags.Top Or TextFormatFlags.Right Or TextFormatFlags.EndEllipsis
+                End Select
+
+                '折り返し
+                Select Case wrapMode
+                    Case DataGridViewTriState.False
+                    Case DataGridViewTriState.NotSet
+                    Case DataGridViewTriState.True
+                        formatFlg = formatFlg Or TextFormatFlags.WordBreak
+                End Select
+
+                Return formatFlg
+
+            Catch ex As Exception
+                Throw ex
+            End Try
+        End Function
+
+#End Region
 #Region " ソート "
 
         ''' <summary>
@@ -1254,7 +1472,7 @@ Namespace Win
             Me.Columns.Clear()
             Me.AutoGenerateColumns = False   ' DataSource設定時の自動列作成をOFF
 
-            AddHandler VerticalScrollBar.VisibleChanged, AddressOf _showScrollBars
+            'AddHandler VerticalScrollBar.VisibleChanged, AddressOf _showScrollBars
 
             _deletedRows = New List(Of Object)
 
@@ -1391,6 +1609,8 @@ Namespace Win
         ''' 列定義設定
         ''' </summary>
         Private Sub _setCols(ByVal value As DataTable)
+            _dicAllowMerging = New Dictionary(Of Integer, Boolean)
+
             If AutoGenerateColumns Then
                 Return
             End If
@@ -1398,31 +1618,39 @@ Namespace Win
                 Return
             End If
 
+            Dim index As Integer = 0
             For Each dbCol As DataColumn In value.Columns
                 Dim col As DataGridViewColumn
 
                 ' スタイル
-                col = _setColStyle(dbCol)
+                col = _setColStyle(index, dbCol)
+
+                Dim args As New DataGridColmnSettingEventArgs(col, col.Index, dbCol)
+                OnGridColmnSetting(args)
 
                 ' 読取専用
                 _setColStyleReadOnly(dbCol, col)
 
-                '' 非表示
-                '_setColStyleHidden(prop, col)
+                ' 非表示
+                _setColStyleHidden(args.Hidden, col)
 
-                '' スクロール固定列
-                '_setColStyleFrozen(prop, col)
+                ' スクロール固定列
+                _setColStyleFrozen()
 
-                '' 必須
-                '_setColStyleRequired(prop, col)
+                ' 必須
+                _setColStyleRequired(args.Required, col)
 
                 '' 編集条件
                 '_setColStyleEditCondition(prop, col)
 
-                Dim args As New DataGridColmnSettingEventArgs(col, col.Index, dbCol)
-                OnGridColmnSetting(args)
+                If args.AllowMerging Then
+                    _dicAllowMerging.Add(index, True)
+                End If
+
+                index += 1
             Next
         End Sub
+        Private _dicAllowMerging As IDictionary(Of Integer, Boolean)
 
         ''' <summary>
         ''' グリッドの列情報設定イベント
@@ -1430,33 +1658,65 @@ Namespace Win
         ''' <param name="args"></param>
         Protected Overridable Sub OnGridColmnSetting(ByVal args As DataGridColmnSettingEventArgs)
             RaiseEvent GridColmnSetting(Me, args)
+
+            OnGridColmnSettingAfter(args)
+        End Sub
+
+        ''' <summary>
+        ''' グリッド列設定後のイベント
+        ''' </summary>
+        ''' <param name="args"></param>
+        Protected Overridable Sub OnGridColmnSettingAfter(args As DataGridColmnSettingEventArgs)
+            RaiseEvent GridColmnSettingAfter(Me, args)
         End Sub
 
         ''' <summary>
         ''' 列のスタイル設定
         ''' </summary>
         ''' <param name="dbCol"></param>
-        Private Function _setColStyle(ByVal dbCol As DataColumn) As DataGridViewColumn
+        Private Function _setColStyle(ByVal idx As Integer, ByVal dbCol As DataColumn) As DataGridViewColumn
             Dim col As DataGridViewColumn
-
+            Dim attr As ColumnStyleAttribute
             Dim caption As String
 
             caption = dbCol.ColumnName
+            attr = New ColumnStyleAttribute()
+            attr.Align = DataGridViewContentAlignment.TopLeft
+            attr.SortMode = DataGridViewColumnSortMode.NotSortable
+            attr.NullValue = Nothing
 
             Dim colIndex As Integer
 
-            col = _makeColumn(dbCol)
+            col = _makeColumn(idx, attr, dbCol)
             col.HeaderText = _cnvColCaption(caption)
             col.DataPropertyName = dbCol.ColumnName
             col.Name = dbCol.ColumnName
-            col.DefaultCellStyle.Alignment = DataGridViewContentAlignment.TopLeft
-            col.SortMode = DataGridViewColumnSortMode.NotSortable
-            col.DefaultCellStyle.NullValue = Nothing
+            col.DefaultCellStyle.Alignment = attr.Align
+            col.SortMode = attr.SortMode
+            col.DefaultCellStyle.NullValue = attr.NullValue
 
             colIndex = Me.Columns.Add(col)
 
             ' とりあえず列のサイズは自動にする
-            col.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells
+            If attr.Width >= 0 Then
+                col.Width = attr.Width
+            Else
+                ' とりあえず列のサイズは自動にする
+                col.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader
+            End If
+
+            Dim negativeValueFormat As String = _getGridDesignSetting("NegativeValueFormat")
+            Dim format As String = attr.Format
+            If Not String.IsNullOrEmpty(negativeValueFormat) Then
+                format = format.Replace(negativeValueFormat, String.Empty)
+            End If
+            If Not String.IsNullOrEmpty(attr.Format) Then
+                col.DefaultCellStyle.Format = format
+            End If
+            If attr.WordWrap Then
+                col.DefaultCellStyle.WrapMode = DataGridViewTriState.True
+            End If
+
             col.Tag = dbCol
 
             Return col
@@ -1467,7 +1727,7 @@ Namespace Win
         ''' </summary>
         ''' <param name="dbCol"></param>
         ''' <returns></returns>
-        Private Function _makeColumn(ByVal dbCol As DataColumn) As DataGridViewColumn
+        Private Function _makeColumn(ByVal idx As Integer, ByVal attr As ColumnStyleAttribute, ByVal dbCol As DataColumn) As DataGridViewColumn
             Dim type As CellType = CellType.TextBox
             Dim col As DataGridViewColumn
 
@@ -1483,22 +1743,37 @@ Namespace Win
             If dbCol.DataType.Equals(GetType(Date?)) Then
                 type = CellType.Calendar
             End If
-            If dbCol.DataType.Equals(GetType(Boolean)) AndAlso Not type.Equals(CellType.CheckBoxImage) Then
+            If dbCol.DataType.Equals(GetType(Boolean?)) Then
                 type = CellType.CheckBox
             End If
+            If dbCol.DataType.Equals(GetType(Boolean)) AndAlso
+                Not type.Equals(CellType.CheckBoxImage) Then
+                type = CellType.CheckBox
+            End If
+
+            Dim args As New GridMakeColumnBeforeEventArgs
+            args.Index = idx
+            args.MakeCellType = type
+            args.ColumnStyle = attr
+            args.DBDataColumn = dbCol
+            OnGridMakeColumnBefore(args)
+            type = args.MakeCellType
 
             Select Case type
                 Case CellType.Button
                     col = New DataGridViewButtonColumn()
+                    attr.Align = DataGridViewContentAlignment.MiddleCenter
                 Case CellType.DisableButton
                     col = New DataGridViewDisableButtonColumn()
+                    attr.Align = DataGridViewContentAlignment.MiddleCenter
                 Case CellType.CheckBox
                     col = New DataGridViewCheckBoxColumn()
                 Case CellType.CheckBoxImage
                     col = New DataGridViewCheckBoxImageColumn()
                     Dim img As DataGridViewCheckBoxImageColumn = col
-                    img.CheckedImage = My.Resources.Checked
-                    img.UnCheckedImage = My.Resources.UnChecked
+                    img.CheckedImage = Global.Moca.My.Resources.Checked
+                    img.UnCheckedImage = Global.Moca.My.Resources.UnChecked
+                    attr.NullValue = False
                 Case CellType.ComboBox
                     col = New DataGridViewComboBoxColumn()
                     Dim cbo As DataGridViewComboBoxColumn = DirectCast(col, DataGridViewComboBoxColumn)
@@ -1510,6 +1785,7 @@ Namespace Win
                     col = New DataGridViewImageColumn()
                     Dim img As DataGridViewImageColumn = col
                     img.ImageLayout = DataGridViewImageCellLayout.Zoom
+                    attr.NullValue = Nothing
                 Case CellType.Link
                     col = New DataGridViewLinkColumn()
                 Case CellType.Calendar
@@ -1524,32 +1800,42 @@ Namespace Win
                             End If
                         End If
                     End If
-                    'If String.IsNullOrEmpty(Attr.InputFormat) Then
-                    '    If Not String.IsNullOrEmpty(Attr.Format) Then
-                    '        cal.PickerCustomFormat = Attr.Format
-                    '    End If
-                    'Else
-                    '    cal.PickerCustomFormat = Attr.InputFormat
-                    'End If
+                    If String.IsNullOrEmpty(attr.InputFormat) Then
+                        '    If Not String.IsNullOrEmpty(Attr.Format) Then
+                        '        cal.PickerCustomFormat = Attr.Format
+                        '    End If
+                    Else
+                        cal.PickerCustomFormat = attr.InputFormat
+                    End If
                     col.DefaultCellStyle.DataSourceNullValue = DBNull.Value
-                    col.DefaultCellStyle.NullValue = Nothing
+                    'col.DefaultCellStyle.NullValue = Nothing
                 Case CellType.MaskedTextBox
                     col = New DataGridViewMaskedTextBoxColumn()
                     Dim mask As DataGridViewMaskedTextBoxColumn = DirectCast(col, DataGridViewMaskedTextBoxColumn)
-                    'mask.Mask = Attr.InputFormat
+                    mask.Mask = attr.InputFormat
                 Case Else
                     col = New DataGridViewTextBoxColumn()
-                    'If Attr.InputControl = TextBoxEx.InputFormatType.None Then
-                    '    col = New DataGridViewTextBoxColumn()
-                    'Else
-                    '    col = New DataGridViewTextBoxExColumn()
-                    '    Dim txt As DataGridViewTextBoxExColumn = DirectCast(col, DataGridViewTextBoxExColumn)
-                    '    txt.InputFormat = Attr.InputControl
-                    'End If
+                    If attr.InputControl = TextBoxEx.InputFormatType.None Then
+                        col = New DataGridViewTextBoxColumn()
+                    Else
+                        col = New DataGridViewTextBoxExColumn()
+                        Dim txt As DataGridViewTextBoxExColumn = DirectCast(col, DataGridViewTextBoxExColumn)
+                        txt.InputFormat = attr.InputControl
+                        txt.InputControlCustomChars = attr.InputControlCustomChars
+                        txt.Precision = attr.Precision
+                    End If
             End Select
 
             Return col
         End Function
+
+        ''' <summary>
+        ''' グリッドの列情報設定イベント
+        ''' </summary>
+        ''' <param name="args"></param>
+        Protected Overridable Sub OnGridMakeColumnBefore(ByVal args As GridMakeColumnBeforeEventArgs)
+            RaiseEvent GridMakeColumnBefore(Me, args)
+        End Sub
 
         ''' <summary>
         ''' 読取専用列設定
@@ -1562,6 +1848,54 @@ Namespace Win
             End If
 
             SetColStyleReadOnly(col)
+        End Sub
+
+        ''' <summary>
+        ''' 非表示列設定
+        ''' </summary>
+        ''' <param name="isHidden"></param>
+        ''' <param name="col"></param>
+        Private Sub _setColStyleHidden(ByVal isHidden As Boolean, ByVal col As DataGridViewColumn)
+            col.Visible = Not isHidden
+        End Sub
+
+        ''' <summary>
+        ''' 必須列設定
+        ''' </summary>
+        ''' <param name="isRequired"></param>
+        ''' <param name="col"></param>
+        Private Sub _setColStyleRequired(ByVal isRequired As Boolean, ByVal col As DataGridViewColumn)
+            If Not isRequired Then
+                Return
+            End If
+
+            Dim style As DataGridViewCellStyle
+            style = Styles(StyleNames.Required.ToString)
+            col.DefaultCellStyle.BackColor = style.BackColor
+            col.DefaultCellStyle.Font = style.Font
+            col.DefaultCellStyle.ForeColor = style.ForeColor
+            col.DefaultCellStyle.SelectionBackColor = style.SelectionBackColor
+            col.DefaultCellStyle.SelectionForeColor = style.SelectionForeColor
+            col.DefaultCellStyle.Tag = style.Tag
+        End Sub
+
+        ''' <summary>
+        ''' スクロール固定列設定
+        ''' </summary>
+        Private Sub _setColStyleFrozen()
+            For ii As Integer = 0 To _frozen - 1
+                If Columns.Count <= ii Then
+                    Return
+                End If
+                Columns.Item(ii).Frozen = True
+                If Columns.Item(ii).DefaultCellStyle IsNot Nothing AndAlso
+                Columns.Item(ii).DefaultCellStyle.Tag = StyleNames.Required.ToString Then
+                    Continue For
+                End If
+                If Styles.ContainsKey(StyleNames.Frozen.ToString) Then
+                    Columns.Item(ii).DefaultCellStyle.BackColor = Styles(StyleNames.Frozen.ToString).BackColor
+                End If
+            Next
         End Sub
 
         ''' <summary>
@@ -1654,6 +1988,12 @@ Namespace Win
         Public ReadOnly Property Index As Integer
 
         Public ReadOnly Property DBColumn As DataColumn
+
+        Public Property Hidden As Boolean
+
+        Public Property Required As Boolean
+
+        Public Property AllowMerging As Boolean
 
     End Class
 
