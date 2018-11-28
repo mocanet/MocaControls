@@ -160,7 +160,6 @@
     <Compile Include="Controls\DataGridView\DataGridViewEx.vb">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\DataGridView\GridMakeColumnBeforeEventArgs.vb" />
     <Compile Include="Controls\DayStyle.vb" />
     <Compile Include="Controls\DebugMarker.Designer.vb">
       <DependentUpon>DebugMarker.vb</DependentUpon>

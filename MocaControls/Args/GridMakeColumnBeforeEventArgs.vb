@@ -1,4 +1,6 @@
 ﻿
+Imports Moca
+
 Namespace Win
 
     ''' <summary>
@@ -16,6 +18,10 @@ Namespace Win
         Public Property InputControl As TextBoxEx.InputFormatType
         ''' <summary>エンティティの該当するプロパティ情報</summary>
         Public Property ModelProperty As System.Reflection.PropertyInfo
+
+        Public Property DBDataColumn As DataColumn
+
+        Public Property ColumnStyle As ColumnStyleAttribute
     End Class
 
 End Namespace
