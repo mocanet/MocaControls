@@ -51,6 +51,8 @@ Namespace Win
         ''' <remarks></remarks>
         Public Event GridColmnSetting(ByVal sender As Object, ByVal e As GridColmnSettingEventArgs)
 
+        Public Event GridMakeColumnBefore(ByVal sender As Object, ByVal e As GridMakeColumnBeforeEventArgs)
+
 #End Region
 
 #Region " スタイル定義 "
@@ -1728,11 +1730,7 @@ Namespace Win
                         RowEntityType = obj.List(0).GetType
                     End If
                 Else
-                    If ClassUtil.GetCustomAttribute(Of Attr.DynamicPropertyAttribute)(obj.List.GetType.GetGenericArguments(0)) Is Nothing Then
-                        RowEntityType = obj.List.GetType.GetGenericArguments(0)
-                    Else
-                        RowEntityType = obj.List(0).GetType
-                    End If
+                    RowEntityType = obj.List.GetType.GetGenericArguments(0)
                 End If
             End If
 
@@ -1794,7 +1792,7 @@ Namespace Win
                 Dim col As DataGridViewColumn
 
                 ' スタイル
-                col = _setColStyle(prop)
+                col = _setColStyle(idx, prop)
 
                 _setColumnProperty(prop, col)
 
@@ -1834,7 +1832,7 @@ Namespace Win
         ''' 列のスタイル設定
         ''' </summary>
         ''' <param name="prop"></param>
-        Private Function _setColStyle(ByVal prop As PropertyInfo) As DataGridViewColumn
+        Private Function _setColStyle(ByVal idx As Integer, ByVal prop As PropertyInfo) As DataGridViewColumn
             Dim col As DataGridViewColumn
             Dim attrCaption As DisplayNameAttribute
             Dim attr As ColumnStyleAttribute
@@ -1851,7 +1849,7 @@ Namespace Win
             attr = ClassUtil.GetCustomAttribute(Of ColumnStyleAttribute)(prop)
             If attr Is Nothing Then
                 attr = New ColumnStyleAttribute(cellType:=CellType.TextBox)
-                col = _makeColumn(attr, prop)
+                col = _makeColumn(idx, attr, prop)
                 col.HeaderText = _cnvColCaption(caption)
                 col.DataPropertyName = prop.Name
                 col.Name = prop.Name
@@ -1862,7 +1860,7 @@ Namespace Win
 
             Dim colIndex As Integer
 
-            col = _makeColumn(attr, prop)
+            col = _makeColumn(idx, attr, prop)
             col.HeaderText = _cnvColCaption(caption)
             col.DataPropertyName = prop.Name
             col.Name = prop.Name
@@ -1900,7 +1898,7 @@ Namespace Win
         ''' <param name="attr"></param>
         ''' <param name="prop"></param>
         ''' <returns></returns>
-        Private Function _makeColumn(ByVal attr As ColumnStyleAttribute, ByVal prop As PropertyInfo) As DataGridViewColumn
+        Private Function _makeColumn(ByVal idx As Integer, ByVal attr As ColumnStyleAttribute, ByVal prop As PropertyInfo) As DataGridViewColumn
             Dim type As CellType = attr.CellType
             Dim col As DataGridViewColumn
 
@@ -1924,6 +1922,14 @@ Namespace Win
                 type = CellType.CheckBox
             End If
 
+            Dim args As New GridMakeColumnBeforeEventArgs
+            args.Index = idx
+            args.MakeCellType = type
+            args.InputControl = attr.InputControl
+            args.ModelProperty = prop
+            OnGridMakeColumnBefore(args)
+            type = args.MakeCellType
+            attr.InputControl = args.InputControl
 
             Select Case type
                 Case CellType.Button
@@ -1986,6 +1992,14 @@ Namespace Win
 
             Return col
         End Function
+
+        ''' <summary>
+        ''' グリッドの列情報設定イベント
+        ''' </summary>
+        ''' <param name="args"></param>
+        Protected Overridable Sub OnGridMakeColumnBefore(ByVal args As GridMakeColumnBeforeEventArgs)
+            RaiseEvent GridMakeColumnBefore(Me, args)
+        End Sub
 
         Private Sub _setColStyleEditCondition(ByVal prop As PropertyInfo, ByVal col As DataGridViewColumn)
             If _editConditions Is Nothing Then
@@ -2301,7 +2315,7 @@ Namespace Win
                 Dim builder As EntityBuilder = New EntityBuilder
                 builder.SetColumnInfo(val)
 
-                tblDef = val.GetType.InvokeMember(info.Name, BindingFlags.Instance Or BindingFlags.NonPublic Or BindingFlags.Public Or BindingFlags.GetField, Nothing, val, New Object() {})
+                tblDef = val.GetType.InvokeMember(info.Name, BindingFlags.Instance Or BindingFlags.NonPublic Or BindingFlags.Static Or BindingFlags.Public Or BindingFlags.GetField, Nothing, val, New Object() {})
                 _tblDefs.Add(tableDefinitionFieldName, tblDef)
             End Sub
 
