@@ -1014,7 +1014,7 @@ Namespace Win
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Overloads Function GetChanges() As IList(Of DataRow)
-            Dim lst As New List(Of Object)(1000)
+            Dim lst As New List(Of DataRow)(1000)
 
             If _dataBinder.BindSrc.DataSource IsNot Nothing Then
                 'lst = (From item As DataRow In CType(_dataBinder.BindSrc.DataSource, DataTable).Rows

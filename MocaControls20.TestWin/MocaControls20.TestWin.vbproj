@@ -11,7 +11,8 @@
     <AssemblyName>MocaControls20.TestWin</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>WindowsForms</MyType>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -162,9 +163,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MocaControls\MocaControls20.vbproj">
-      <Project>{467638fb-8a19-43de-8918-bcda0f8a51c2}</Project>
-      <Name>MocaControls20</Name>
+    <ProjectReference Include="..\MocaControls\MocaControls35.vbproj">
+      <Project>{1eacf60c-d879-49f9-9ec0-edb64403bfbc}</Project>
+      <Name>MocaControls35</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

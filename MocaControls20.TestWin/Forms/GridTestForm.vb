@@ -2,7 +2,25 @@
 
 Public Class GridTestForm
 
+    Public Sub New()
+
+        ' この呼び出しはデザイナーで必要です。
+        InitializeComponent()
+
+        ' InitializeComponent() 呼び出しの後で初期化を追加します。
+
+        If Me.DesignMode Then
+            Return
+        End If
+
+        _new()
+    End Sub
+
     Private Sub GridTestForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        '_new()
+    End Sub
+
+    Private Sub _new()
         Dim lst As IList(Of GridRow)
         lst = New List(Of GridRow)
         Dim ii As Integer
@@ -33,6 +51,10 @@ Public Class GridTestForm
         dt2.Columns.Add("Day", GetType(DateTime))
         dt2.Rows.Add(1, "hoge1", DBNull.Value)
         dt2.Rows.Add(2, "hoge2", Now)
+        dt2.Rows.Add(3, "hoge3", DBNull.Value)
+        dt2.Rows.Add(3, "hoge3", DBNull.Value)
+        dt2.Rows.Add(3, "hoge3", DBNull.Value)
+        dt2.Rows.Add(3, "hoge3", DBNull.Value)
         dt2.Rows.Add(3, "hoge3", DBNull.Value)
         dt2.AcceptChanges()
 
