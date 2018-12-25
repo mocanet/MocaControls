@@ -84,7 +84,7 @@ Namespace Win
         Private _editConditions As IDictionary(Of DataGridViewColumn, EditConditionAttribute)
 
         Private CAPTIONHEIGHT As Integer = 20
-        Private BORDERWIDTH As Integer = 0
+        Private BORDERWIDTH As Integer = 1
 
 #End Region
 
@@ -2158,13 +2158,17 @@ Namespace Win
         End Function
 
         Private Sub _showScrollBars(sender As Object, e As EventArgs)
-            If Not VerticalScrollBar.Visible Then
-                Dim width As Integer = VerticalScrollBar.Width
-                VerticalScrollBar.Location = New Point(Me.ClientRectangle.Width - width - BORDERWIDTH, 0)
-                VerticalScrollBar.Size = New Size(width, Me.ClientRectangle.Height - CAPTIONHEIGHT - BORDERWIDTH + 4)
-                HorizontalScrollBar.Size = New Size(HorizontalScrollBar.Size.Width - VerticalScrollBar.Size.Width, HorizontalScrollBar.Size.Height)
-                VerticalScrollBar.Show()
+            If Not VerticalScrollBarAlwaysShow Then
+                Return
             End If
+            If VerticalScrollBar.Visible Then
+                Return
+            End If
+            Dim width As Integer = VerticalScrollBar.Width
+            VerticalScrollBar.Location = New Point(Me.ClientRectangle.Width - width - BORDERWIDTH, BORDERWIDTH)
+            VerticalScrollBar.Size = New Size(width, Me.ClientRectangle.Height - CAPTIONHEIGHT)
+            HorizontalScrollBar.Size = New Size(HorizontalScrollBar.Size.Width + VerticalScrollBar.Size.Width, HorizontalScrollBar.Size.Height)
+            VerticalScrollBar.Show()
         End Sub
 
 #Region " Validate "

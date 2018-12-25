@@ -13,11 +13,11 @@ Public Class GridTestForm
             Return
         End If
 
-        _new()
+        '_new()
     End Sub
 
     Private Sub GridTestForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        '_new()
+        _new()
     End Sub
 
     Private Sub _new()
@@ -30,10 +30,16 @@ Public Class GridTestForm
         ii += 1
 
         ModelGridView1.EnableHeadersVisualStyles = False
+        ModelGridView1.VerticalScrollBarAlwaysShow = True
         ModelGridView1.AllowUserToAddRows = False
         Dim lstSort As New Moca.SortableBindingList(Of GridRow)(lst)
         ModelGridView1.DataSource = lstSort
         ModelGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect
+        lstSort.AddNew()
+        lstSort.AddNew()
+        lstSort.AddNew()
+        lstSort.AddNew()
+        lstSort.AddNew()
         'ModelGridView1.SelectionMode = DataGridViewSelectionMode.CellSelect
         'ModelGridView1.SelectionMode = DataGridViewSelectionMode.RowHeaderSelect
         'ModelGridView1.SelectionMode = DataGridViewSelectionMode.ColumnHeaderSelect
@@ -99,6 +105,10 @@ Public Class GridTestForm
 
     Private Sub btnDel_Click(sender As Object, e As EventArgs) Handles btnDel.Click
         DataGridViewEx1.RemoveCurrent()
+    End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        ModelGridView1.AddNew(Of GridRow)()
     End Sub
 
 End Class
